@@ -40,35 +40,15 @@ const Header = () => {
   }, [prevScroll]);
 
 
-  return (
-    <Navbar
-      expand="lg"
-      fixed="top"
-      className={`
-    ${styles.navbar}
-    ${showHeader ? styles.show : ""}
-    ${solid ? styles.solid : styles.transparent}
-  `}
-    >
-      <div className={styles.navWrapper}>
-        <Navbar.Brand href="/" className={styles.logo}>
-          TNT
-        </Navbar.Brand>
-
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-
-        <Navbar.Collapse id="basic-navbar-nav" className={styles.menuArea}>
-          <Nav>
-            <Nav.Link href="/color">Personal Color</Nav.Link>
-            <Nav.Link href="/body">Personal Body</Nav.Link>
-            <Nav.Link href="/fitroom">FitRoom</Nav.Link>
-          </Nav>
-        </Navbar.Collapse>
-      </div>
-    </Navbar>
-
-
-  );
+    return (
+        <div className={styles.header}>
+            <nav>
+                <Link to="/">Home</Link> |
+                <Link to="/color">Personal Color</Link>|
+                  <Link to="/fitroom">FitRoom</Link>
+            </nav>
+        </div>
+    );
 };
 
 export default Header;

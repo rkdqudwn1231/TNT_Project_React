@@ -1,6 +1,6 @@
 import { Routes, Route, useLocation } from "react-router-dom";
 import styles from "./ContentMain.module.css";
-import PersonalColor from "../../PersonalColor/personalColor";
+import PersonalColor from "../PersonalColor/personalColor";
 import FitRoom from "../FitRoom/FitRoom";
 import Home from "../Home/Home";
 import Header from "./Header";

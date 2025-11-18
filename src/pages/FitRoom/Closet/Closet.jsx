@@ -35,15 +35,19 @@ function Closet() {
 
                     {(clothType === "upper" || clothType === "full" && item.upperImageUrl) && (
                         <>
-                            <img src={`data:image/png;base64,${item.upperImageUrl}`} />
-                            <p>{item.upperName}</p>
+                            <div style={{ float: "left" }}>
+                                <img src={`data:image/png;base64,${item.upperImageUrl}`} width={200}/>
+                                <p>{item.upperName}</p>
+                            </div>
                         </>
                     )}
 
                     {(clothType === "lower" && item.lowerImageUrl) && (
                         <>
-                            <img src={`data:image/png;base64,${item.lowerImageUrl}`} />
-                            <p>{item.lowerName}</p>
+                            <div style={{ float: "left" }}>
+                                <img src={`data:image/png;base64,${item.lowerImageUrl}`} width={200}/>
+                                <p>{item.lowerName}</p>
+                            </div>
                         </>
                     )}
 

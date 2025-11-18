@@ -14,7 +14,7 @@ function History() {
                 setHistoryData(res.data);
             } catch (err) {
                 console.error(err);
-                
+
             }
         };
 
@@ -42,7 +42,7 @@ function History() {
     return (
         <div>
             {Object.entries(groupedByDate).map(([date, items]) => (
-                <div key={date} style={{ marginBottom: "20px",float:"left" }} >
+                <div key={date} style={{ marginBottom: "20px", float: "left" }} >
                     <h2>{date}</h2>
                     <div style={{ display: "flex", gap: "10px" }}>
                         {items.map(item => {
@@ -50,16 +50,23 @@ function History() {
                             const day = new Date(item.saveDate);
                             const time = day.toTimeString().split(" ")[0]; // HH:MM:SS
                             return (
-                                <div key={item.seq}>
 
-                                    <img src={item.resultUrl} width={200} />
-                                    
-                                    <p style={{ fontSize: "25px" }}> {item.name} </p>
-                                  
+                                <div key={item.seq}>
+                                    <div>
+                                        <img src={item.resultUrl} width={200} />
+
+                                        <img src={`data:image/png;base64,${item.upperImageUrl}`} width={50} />
+
+                                        {item.lowerImageUrl &&
+                                            <img src={`data:image/png;base64,${item.lowerImageUrl}`} width={50} />
+
+                                        }
+
+                                    </div>
                                 </div>
-                                
                             );
                         })}
+                        {/* map */}
                     </div>
                 </div>
             ))}

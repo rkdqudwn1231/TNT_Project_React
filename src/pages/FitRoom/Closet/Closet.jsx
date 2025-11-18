@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
+
 import { caxios } from "../../../config/config";
+
 
 function Closet() {
     const [clothType, setClothType] = useState("upper");

@@ -1,6 +1,8 @@
 import { useState, useRef } from "react";
 import { colorPalettes } from "./palettes";
+
 import {caxios} from "../../config/config";
+
 
 //  연예인 데이터 (기존 HEAD 유지)
 const celebrityMap = {

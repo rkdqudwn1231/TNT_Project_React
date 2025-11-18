@@ -1,20 +1,14 @@
 import axios from "axios";
 
-export const ip = `http://10.5.5.11:`;
-
-const caxios = axios.create({
-  baseURL:ip
+export const caxios = axios.create({
+  baseURL: `http://10.5.5.12`
 });
 
-caxios.interceptors.request.use(
-  (req) => {
-    const token = sessionStorage.getItem("token");
-    if (token) {
-      req.headers.Authorization = `Bearer ${token}`;
-    }
-    return req;
-  },
-  (error) => Promise.reject(error)
-);
 
-export default caxios;
+caxios.interceptors.request.use((config) => {
+  const token = sessionStorage.getItem("token");
+  if (token) {
+    config.headers["Authorization"] = `bearer ${token}`;
+  }
+  return config;
+});

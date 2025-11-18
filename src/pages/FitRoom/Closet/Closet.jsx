@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { caxios } from "../../config/config";
+import { caxios } from "../../../config/config";
 
 function Closet() {
     const [clothType, setClothType] = useState("upper");
@@ -31,18 +31,19 @@ function Closet() {
                 <div key={item.seq}>
                     {/* 이미지 뽑을때 db에 있는 url은 항상 base64로 변환해서 뽑아야 이미지로 나옴! */}
 
-                    {(clothType === "upper" || clothType === "full") && (
+                    {(clothType === "upper" || clothType === "full" && item.upperImageUrl) && (
                         <>
                             <img src={`data:image/png;base64,${item.upperImageUrl}`} />
                             <p>{item.upperName}</p>
                         </>
                     )}
 
-                    {(clothType === "lower") && (
+                    {(clothType === "lower" && item.lowerImageUrl) && (
                         <>
                             <img src={`data:image/png;base64,${item.lowerImageUrl}`} />
                             <p>{item.lowerName}</p>
-                        </>)}
+                        </>
+                    )}
 
 
                 </div>

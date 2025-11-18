@@ -1,4 +1,4 @@
-.header {
+/* .header {
     height: 60px;
     background: #fff;
     border-bottom: 1px solid #ddd;
@@ -7,4 +7,64 @@
     justify-content: space-between;
     padding: 0 20px;
     flex-shrink: 0; 
+} */
+
+
+/* 네비바 전체영역: 100% width */
+.navbar {
+  min-height: 20px !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  transition: transform 0.6s ease-out;
+  transform: translateY(-100%);
+}
+
+/* 나타날 때 */
+.show {
+  transform: translateY(0);
+}
+
+.navWrapper {
+  width: 100%;
+  max-width: 100%;
+  padding: 0 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.menuArea {
+  display: flex;
+  justify-content: flex-end;
+  flex-grow: 1;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+/* 로고 */
+.logo {
+  font-size: 40px !important;
+  font-weight: 800 !important;
+  letter-spacing: 1px;
+  padding: 0;
+  margin: 0;
+}
+
+/* 색상 모드 */
+.transparent {
+  background: transparent !important;
+  color: white;
+}
+
+.transparent a {
+  color: white !important;
+}
+
+.solid {
+  background: rgba(255, 200, 220, 0.85) !important;
+  backdrop-filter: blur(6px);
+}
+
+.solid a {
+  color: white !important;
 }

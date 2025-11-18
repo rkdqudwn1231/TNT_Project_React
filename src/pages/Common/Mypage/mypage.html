@@ -1,19 +1,179 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<style>
-    div{
-        border: 1px solid black;
+  <meta charset="UTF-8">
+  <title>마이페이지</title>
+  <style>
+    body {
+      background: #f5f5f5;
+      font-family: sans-serif;
     }
-</style>
+
+    .container {
+      max-width: 480px;
+      margin: 40px auto;
+      padding: 24px 20px;
+      border-radius: 12px;
+      background-color: #ffffff;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+      box-sizing: border-box;
+    }
+
+    .title {
+      margin: 0 0 20px;
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .profileImageBox {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 1px solid #ddd;
+      background: #f7f7f7;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .profilePlaceholder {
+      font-size: 12px;
+      color: #999;
+    }
+
+    .headerInfo {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .nameRow {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+
+    .name {
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .userId {
+      font-size: 13px;
+      color: #777;
+    }
+
+    .subInfo {
+      display: flex;
+      gap: 6px;
+      font-size: 13px;
+      color: #666;
+    }
+
+    .section {
+      margin-top: 20px;
+    }
+
+    .sectionTitle {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .infoRow {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .infoLabel {
+      font-size: 13px;
+      color: #666;
+    }
+
+    .infoValue {
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .editButton {
+      margin-top: 24px;
+      width: 100%;
+      padding: 10px 0;
+      border-radius: 8px;
+      border: none;
+      font-size: 15px;
+      font-weight: 600;
+      background-color: #111;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    .editButton:hover { opacity: 0.88; }
+  </style>
+</head>
 <body>
 
-<div>MYpage</div>
+<div class="container">
+  <h2 class="title">마이페이지</h2>
 
+  <div class="header">
+    <div class="profileImageBox">
+      <span class="profilePlaceholder">이미지 없음</span>
+    </div>
+
+    <div class="headerInfo">
+      <div class="nameRow">
+        <span class="name">홍길동</span>
+        <span class="userId">@pink123</span>
+      </div>
+
+      <div class="subInfo">
+        <span>여성</span>
+        <span>·</span>
+        <span>1995-01-01</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h3 class="sectionTitle">기본 정보</h3>
+
+    <div class="infoRow">
+      <span class="infoLabel">휴대전화</span>
+      <span class="infoValue">010-0000-0000</span>
+    </div>
+
+    <div class="infoRow">
+      <span class="infoLabel">아이디</span>
+      <span class="infoValue">pink123</span>
+    </div>
+  </div>
+
+  <div class="section">
+    <h3 class="sectionTitle">퍼스널 정보</h3>
+
+    <div class="infoRow">
+      <span class="infoLabel">퍼스널 컬러</span>
+      <span class="infoValue">봄웜</span>
+    </div>
+
+    <div class="infoRow">
+      <span class="infoLabel">퍼스널 체형</span>
+      <span class="infoValue">모래시계형</span>
+    </div>
+  </div>
+
+  <button class="editButton">정보 수정</button>
+</div>
 
 </body>
 </html>

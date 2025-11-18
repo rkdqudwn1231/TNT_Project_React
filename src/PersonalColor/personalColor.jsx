@@ -2,7 +2,7 @@ import { useState, useRef } from "react";
 import { colorPalettes } from "./palettes";
 import caxios from "../config/config";
 
-//  연예인 데이터
+//  연예인 데이터 (기존 HEAD 유지)
 const celebrityMap = {
   spring: [
     {
@@ -54,9 +54,7 @@ const celebrityMap = {
   ]
 };
 
-// ======================================================
-//  ⭐ 연예인 카드 컴포넌트 2개 추가 (빼먹지 않음)
-// ======================================================
+// ⭐ 연예인 카드
 function CelebrityCard({ celeb }) {
   return (
     <div
@@ -75,9 +73,7 @@ function CelebrityCard({ celeb }) {
       />
       <div style={{ padding: 12 }}>
         <strong style={{ fontSize: 16 }}>{celeb.name}</strong>
-        <p style={{ marginTop: 6, fontSize: 13, color: "#555" }}>
-          {celeb.desc}
-        </p>
+        <p style={{ marginTop: 6, fontSize: 13, color: "#555" }}>{celeb.desc}</p>
       </div>
     </div>
   );
@@ -97,7 +93,7 @@ function CelebritySection({ season }) {
   );
 }
 
-// ========================== 기존 코드 유지 ==========================
+// ========= 기존 기능 =========
 
 //색조 기반 정확도 
 function getHue([r, g, b]) {
@@ -180,7 +176,6 @@ function FileUploadBox({ onChange }) {
       onClick={() => document.getElementById("uploadInput").click()}
     >
       <div style={{ fontSize: 60, opacity: 0.4 }}>📷</div>
-
       <button
         type="button"
         style={{
@@ -195,14 +190,7 @@ function FileUploadBox({ onChange }) {
       >
         Choose Photo
       </button>
-
-      <input
-        id="uploadInput"
-        type="file"
-        accept="image/*"
-        onChange={onChange}
-        style={{ display: "none" }}
-      />
+      <input id="uploadInput" type="file" accept="image/*" onChange={onChange} style={{ display: "none" }} />
     </div>
   );
 }
@@ -233,7 +221,6 @@ function PersonalColor() {
   };
 
   const handleAnalyze = () => {
-
     if(!skin || !hair || !eye){
       alert("색을 모두 선택해주세요!");
       return;
@@ -292,15 +279,15 @@ function PersonalColor() {
 
   return (
     <div
-  style={{
-    display: "flex",
-    justifyContent: "center",   // 가로 중앙 정렬
-    alignItems: "flex-start",    // 세로 위치 자연스럽게
-    gap: 40,
-    padding: 20,
-    width: "100%",              // 가운데 배치 안정화
-  }}
->
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "flex-start",
+        gap: 40,
+        padding: 20,
+        width: "100%",
+      }}
+    >
       <div>
         <h2>이미지 색 추출</h2>
 
@@ -354,6 +341,7 @@ function PersonalColor() {
 
         {imageSrc && (
           <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+
             <ColorBox label="Skin" color={skin} />
             <ColorBox label="Hair" color={hair} />
             <ColorBox label="Eye" color={eye} />
@@ -376,19 +364,18 @@ function PersonalColor() {
               퍼스널 컬러 분석하기
             </button>
 
-            {tone &&(
-              <div style={{marginTop: 10, letterSpacing: "1px", lineHeight: "1.8"}}>
-                <strong>당신은 </strong>
-                {tone === "warm" ?  "웜톤":"쿨톤"}입니다.
+            {tone && (
+              <div style={{ marginTop: 10, letterSpacing: "1px", lineHeight: "1.8" }}>
+                <strong>당신은 </strong>{tone === "warm" ? "웜톤" : "쿨톤"}입니다.
               </div>
             )}
 
             {season && (
-              <div style={{marginTop: 10, letterSpacing: "1px", lineHeight: "1.8" }}>
+              <div style={{ marginTop: 10, letterSpacing: "1px", lineHeight: "1.8" }}>
                 <strong>당신의 퍼스널 컬러: </strong>
                 {season === "spring" && "봄(Spring)"}
                 {season === "summer" && "여름(Summer)"}
-                {season === "autumn" &&"가을(Autumn)"}
+                {season === "autumn" && "가을(Autumn)"}
                 {season === "winter" && "겨울(Winter)"}
               </div>
             )}
@@ -405,24 +392,18 @@ function PersonalColor() {
                   colors={colorPalettes[season].worst}
                 />
 
-                {/* ⭐ 여기 연예인 카드형 UI 추가됨 */}
+                {/* 연예인 카드 */}
                 <CelebritySection season={season} />
               </>
             )}
-
           </div>
         )}
-
       </div>
-
     </div>
   );
 }
 
 function ColorBox({ label, color }) {
-  const rgbArray = color ? parseRgb(color) : null;
-  const hex = rgbArray ? rgbArrayToHex(rgbArray) : null;
-
   return (
     <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
       <div

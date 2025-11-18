@@ -7,7 +7,6 @@ const Header = () => {
   const [solid, setSolid] = useState(false);
   const [prevScroll, setPrevScroll] = useState(0);
 
-  // 헤더 스크롤 이벤트 
   useEffect(() => {
 
     const threshold = 10;
@@ -66,10 +65,7 @@ const Header = () => {
         </Navbar.Collapse>
       </div>
     </Navbar>
-
-
   );
-
 };
 
 export default Header;

@@ -1,7 +1,103 @@
 import { useState, useRef } from "react";
 import { colorPalettes } from "./palettes";
+import caxios from "../config/config";
 
+//  연예인 데이터
+const celebrityMap = {
+  spring: [
+    {
+      name: "아이유",
+      img: "https://i.imgur.com/4Z8wQ2F.jpeg",
+      desc: "맑고 밝은 라이트 스프링 대표 톤"
+    },
+    {
+      name: "태연",
+      img: "https://i.imgur.com/m4Zytnp.jpeg",
+      desc: "중명도의 따뜻한 봄톤"
+    }
+  ],
+  summer: [
+    {
+      name: "수지",
+      img: "https://i.imgur.com/e8M2D1v.jpeg",
+      desc: "부드럽고 차분한 여름 라이트톤"
+    },
+    {
+      name: "이영애",
+      img: "https://i.imgur.com/2lfHwqy.jpeg",
+      desc: "청초하고 투명한 쿨톤 대표"
+    }
+  ],
+  autumn: [
+    {
+      name: "제니",
+      img: "https://i.imgur.com/B2xjGgK.jpeg",
+      desc: "고급스럽고 딥한 가을톤"
+    },
+    {
+      name: "한지민",
+      img: "https://i.imgur.com/0X9y4bT.jpeg",
+      desc: "부드럽고 따뜻한 뮤트톤"
+    }
+  ],
+  winter: [
+    {
+      name: "송혜교",
+      img: "https://i.imgur.com/0AvmLdM.jpeg",
+      desc: "선명하고 대비 강한 겨울 딥톤"
+    },
+    {
+      name: "윤아",
+      img: "https://i.imgur.com/K1LLVwk.jpeg",
+      desc: "깨끗하고 투명한 아이시 쿨톤"
+    }
+  ]
+};
 
+// ======================================================
+//  ⭐ 연예인 카드 컴포넌트 2개 추가 (빼먹지 않음)
+// ======================================================
+function CelebrityCard({ celeb }) {
+  return (
+    <div
+      style={{
+        width: 160,
+        borderRadius: 14,
+        overflow: "hidden",
+        backgroundColor: "white",
+        boxShadow: "0 4px 12px rgba(0,0,0,0.15)"
+      }}
+    >
+      <img
+        src={celeb.img}
+        alt={celeb.name}
+        style={{ width: "100%", height: 150, objectFit: "cover" }}
+      />
+      <div style={{ padding: 12 }}>
+        <strong style={{ fontSize: 16 }}>{celeb.name}</strong>
+        <p style={{ marginTop: 6, fontSize: 13, color: "#555" }}>
+          {celeb.desc}
+        </p>
+      </div>
+    </div>
+  );
+}
+
+function CelebritySection({ season }) {
+  const list = celebrityMap[season];
+  return (
+    <div style={{ marginTop: 25 }}>
+      <h3 style={{ marginBottom: 12 }}>당신과 비슷한 톤의 연예인</h3>
+      <div style={{ display: "flex", gap: 20, flexWrap: "wrap" }}>
+        {list.map((celeb, i) => (
+          <CelebrityCard key={i} celeb={celeb} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ========================== 기존 코드 유지 ==========================
 
 //색조 기반 정확도 
 function getHue([r, g, b]) {
@@ -21,29 +117,23 @@ function getHue([r, g, b]) {
   return h;
 }
 
-//고급 윕톤/쿨론 판정
 function getToneAdvanced(rgb) {
   const h = getHue(rgb);
 
-  if (h >= 20 && h <= 85) return "warm";    // 노랑/올리브 → 웜
-  if (h >= 180 && h <= 300) return "cool";  // 핑크/블루 → 쿨
+  if (h >= 20 && h <= 85) return "warm";
+  if (h >= 180 && h <= 300) return "cool";
   return "neutral";
 }
 
-//밝기 정확도
 function getLightness([r, g, b]) {
-  return 0.2126*r + 0.7152*g + 0.0722*b; // 실제 인간 눈 기준 명도
+  return 0.2126*r + 0.7152*g + 0.0722*b;
 }
-
-
-
 
 function detectPersonalColor(skinRGB, hairRGB, eyeRGB) {
   const tone = getToneAdvanced(skinRGB);
   const light = getLightness(skinRGB);
   const isBright = light >= 150;
 
-  // 중립톤이면 머리색 기준으로 보정
   let finalTone = tone;
   if (tone === "neutral") {
     const hairTone = getToneAdvanced(hairRGB);
@@ -60,22 +150,17 @@ function detectPersonalColor(skinRGB, hairRGB, eyeRGB) {
   return { tone: finalTone, season };
 }
 
-
-
-
 function parseRgb(rgbString){
-  if(!rgbString) return null; //색을 클릭하지 않을 경우
-  const matches =rgbString.match(/\d+/g);  //rgb 값이 숫자가 들어오면 숫자 출력
-  if(!matches) return null; //rgb숫자값이 들어있지 않으면 null 값 반환
-  return matches.map(Number); //문자열 배열을 숫자 배열로 변환
+  if(!rgbString) return null;
+  const matches = rgbString.match(/\d+/g);
+  if(!matches) return null;
+  return matches.map(Number);
 }
 
-function rgbArrayToHex([r,g,b]){ // R,G,B 파라미터값에 값 저장
-  const toHex=(v)=>v.toString(16).padStart(2,"0"); //숫자 V(RGB)를 16진수(HEX) 문자열로 변환(두 자리에 맞게 앞에 0을 붙어서 2자리 맞춤)
-  return `#${toHex(r)}${toHex(g)}${toHex(b)}` //RGB 각각 HEX로 변환해서 붙여준다.
+function rgbArrayToHex([r,g,b]) {
+  const toHex=(v)=>v.toString(16).padStart(2,"0");
+  return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
 }
-
-
 
 function FileUploadBox({ onChange }) {
   return (
@@ -122,13 +207,7 @@ function FileUploadBox({ onChange }) {
   );
 }
 
-
-
-
-
-
 function PersonalColor() {
-
 
   const [imageSrc, setImageSrc] = useState(null);
   const [mode, setMode] = useState("Skin");
@@ -143,8 +222,6 @@ function PersonalColor() {
 
   const[tone,setTone]=useState(null);
 
-  
-
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -155,7 +232,8 @@ function PersonalColor() {
     setHoverColor(null);
   };
 
-  const handleAnalyze=()=>{
+  const handleAnalyze = () => {
+
     if(!skin || !hair || !eye){
       alert("색을 모두 선택해주세요!");
       return;
@@ -166,15 +244,21 @@ function PersonalColor() {
     const eyeRGB=parseRgb(eye);
 
     if(!skinRGB || !hairRGB || !eyeRGB){
-      alert("색 불러오기 실패 ㅠㅠ")
+      alert("색 불러오기 실패 ㅠㅠ");
       return;
     }
 
-  const seasonResult = detectPersonalColor(skinRGB, hairRGB, eyeRGB);
-    Setseaon(seasonResult.season); // 시즌 저장
-    setTone(seasonResult.tone); //톤 저장
-    
-  }
+    const seasonResult = detectPersonalColor(skinRGB, hairRGB, eyeRGB);
+    Setseaon(seasonResult.season);
+    setTone(seasonResult.tone);
+
+    caxios.post("/Personalcolor",{
+      season: seasonResult.season,
+      tone_type: seasonResult.tone,
+      best_color: colorPalettes[seasonResult.season].best.join(","),
+      worst_color: colorPalettes[seasonResult.season].worst.join(",")
+    })
+  };
 
   const getPixelColor = (e) => {
     const canvas = canvasRef.current;
@@ -207,32 +291,37 @@ function PersonalColor() {
   };
 
   return (
-    <div style={{ display: "flex", gap: 40, padding: 20 }}>
-
+    <div
+  style={{
+    display: "flex",
+    justifyContent: "center",   // 가로 중앙 정렬
+    alignItems: "flex-start",    // 세로 위치 자연스럽게
+    gap: 40,
+    padding: 20,
+    width: "100%",              // 가운데 배치 안정화
+  }}
+>
       <div>
         <h2>이미지 색 추출</h2>
 
-        {!imageSrc && (
-          <FileUploadBox onChange={handleFileChange} />
-        )}
+        {!imageSrc && <FileUploadBox onChange={handleFileChange} />}
 
         {imageSrc && (
           <div style={{ position: "relative", display: "inline-block" }}>
-           <img
-  ref={imgRef}
-  src={imageSrc}
-  alt="upload"
-  onMouseMove={handleMouseMove}
-  onClick={handleImageClick}
-  style={{
-    width: "350px",
-    height: "auto",
-    objectFit: "contain",
-    marginTop: 20,
-    cursor: "none"
-  }}
-/>
-
+            <img
+              ref={imgRef}
+              src={imageSrc}
+              alt="upload"
+              onMouseMove={handleMouseMove}
+              onClick={handleImageClick}
+              style={{
+                width: "350px",
+                height: "auto",
+                objectFit: "contain",
+                marginTop: 20,
+                cursor: "none"
+              }}
+            />
 
             {hoverColor && (
               <div
@@ -269,67 +358,61 @@ function PersonalColor() {
             <ColorBox label="Hair" color={hair} />
             <ColorBox label="Eye" color={eye} />
 
-          <button
-  onClick={handleAnalyze}
-  style={{
-    padding: "12px 20px",
-    borderRadius: 10,
-    border: "none",
-    fontSize: "15px",
-    fontWeight: "600",
-    cursor: "pointer",
-    background: "linear-gradient(135deg, #ff7096 0%, #ff4d6d 100%)",
-    color: "white",
-    boxShadow: "0 4px 12px rgba(255, 109, 132, 0.4)",
-    transition: "0.2s"
-  }}
-  onMouseOver={e => {
-    e.target.style.transform = "scale(1.03)";
-    e.target.style.boxShadow = "0 6px 16px rgba(255, 109, 132, 0.6)";
-  }}
-  onMouseOut={e => {
-    e.target.style.transform = "scale(1)";
-    e.target.style.boxShadow = "0 4px 12px rgba(255, 109, 132, 0.4)";
-  }}
->
-  퍼스널 컬러 분석하기
-</button>
+            <button
+              onClick={handleAnalyze}
+              style={{
+                padding: "12px 20px",
+                borderRadius: 10,
+                border: "none",
+                fontSize: "15px",
+                fontWeight: "600",
+                cursor: "pointer",
+                background: "linear-gradient(135deg, #ff7096 0%, #ff4d6d 100%)",
+                color: "white",
+                boxShadow: "0 4px 12px rgba(255, 109, 132, 0.4)",
+                transition: "0.2s"
+              }}
+            >
+              퍼스널 컬러 분석하기
+            </button>
 
-          {tone &&(
-            <div style={{marginTop: 10, letterSpacing: "1px", lineHeight: "1.8"}}>
-              <strong>당신은 </strong>
-              {tone === "warm" ?  "웜톤":"쿨톤"}입니다.
-            </div>
-          )}
+            {tone &&(
+              <div style={{marginTop: 10, letterSpacing: "1px", lineHeight: "1.8"}}>
+                <strong>당신은 </strong>
+                {tone === "warm" ?  "웜톤":"쿨톤"}입니다.
+              </div>
+            )}
 
             {season && (
               <div style={{marginTop: 10, letterSpacing: "1px", lineHeight: "1.8" }}>
-                <strong>당신의 퍼스널 컬러: </strong>{season === "spring" && "봄(Spring)"}
+                <strong>당신의 퍼스널 컬러: </strong>
+                {season === "spring" && "봄(Spring)"}
                 {season === "summer" && "여름(Summer)"}
                 {season === "autumn" &&"가을(Autumn)"}
                 {season === "winter" && "겨울(Winter)"}
-                </div>
+              </div>
             )}
 
-          {season && (
-            <>
-              <ColorPalette
-                title="어울리는 색상 (BEST)"
-                colors={colorPalettes[season].best}
-              />
+            {season && (
+              <>
+                <ColorPalette
+                  title="어울리는 색상 (BEST)"
+                  colors={colorPalettes[season].best}
+                />
 
-              <ColorPalette
-                title="피해야 하는 색상 (WORST)"
-                colors={colorPalettes[season].worst}
-              />
-            </>
-          )}
+                <ColorPalette
+                  title="피해야 하는 색상 (WORST)"
+                  colors={colorPalettes[season].worst}
+                />
+
+                {/* ⭐ 여기 연예인 카드형 UI 추가됨 */}
+                <CelebritySection season={season} />
+              </>
+            )}
 
           </div>
-          
         )}
 
-   
       </div>
 
     </div>
@@ -337,10 +420,8 @@ function PersonalColor() {
 }
 
 function ColorBox({ label, color }) {
-
-const rgbArray=color ? parseRgb(color) : null;
-const hex=rgbArray ? rgbArrayToHex(rgbArray) : null;
-
+  const rgbArray = color ? parseRgb(color) : null;
+  const hex = rgbArray ? rgbArrayToHex(rgbArray) : null;
 
   return (
     <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
@@ -354,7 +435,6 @@ const hex=rgbArray ? rgbArrayToHex(rgbArray) : null;
         }}
       />
       <span>{label}</span>
-    
     </div>
   );
 }

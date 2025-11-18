@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { caxios } from "../../config/config";
+import caxios from "../../../config/config";
 
 function History() {
 

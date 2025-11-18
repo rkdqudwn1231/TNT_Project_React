@@ -1,6 +1,6 @@
 import "./App.css";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
-import PersonalColor from "./PersonalColor/personalColor.jsx";
+import PersonalColor from "./pages/PersonalColor/personalColor.jsx";
 import ContentMain from "./pages/Common/ContentMain.jsx";
 
 function App() {

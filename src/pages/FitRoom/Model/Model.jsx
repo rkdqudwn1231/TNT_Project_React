@@ -105,8 +105,13 @@ function Model() {
                                     <button onClick={() => handleDeleteClick(item)}>🗑️</button>
                                 </div>
                             </div>
+                            <div>
+                                <span style={{ fontSize: "0.9em", color: "black" }}>{item.modelName}</span>{" "}{" "}
+                                <span style={{ fontSize: "0.7em", color: "gray" }}>{item.sex}</span>
+
+                            </div>
                         </div>
-                        <p>{item.modelName}</p>
+
                     </div>
                 ))}
             </div>
@@ -122,15 +127,29 @@ function Model() {
                     {modalType === "edit" && selectedModel && (
                         // 수정 로직 연결
                         <div>
-                            <label>이름:</label>
-                            <input type="text" defaultValue={selectedModel.modelName} />
-                            <br></br>
-                            <label> 성별:</label>
-                            <input type="text" defaultValue={selectedModel.sex} />
+
+                            <div>
+                                <div style={{ textAlign: "center", marginBottom: "10px" }}>
+                                    <img
+                                        src={`data:image/png;base64,${selectedModel.modelUrl}`}
+                                        alt={selectedModel.modelName}
+                                        style={{ width: "200px" }}
+                                    />
+                                </div>
+                            </div>
+
+
+                            <div>
+                                <label>이름:</label>
+                                <input type="text" defaultValue={selectedModel.modelName} />
+                                <br></br>
+                                <label> 성별:</label>
+                                <input type="text" defaultValue={selectedModel.sex} />
+                            </div>
                         </div>
                     )}
                     {modalType === "delete" && selectedModel && (
-                        <p>{selectedModel.modelName} 해당 모델을 삭제하시겠습니까?</p>
+                        <p>모델명 : {selectedModel.modelName}<br></br> 해당 모델을 삭제하시겠습니까?</p>
                     )}
                 </Modal.Body>
 

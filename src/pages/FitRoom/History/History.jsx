@@ -91,7 +91,7 @@ function History() {
             <h1> 기록 내역 </h1>
             {sortedDates.map(date => (
                 <div key={date}>
-                    <h2>{date}</h2>
+                    <span style={{ fontSize: "25px", color: "black" }}>{date}</span>
                     <div className="cardContainer">
                         <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
                             {groupedByDate[date].map(item => {
@@ -134,7 +134,8 @@ function History() {
                 <Modal.Body>
 
                     {modalType === "delete" && selectedHistory && (
-                        <p>{selectedHistory.name} 해당 기록을 삭제하시겠습니까?</p>
+                        
+                        <p>기록 : {selectedHistory.name}<br></br> 해당 기록을 삭제하시겠습니까?</p>
                     )}
                 </Modal.Body>
 

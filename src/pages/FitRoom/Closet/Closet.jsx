@@ -38,10 +38,10 @@ function Closet() {
 
 
     // 삭제
-    const handleDelete = async() => {
-console.log("DELETE seq:", selectedCloth?.seq);
+    const handleDelete = async () => {
+        console.log("DELETE seq:", selectedCloth?.seq);
         try {
-           await caxios.delete("/closet/delete", { params: { seq: selectedCloth.seq } });
+            await caxios.delete("/closet/delete", { params: { seq: selectedCloth.seq } });
 
             setClosetData(prev => prev.filter(e => e.seq !== selectedCloth.seq));
 
@@ -63,13 +63,13 @@ console.log("DELETE seq:", selectedCloth?.seq);
         closetData.forEach(item => {
             if ((clothType === "all" || clothType === "upper") && item.upperImageUrl) {
                 if (!uniqueUpper.includes(item.upperImageUrl)) {
-                    result.push({seq: item.seq, type: "상의", name: item.upperName, url: item.upperImageUrl });
+                    result.push({ seq: item.seq, type: "상의", name: item.upperName, url: item.upperImageUrl });
                     uniqueUpper.push(item.upperImageUrl);
                 }
             }
             if ((clothType === "all" || clothType === "lower") && item.lowerImageUrl) {
                 if (!uniqueLower.includes(item.lowerImageUrl)) {
-                    result.push({seq: item.seq, type: "하의", name: item.lowerName, url: item.lowerImageUrl });
+                    result.push({ seq: item.seq, type: "하의", name: item.lowerName, url: item.lowerImageUrl });
                     uniqueLower.push(item.lowerImageUrl);
                 }
             }
@@ -125,9 +125,12 @@ console.log("DELETE seq:", selectedCloth?.seq);
                                 </div>
 
                             </div>
-
+                            <div>
+                                <span style={{ fontSize: "0.9em", color: "black" }}>{item.name}</span>{" "}{" "}
+                                <span style={{ fontSize: "0.7em", color: "gray" }}>{item.type}</span>
+                            </div>
                         </div>
-                        <p>{item.name}</p>
+
                     </div>
                 ))}
             </div>
@@ -143,8 +146,20 @@ console.log("DELETE seq:", selectedCloth?.seq);
                     {modalType === "edit" && selectedCloth && (
                         // 수정 로직 연결
                         <div>
+
+                            <div>
+                                <div style={{ textAlign: "center", marginBottom: "10px" }}>
+                                    <img
+                                        src={`data:image/png;base64,${selectedCloth.url}`}
+                                        alt={selectedCloth.name}
+                                        style={{ width: "200px" }}
+                                    />
+                                </div>
+                            </div>
+
+
                             <label>이름:</label>
-                            <input type="text"   value={editName} onChange={(e) => setEditName(e.target.value)}  />
+                            <input type="text" value={editName} onChange={(e) => setEditName(e.target.value)} />
                             <br></br>
                             <label>유형:</label>
                             <select value={editType} onChange={(e) => setEditType(e.target.value)}>
@@ -154,7 +169,7 @@ console.log("DELETE seq:", selectedCloth?.seq);
                         </div>
                     )}
                     {modalType === "delete" && selectedCloth && (
-                        <p>{selectedCloth.name} 해당 의류를 삭제하시겠습니까?</p>
+                        <p>의류명 : {selectedCloth.name}<br></br> 해당 의류를 삭제하시겠습니까?</p>
                     )}
                 </Modal.Body>
 

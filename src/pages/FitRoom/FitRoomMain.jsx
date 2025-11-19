@@ -183,7 +183,7 @@ function FitRoomMain() {
 
 
 
-          <button type="submit" disabled={loading} style={{ marginLeft: "30px" }}>
+          <button type="submit" disabled={loading}>
             {loading ? "업로드 중..." : "전송"}
           </button>
         </div>

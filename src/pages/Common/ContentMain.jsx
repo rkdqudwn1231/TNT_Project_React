@@ -18,25 +18,24 @@ const ContentMain = () => {
         // 홈일 때와 홈이 아닐 때 레이아웃 
         <div className={`${styles.container} ${isHome ? styles.home : styles.sub}`}>
 
-                {/*헤더 */}
-                <header className={styles.header}>
-                    <Header isHome={isHome} />
-                </header>
-
-                {/* 메인 (컨텐츠) */}
-                <main className={styles.main}>
-                    {/* 컨텐츠 */}
-                    <section className={styles.content}>
-                        <Routes>
-                            <Route path="/" element={<Home />} />
-                            <Route path="/color/*" element={<PersonalColor />} />
-                            <Route path="/body/*" element={<Body />} />
-                            <Route path="/fitroom/*" element={<FitRoom />} />
-                            <Route path="/community/*" element={<PersonalColor />} />
-                            <Route path="*" element={<h2>404 Not Found</h2>} />
-                        </Routes>
-                    </section>
-                </main>
+            {/*헤더 */}
+            <header className={styles.header}>
+                <Header isHome={isHome} />
+            </header>
+            {/* 메인 (컨텐츠) */}
+            <main className={styles.main}>
+                {/* 컨텐츠 */}
+                <section className={styles.content}>
+                    <Routes>
+                        <Route path="/" element={<Home />} />
+                        <Route path="/color/*" element={<PersonalColor />} />
+                        <Route path="/body/*" element={<Body />} />
+                        <Route path="/fitroom/*" element={<FitRoom />} />
+                        <Route path="/community/*" element={<PersonalColor />} />
+                        <Route path="*" element={<h2>404 Not Found</h2>} />
+                    </Routes>
+                </section>
+            </main>
         </div>
     );
 };

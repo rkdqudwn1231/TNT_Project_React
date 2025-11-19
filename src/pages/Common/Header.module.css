@@ -12,11 +12,17 @@
 
 /* 네비바 전체영역: 100% width */
 .navbar {
-  min-height: 20px !important;
-  padding-top: 0 !important;
-  padding-bottom: 0 !important;
+  height: 60px !important;
+  padding: 0 !important;
+  margin: 0 !important;
   transition: transform 0.6s ease-out;
   transform: translateY(-100%);
+}
+
+/* header 태그 자체 여백 제거 */
+header {
+  margin: 0;
+  padding: 0;
 }
 
 /* 나타날 때 */
@@ -26,8 +32,9 @@
 
 .navWrapper {
   width: 100%;
-  max-width: 100%;
-  padding: 0 30px;
+  height: 60px;
+  padding: 0 20px;
+  margin: 0 !important;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -36,9 +43,20 @@
 .menuArea {
   display: flex;
   justify-content: flex-end;
+  align-items: flex-end;
+  height: 60px; 
+  margin: 0;
+  padding: 0;
   flex-grow: 1;
-  font-size: 20px;
+  font-size: 14px;
   font-weight: 800;
+}
+
+/* Bootstrap Nav 기본 padding 강제 제거 */
+.menuArea > a,
+.menuArea .nav-link {
+  padding: 0 !important;
+  margin: 0 16px !important;      /* 탭 간격만 유지 */
 }
 
 /* 로고 */
@@ -67,4 +85,15 @@
 
 .solid a {
   color: white !important;
+}
+
+/* 서브 페이지 전용 헤더 스타일 */
+.subHeader {
+  background: #ffffff !important;
+  /* 서브 배경 색 */
+  color: #333 !important;
+}
+
+.subHeader a {
+  color: #333 !important;
 }

@@ -60,8 +60,8 @@ const Header = ({isHome}) => {
       fixed="top"
       className={`
     ${styles.navbar}
-    ${visibleClass}
-    ${solid ? styles.solid : styles.transparent}
+    ${(!isHome || showHeader) ? styles.show : ""}
+    ${isHome ? (solid ? styles.solid : styles.transparent) : styles.subHeader}
   `}
     >
       <div className={styles.navWrapper}>
@@ -75,7 +75,7 @@ const Header = ({isHome}) => {
           <Nav>
             <Nav.Link href="/color">Personal Color</Nav.Link>
             <Nav.Link href="/body">Personal Body</Nav.Link>
-            <Nav.Link href="/fitroom">FitRoom</Nav.Link>
+            <Nav.Link href="/fitroom">Fitting Room</Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </div>

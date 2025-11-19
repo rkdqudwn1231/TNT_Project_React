@@ -94,7 +94,6 @@ function Model() {
 
                 {displayedModels.map(item => (
 
-
                     <div key={item.seq} style={{ textAlign: "center" }}>
 
                         <div className={styles.itemCard}>
@@ -109,8 +108,6 @@ function Model() {
                         </div>
                         <p>{item.modelName}</p>
                     </div>
-
-
                 ))}
             </div>
 
@@ -133,7 +130,7 @@ function Model() {
                         </div>
                     )}
                     {modalType === "delete" && selectedModel && (
-                        <p>정말 {selectedModel.modelName} 모델을 삭제하시겠습니까?</p>
+                        <p>{selectedModel.modelName} 해당 모델을 삭제하시겠습니까?</p>
                     )}
                 </Modal.Body>
 

@@ -154,7 +154,7 @@ console.log("DELETE seq:", selectedCloth?.seq);
                         </div>
                     )}
                     {modalType === "delete" && selectedCloth && (
-                        <p>정말 {selectedCloth.name} 옷을 삭제하시겠습니까?</p>
+                        <p>{selectedCloth.name} 해당 의류를 삭제하시겠습니까?</p>
                     )}
                 </Modal.Body>
 

@@ -11,9 +11,7 @@ function App() {
     <BrowserRouter>
       <div className="App">
         <Routes>
-          <Route path="/" element={<ContentMain />} />
-          <Route path="/personalColor" element={<PersonalColor />} />
-          <Route path="/fitroom/*" element={<FitRoom />} />
+          <Route path="/*" element={<ContentMain />} />
         </Routes>
       </div>
     </BrowserRouter>

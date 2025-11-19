@@ -1,0 +1,62 @@
+/* ContentMain.module.css */
+
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+/* 헤더 기본 */
+.header {
+    flex-shrink: 0;
+    height: 0;
+}
+
+/* 메인 기본 */
+.home .main {
+    flex: 1;
+    overflow-y: visible !important;
+}
+
+/* 컨텐츠 기본 */
+.home .content {
+    width: 100%;
+    height: 100%;
+         /* 스크롤바 숨기기 */
+    -ms-overflow-style: none; 
+    scrollbar-width: none; 
+    overflow: visible !important;
+}
+
+.content::-webkit-scrollbar {
+    display: none; 
+}
+
+/* 홈이 아닐 때 레이아웃 변경 */
+.sub {
+    display: grid;
+    grid-template-rows: 60px  8fr;
+    height: 100vh;
+}
+
+/* 서브 페이지 헤더 */
+.sub .header {
+    height: 60px !important;
+    overflow: visible;
+}
+
+/* 서브 페이지 메인 */
+.sub .main {
+    overflow-y: auto;
+    height: 100%;
+    margin-top: 50px;
+}
+
+/* 서브 페이지 컨텐츠 */
+.sub .content {
+    width: 75%;
+    height: 100%;
+    margin: 0 auto;
+    overflow: auto;
+    background-color: rgb(101, 195, 250);
+}

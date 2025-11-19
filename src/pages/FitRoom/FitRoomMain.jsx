@@ -11,7 +11,9 @@ function FitRoomMain() {
   const [modelImage, setModelImage] = useState(null);
   const [clothImage, setClothImage] = useState(null);
   const [lowerClothImage, setLowerClothImage] = useState(null);
+  const [sex, setSex] = useState("male");
   const [clothType, setClothType] = useState("upper");
+  const [closetCategory, setClosetCategory] = useState(null);
   const [resultImage, setResultImage] = useState(null); // 완성 이미지 URL
   const [loading, setLoading] = useState(false);
 
@@ -19,7 +21,6 @@ function FitRoomMain() {
   const isSubmitting = useRef(false); // 중복 요청 방지
 
   const navigate = useNavigate();
-
 
 
   const handleSubmit = async (e) => {
@@ -50,6 +51,7 @@ function FitRoomMain() {
       return;
     }
 
+    // ---- api 스타트
 
     const formData = new FormData();
     if (modelImage) formData.append("model_image", modelImage);
@@ -65,7 +67,7 @@ function FitRoomMain() {
     formData.append("hd_mode", "false");
 
     try {
-      // api 실행 
+      // -- 서버에 api 요청 전달
       const res = await caxios.post("/fitroom/wear", formData, {
         headers: { "Content-Type": "multipart/form-data" }
       });
@@ -83,6 +85,8 @@ function FitRoomMain() {
       if (clothImage) saveData.append("cloth_image", clothImage);
       if (lowerClothImage) saveData.append("lower_cloth_image", lowerClothImage);
       saveData.append("memberId", "맴버임시");
+      saveData.append("ClosetCategory", closetCategory);
+      saveData.append("sex", sex);
       // DB에 저장
       await caxios.post("/fitroom/save", saveData, {
         headers: { "Content-Type": "multipart/form-data" }
@@ -106,12 +110,51 @@ function FitRoomMain() {
   return (
     <div style={{ margin: "auto" }}>
       <form onSubmit={handleSubmit}>
+        {/* 모델 업로드 */}
+
+
+
         <div>
+          <label>성별:</label>
+          <select value={sex} onChange={(e) => setSex(e.target.value)}>
+            <option value="male">남성</option>
+            <option value="female">여성</option>
+          </select>
+
           <label>모델 이미지:</label>
           <input type="file" accept="image/*" onChange={(e) => setModelImage(e.target.files[0])} />
           {modelImage && <img src={URL.createObjectURL(modelImage)} alt="모델 미리보기" style={{ width: 150 }} />}
         </div>
 
+
+
+        <label>옷 타입:</label>
+        <select value={clothType} onChange={(e) => setClothType(e.target.value)}>
+          <option value="upper">상의</option>
+          <option value="combo">상하의</option>
+          <option value="full">한벌</option>
+        </select>
+
+        <label>카테고리:</label>
+        <select value={closetCategory} onChange={(e) => setClosetCategory(e.target.value)}>
+          <option value="tshirt">티셔츠</option>
+          <option value="shirt">셔츠</option>
+          <option value="hoodie">후드티</option>
+          <option value="jacket">자켓</option>
+          <option value="sweater">스웨터</option>
+          <option value="cardigan">가디건</option>
+          <option value="coat">코트</option>
+          <option value="jeans">청바지</option>
+          <option value="slacks">슬랙스</option>
+          <option value="longpants">긴바지</option>
+          <option value="shorts">반바지</option>
+          <option value="skirt">스커트</option>
+          <option value="dress">드레스</option>
+          <option value="etc">기타</option>
+        </select>
+
+
+        {/*type이 upper이거나 full 일 때 상의 업로드 */}
         {(clothType === "upper" || clothType === "full") && (
           <div>
             <label>상의 이미지:</label>
@@ -120,7 +163,7 @@ function FitRoomMain() {
           </div>
         )}
 
-
+        {/* type이 combo 일때 상의 하의 업로드 */}
         {(clothType === "combo") && (
           <>
             <div>
@@ -137,15 +180,12 @@ function FitRoomMain() {
         )}
 
         <div>
-          <label>옷 타입:</label>
-          <select value={clothType} onChange={(e) => setClothType(e.target.value)}>
-            <option value="upper">상의</option>
-            <option value="combo">상하의</option>
-            <option value="full">한벌</option>
-          </select>
-          <button type="submit" disabled={loading} style={{marginLeft:"30px"}}>
-          {loading ? "업로드 중..." : "전송"}
-        </button>
+
+
+
+          <button type="submit" disabled={loading} style={{ marginLeft: "30px" }}>
+            {loading ? "업로드 중..." : "전송"}
+          </button>
         </div>
 
       </form>

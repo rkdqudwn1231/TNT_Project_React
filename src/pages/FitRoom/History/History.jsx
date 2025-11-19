@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import { caxios } from "../../../config/config";
-
+import styles from "./History.module.css"; // 현재 폴더 기준
 
 function History() {
 
@@ -39,37 +39,47 @@ function History() {
         );
     });
 
+    // 날짜 그룹 최신순 정렬
+    const sortedDates = Object.keys(groupedByDate).sort((a, b) => new Date(b) - new Date(a));
+
     return (
-        <div>
-            {Object.entries(groupedByDate).map(([date, items]) => (
-                <div key={date} style={{ marginBottom: "20px", float: "left" }} >
+        <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+
+            <h1> 기록 내역 </h1>
+            {sortedDates.map(date => (
+                <div key={date}>
                     <h2>{date}</h2>
-                    <div style={{ display: "flex", gap: "10px" }}>
-                        {items.map(item => {
+                    <div className="cardContainer">
+                        <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+                            {groupedByDate[date].map(item => {
 
-                            const day = new Date(item.saveDate);
-                            const time = day.toTimeString().split(" ")[0]; // HH:MM:SS
-                            return (
+                                const day = new Date(item.saveDate);
+                                const time = day.toTimeString().split(" ")[0]; // HH:MM:SS
+                                return (
 
-                                <div key={item.seq}>
-                                    <div>
-                                        <img src={item.resultUrl} width={200} />
+                                    <div key={item.seq} className={styles.itemCard}>
+                                        {/* 큰 이미지 */}
+                                        <img src={item.resultUrl} className={styles.mainImg} />
 
-                                        <img src={`data:image/png;base64,${item.upperImageUrl}`} width={50} />
-
-                                        {item.lowerImageUrl &&
-                                            <img src={`data:image/png;base64,${item.lowerImageUrl}`} width={50} />
-
-                                        }
-
+                                        {/* 작은 이미지 오버레이 */}
+                                        <div className={styles.overlayImages}>
+                                            <img src={`data:image/png;base64,${item.upperImageUrl}`} className={styles.smallImg} />
+                                            {item.lowerImageUrl &&
+                                                <img src={`data:image/png;base64,${item.lowerImageUrl}`} className={styles.smallImg} />
+                                            }
+                                        </div>
                                     </div>
-                                </div>
-                            );
-                        })}
-                        {/* map */}
+                                );
+                            })}
+                            {/* map */}
+                        </div>
                     </div>
                 </div>
             ))}
+
+
+
+            
         </div>
     );
 }

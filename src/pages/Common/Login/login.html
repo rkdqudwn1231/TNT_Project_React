@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>로그인</title>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body, html {
+    width: 100%;
+    height: 100%;
+    font-family: sans-serif;
+  }
+
+  /* 🔥 전체 배경 이미지 */
+  body {
+    background-image: url('/public/images/login.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  /* 🔥 로그인 박스 */
+  .container {
+    width: 360px;
+    padding: 28px 24px;
+    border-radius: 16px;
+
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(8px);
+
+    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+  }
+
+  .title {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 700;
+    text-align: center;
+  }
+
+  .subText {
+    margin-top: 8px;
+    margin-bottom: 24px;
+    text-align: center;
+    font-size: 13px;
+    color: #555;
+  }
+
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .formGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .label {
+    font-size: 13px;
+    color: #444;
+    font-weight: 500;
+  }
+
+  /* 🔥 인풋이 박스 바깥으로 안나가도록 width 조정 */
+  .input {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid #bbb;
+    font-size: 14px;
+  }
+
+  .input:focus {
+    border-color: #111;
+    outline: none;
+  }
+
+  .loginButton {
+    width: 100%;
+    padding: 12px 0;
+    background: #111;
+    color: #fff;
+    font-size: 16px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+  }
+
+  .loginButton:hover {
+    opacity: 0.9;
+  }
+
+  .links {
+    margin-top: 14px;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    font-size: 12px;
+  }
+
+  .link {
+    text-decoration: none;
+    color: #333;
+  }
+
+  .link:hover {
+    text-decoration: underline;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h2 class="title">로그인</h2>
+  <p class="subText">나에게 맞는 퍼스널컬러와 스타일을 찾아보세요</p>
+
+  <form class="form">
+    <div class="formGroup">
+      <label class="label">아이디</label>
+      <input type="text" class="input" placeholder="아이디를 입력하세요">
+    </div>
+
+    <div class="formGroup">
+      <label class="label">비밀번호</label>
+      <input type="password" class="input" placeholder="비밀번호를 입력하세요">
+    </div>
+
+    <button class="loginButton">로그인</button>
+
+    <div class="links">
+      <a href="#" class="link">아이디 찾기</a>
+      <span>·</span>
+      <a href="#" class="link">비밀번호 찾기</a>
+      <span>·</span>
+      <a href="#" class="link">회원가입</a>
+    </div>
+  </form>
+</div>
+
+</body>
+</html>

@@ -5,13 +5,13 @@ import ContentMain from "./pages/Common/ContentMain.jsx";
 import FitRoom from "./pages/FitRoom/FitRoom.jsx";
 
 function App() {
+
+  // 로그인이 되어 있으면 url 링크에 맞춰서 동작.
   return (
     <BrowserRouter>
       <div className="App">
         <Routes>
-          <Route path="/" element={<ContentMain />} />
-          <Route path="/personalColor" element={<PersonalColor />} />
-          <Route path="/fitroom/*" element={<FitRoom />} />
+          <Route path="/*" element={<ContentMain />} />
         </Routes>
       </div>
     </BrowserRouter>

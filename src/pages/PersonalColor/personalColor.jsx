@@ -6,19 +6,31 @@ import { caxios } from "../../config/config";
 const celebrityMap = {
   spring: [
     { name: "아이유", img: "/images/celebrity/아이유.png", desc: "맑고 밝은 라이트 스프링 대표 톤" },
-    { name: "태연", img: "/images/celebrity/태연.png", desc: "중명도의 따뜻한 봄톤" }
+    { name: "태연", img: "/images/celebrity/태연.png", desc: "중명도의 따뜻한 봄톤" },
+    { name: "박보검", img: "/images/celebrity/박보검.png", desc: "부드럽고 깨끗한 봄 라이트톤" },
+    { name: "차은우", img: "/images/celebrity/차은우.png", desc: "맑고 선명한 봄 브라이트톤" }
   ],
+
   summer: [
     { name: "수지", img: "/images/celebrity/수지.png", desc: "부드럽고 차분한 여름 라이트톤" },
-    { name: "이영애", img: "/images/celebrity/이영애.png", desc: "청초하고 투명한 쿨톤 대표" }
+    { name: "이영애", img: "/images/celebrity/이영애.png", desc: "청초하고 투명한 쿨톤 대표" },
+
+    { name: "정해인", img: "/images/celebrity/정해인.png", desc: "맑고 깨끗한 여름 라이트톤" },
+    { name: "뷔", img: "/images/celebrity/뷔.png", desc: "시원하고 부드러운 여름 쿨톤" }
   ],
   autumn: [
     { name: "제니", img: "/images/celebrity/제니.png", desc: "고급스럽고 딥한 가을톤" },
-    { name: "한지민", img: "/images/celebrity/한지민.png", desc: "부드럽고 따뜻한 뮤트톤" }
+    { name: "한지민", img: "/images/celebrity/한지민.png", desc: "부드럽고 따뜻한 뮤트톤" },
+
+    { name: "공유", img: "/images/celebrity/공유.png", desc: "따뜻하고 차분한 가을 소프트톤" },
+    { name: "남주혁", img: "/images/celebrity/남주혁.png", desc: "깊고 안정적인 가을 딥톤" }
   ],
   winter: [
     { name: "송혜교", img: "/images/celebrity/송혜교.png", desc: "선명하고 대비 강한 겨울 딥톤" },
-    { name: "윤아", img: "/images/celebrity/윤아.png", desc: "깨끗하고 투명한 아이시 쿨톤" }
+    { name: "윤아", img: "/images/celebrity/윤아.png", desc: "깨끗하고 투명한 아이시 쿨톤" },
+
+    { name: "현빈", img: "/images/celebrity/현빈.png", desc: "차갑고 강렬한 겨울 딥톤" },
+    { name: "정우성", img: "/images/celebrity/정우성.png", desc: "선명한 대비의 겨울 브라이트톤" }
   ]
 };
 
@@ -183,11 +195,20 @@ function CelebrityCard({ celeb }) {
         boxShadow: "0 4px 12px rgba(0,0,0,0.15)"
       }}
     >
-      <img
-        src={celeb.img}
-        alt={celeb.name}
-        style={{ width: "100%", height: 150, objectFit: "cover" }}
-      />
+    <img
+  src={celeb.img}
+  alt={celeb.name}
+  style={{
+    width: "100%",
+    aspectRatio: "3 / 4",
+    objectFit: "cover",
+    borderRadius: "14px",
+
+    imageRendering: "-webkit-optimize-contrast",
+    imageRendering: "crisp-edges",
+    imageRendering: "high-quality"
+  }}
+/>
       <div style={{ padding: 12 }}>
         <strong style={{ fontSize: 16 }}>{celeb.name}</strong>
         <p style={{ marginTop: 6, fontSize: 13, color: "#555" }}>{celeb.desc}</p>
@@ -202,7 +223,7 @@ function CelebritySection({ season }) {
   return (
     <div style={{ marginTop: 25 }}>
       <h3 style={{ marginBottom: 12 }}>당신과 비슷한 톤의 연예인</h3>
-      <div style={{ display: "flex", gap: 20, flexWrap: "wrap" }}>
+      <div style={{ display: "flex", gap: 20, flexWrap: "nowrap" }}>
         {list.map((celeb, i) => (
           <CelebrityCard key={i} celeb={celeb} />
         ))}
@@ -339,11 +360,14 @@ function FileUploadBox({ onChange }) {
         alignItems: "center",
         justifyContent: "center",
         cursor: "pointer",
-        backgroundColor: "#fafafa"
+        backgroundColor: "#fafafa",
+        padding: 20,
+        textAlign: "center",
       }}
       onClick={() => document.getElementById("uploadInput").click()}
     >
       <div style={{ fontSize: 60, opacity: 0.4 }}>📷</div>
+
       <button
         type="button"
         style={{
@@ -353,11 +377,27 @@ function FileUploadBox({ onChange }) {
           padding: "10px 22px",
           borderRadius: 20,
           border: "none",
-          cursor: "pointer"
+          cursor: "pointer",
         }}
       >
         Choose Photo
       </button>
+
+      {/* 안내 문구 추가 */}
+      <div
+        style={{
+          marginTop: 15,
+          fontSize: 13,
+          color: "#666",
+          lineHeight: 1.4,
+          pointerEvents: "none" // 클릭 방지 (박스 클릭이 파일 업로드로 가도록 유지)
+        }}
+      >
+        정확한 진단을 위해<br />
+        과한 보정(뽀샵) 또는 초점이 흐린 사진은<br />
+        등록하지 말아주세요!
+      </div>
+
       <input
         id="uploadInput"
         type="file"
@@ -379,9 +419,18 @@ function PersonalColor() {
   const [eye, setEye] = useState(null);
   const [hoverColor, setHoverColor] = useState(null);
   const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
+  const [scale, setScale] = useState(1); // 이미지 확대 비율
 
   const [season, setSeason] = useState(null); // Bright Spring 등 12톤 이름
   const [tone, setTone] = useState(null); // warm / cool
+
+
+const [offsetX, setOffsetX] = useState(0);
+const [offsetY, setOffsetY] = useState(0);
+const [dragging, setDragging] = useState(false);
+const [startX, setStartX] = useState(0);
+const [startY, setStartY] = useState(0);
+
 
   const imgRef = useRef(null);
   const canvasRef = useRef(null);
@@ -429,7 +478,7 @@ function PersonalColor() {
       ? "autumn"
       : "winter";
 
-    caxios.post("/Personalcolor", {
+    caxios.post("/color", {
       season: result,
       tone_type: toneType,
       best_color: colorPalettes[baseSeason].best.join(","),
@@ -439,22 +488,59 @@ function PersonalColor() {
   }, 1200); 
 };
 
-  const getPixelColor = (e) => {
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext("2d");
-    const img = imgRef.current;
+ const getPixelColor = (e) => {
+  const canvas = canvasRef.current;
+  const ctx = canvas.getContext("2d");
+  const img = imgRef.current;
+  if (!img) return null;
 
-    canvas.width = img.width;
-    canvas.height = img.height;
-    ctx.drawImage(img, 0, 0, img.width, img.height);
+  const naturalW = img.naturalWidth;
+  const naturalH = img.naturalHeight;
 
-    const rect = img.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
+  const rect = img.getBoundingClientRect();
+  const boxW = rect.width;
+  const boxH = rect.height;
 
-    const pixel = ctx.getImageData(x, y, 1, 1).data;
-    return `rgb(${pixel[0]}, ${pixel[1]}, ${pixel[2]})`;
-  };
+  const imgRatio = naturalW / naturalH;
+  const boxRatio = boxW / boxH;
+
+  // 실제 화면에 렌더링된 이미지 크기 (scale 적용됨)
+  let renderW, renderH;
+
+  if (imgRatio > boxRatio) {
+    renderW = boxW * scale;
+    renderH = (boxW / imgRatio) * scale;
+  } else {
+    renderH = boxH * scale;
+    renderW = (boxH * imgRatio) * scale;
+  }
+
+  // 이미지가 중앙 정렬되므로 여백(오프셋) 계산
+  const offsetX = (boxW - renderW) / 2;
+  const offsetY = (boxH - renderH) / 2;
+
+  // 마우스 위치 변환
+  const mouseX = e.clientX - rect.left - offsetX;
+  const mouseY = e.clientY - rect.top - offsetY;
+
+  // 이미지 영역 밖이면 무시
+  if (mouseX < 0 || mouseY < 0 || mouseX > renderW || mouseY > renderH) {
+    return null;
+  }
+
+  // 원본 비율로 변환
+  const imgX = (mouseX / renderW) * naturalW;
+  const imgY = (mouseY / renderH) * naturalH;
+
+  // 픽셀 추출
+  canvas.width = naturalW;
+  canvas.height = naturalH;
+  ctx.drawImage(img, 0, 0);
+
+  const pixel = ctx.getImageData(imgX, imgY, 1, 1).data;
+
+  return `rgb(${pixel[0]}, ${pixel[1]}, ${pixel[2]})`;
+};
 
   const handleMouseMove = (e) => {
     if (!imageSrc) return;
@@ -469,6 +555,19 @@ function PersonalColor() {
     if (mode === "Eye") setEye(color);
   };
 
+  const zoomBtnStyle = {
+  width: 35,
+  height: 35,
+  borderRadius: "50%",
+  border: "none",
+  background: "rgba(0,0,0,0.65)",
+  color: "white",
+  fontSize: 20,
+  cursor: "pointer",
+};
+
+  
+
   const baseSeasonForUI =
     season && season.includes("Spring")
       ? "spring"
@@ -481,99 +580,150 @@ function PersonalColor() {
       : null;
 
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "flex-start",
-        gap: 40,
-        padding: 20,
-        width: "100%"
-      }}
+  <div
+    style={{
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "flex-start",
+      gap: 40,
+      padding: 20,
+      width: "100%",
+    }}
+  >
+    {/* ========== 왼쪽: 이미지 영역 ========== */}
+    <div>
+      
+
+      {!imageSrc && <FileUploadBox onChange={handleFileChange} />}
+
+      {imageSrc && (
+        <div
+  style={{
+    position: "relative",
+    display: "inline-block",
+    width: 350,
+    height: 350,
+    overflow: "hidden",   // ★ 반드시 추가!!
+    borderRadius: 12,
+  }}
+>
+
+ <img
+  ref={imgRef}
+  src={imageSrc}
+  onMouseMove={handleMouseMove}
+  onClick={handleImageClick}
+  onMouseLeave={() => setHoverColor(null)}   // ★ 이거 추가
+
+  style={{
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    objectFit: "contain",
+    width: "100%",
+    height: "100%",
+    cursor: "none",
+    transform: `translate(-50%, -50%) scale(${scale})`,
+    transformOrigin: "center center",
+    transition: "transform 0.15s ease-out",
+  }}
+/>
+
+          {/* 마우스 컬러 추적 */}
+          {hoverColor && (
+            <div
+              style={{
+                position: "fixed",
+                top: cursorPos.y - 10,
+                left: cursorPos.x - 10,
+                width: 20,
+                height: 20,
+                borderRadius: "50%",
+                border: "2px solid white",
+                backgroundColor: hoverColor,
+                pointerEvents: "none",
+              }}
+            />
+          )}
+
+          {/* 로딩 오버레이 */}
+          {loading && (
+            <div
+              style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                width: "350px",
+                height: "100%",
+                background: "rgba(0,0,0,0.55)",
+                backdropFilter: "blur(4px)",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                borderRadius: 12,
+                color: "white",
+                fontSize: 18,
+                fontWeight: "bold",
+              }}
+            >
+              AI가 당신의 톤을 분석 중입니다…
+            </div>
+          )}
+
+  <div
+    style={{
+      position: "absolute",
+      top: "50%",
+      right: "10px",    // ← 이미지 박스 오른쪽에 고정
+      transform: "translateY(-50%)",
+      display: "flex",
+      flexDirection: "column",
+      gap: 10,
+    }}
+  >
+    <button
+      onClick={() => setScale(prev => Math.min(prev + 0.2, 3))}
+      style={zoomBtnStyle}
     >
-      {/* ========== 이미지 선택 영역 ========== */}
-      <div>
-        <h2>이미지 색 추출</h2>
-
-        {!imageSrc && <FileUploadBox onChange={handleFileChange} />}
-
-     {imageSrc && (
-  <div style={{ position: "relative", display: "inline-block" }}>
-    <img
-      ref={imgRef}
-      src={imageSrc}
-      alt="upload"
-      onMouseMove={handleMouseMove}
-      onClick={handleImageClick}
-      style={{
-        width: "350px",
-        height: "auto",
-        objectFit: "contain",
-        marginTop: 20,
-        cursor: "none",
-        filter: loading ? "blur(2px)" : "none"
-      }}
-    />
-
-  
-    {hoverColor && (
-      <div
-        style={{
-          position: "fixed",
-          top: cursorPos.y - 10,
-          left: cursorPos.x - 10,
-          width: 20,
-          height: 20,
-          borderRadius: "50%",
-          border: "2px solid white",
-          backgroundColor: hoverColor,
-          pointerEvents: "none"
-        }}
-      />
-    )}
-
-  
-    {loading && (
-      <div
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          width: "350px",
-          height: "100%",
-          background: "rgba(0,0,0,0.55)",
-          backdropFilter: "blur(4px)",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          borderRadius: 12,
-          color: "white",
-          fontSize: 18,
-          fontWeight: "bold",
-          animation: "fadeIn 0.3s"
-        }}
-      >
-        AI가 당신의 톤을 분석 중입니다…
-      </div>
-    )}
-
-    <canvas ref={canvasRef} style={{ display: "none" }} />
+      +
+    </button>
+    <button
+      onClick={() => setScale(prev => Math.max(prev - 0.2, 1))}
+      style={zoomBtnStyle}
+    >
+      -
+    </button>
   </div>
-)}
 
+  <canvas ref={canvasRef} style={{ display: "none" }} />
+</div>
+      )}
+    </div>
+
+    {/* ========== 오른쪽: 분석 영역 ========== */}
+    <div style={{ width: 480 }}>
+
+      {/* 상단: 색 선택 + 분석 버튼 */}
+
+      <div style={{ display: "flex", gap: 10, marginBottom: 20 }}>
+        <button onClick={() => setMode("Skin")}>Skin</button>
+        <button onClick={() => setMode("Hair")}>Hair</button>
+        <button onClick={() => setMode("Eye")}>Eye</button>
       </div>
 
-      {/* ========== 분석 결과 영역 ========== */}
-      <div>
-        <h3>색 선택</h3>
-        <div style={{ display: "flex", gap: 10, marginBottom: 20 }}>
-          <button onClick={() => setMode("Skin")}>Skin</button>
-          <button onClick={() => setMode("Hair")}>Hair</button>
-          <button onClick={() => setMode("Eye")}>Eye</button>
-        </div>
-
-        {imageSrc && (
-          <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+      {imageSrc && (
+        <>
+          {/* 상단 요약 */}
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: 20,
+              paddingBottom: 20,
+              borderBottom: "1px solid #eee",
+              marginBottom: 20,
+            }}
+          >
             <ColorBox label="Skin" color={skin} />
             <ColorBox label="Hair" color={hair} />
             <ColorBox label="Eye" color={eye} />
@@ -584,48 +734,45 @@ function PersonalColor() {
                 padding: "12px 20px",
                 borderRadius: 10,
                 border: "none",
-                fontSize: "15px",
-                fontWeight: "600",
+                fontSize: 15,
+                fontWeight: 600,
                 cursor: "pointer",
                 background: "linear-gradient(135deg, #ff7096, #ff4d6d)",
                 color: "white",
                 boxShadow: "0 4px 12px rgba(255,109,132,0.4)",
-                transition: "0.2s"
               }}
             >
               퍼스널 컬러 분석하기
             </button>
 
             {tone && (
-              <div
-                style={{
-                  marginTop: 10,
-                  letterSpacing: "1px",
-                  lineHeight: "1.8"
-                }}
-              >
+              <div style={{ lineHeight: 1.8 }}>
                 <strong>당신은 </strong>
                 {tone === "warm" ? "웜톤" : "쿨톤"}입니다.
               </div>
             )}
 
             {season && (
-              <div
-                style={{
-                  marginTop: 10,
-                  letterSpacing: "1px",
-                  lineHeight: "1.8"
-                }}
-              >
+              <div style={{ lineHeight: 1.8 }}>
                 <strong>당신의 퍼스널 컬러: </strong>
                 {season}
               </div>
             )}
+          </div>
 
-            {/* 🔍 12톤 상세 설명 */}
+          {/* 하단 상세 카드 (설명, 팔레트, 연예인 추천) */}
+        <div
+  style={{
+    background: "white",
+    padding: 24,
+    borderRadius: 14,
+    boxShadow: "0 4px 20px rgba(0,0,0,0.08)",
+    width: "1000px",     
+    marginLeft: "-420px" 
+  }}
+          >
             {season && <ExplanationBox season={season} />}
 
-            {/* 팔레트 + 연예인 추천 */}
             {baseSeasonForUI && (
               <>
                 <ColorPalette
@@ -642,10 +789,11 @@ function PersonalColor() {
               </>
             )}
           </div>
-        )}
-      </div>
+        </>
+      )}
     </div>
-  );
+  </div>
+);
 }
 
 // =================== UI 컴포넌트 ===================

@@ -6,6 +6,8 @@ import Home from "../Home/Home";
 import Header from "./Header";
 import Body from "../PersonalBody/Body";
 import ColorResult from "../PersonalColor/ColorResult";
+import SubTabs from "./SubTabs.jsx";
+
 
 
 const ContentMain = () => {
@@ -19,10 +21,11 @@ const ContentMain = () => {
         // 홈일 때와 홈이 아닐 때 레이아웃 
         <div className={`${styles.container} ${isHome ? styles.home : styles.sub}`}>
 
-                {/*헤더 */}
-                <header className={styles.header}>
-                    <Header isHome={isHome} />
-                </header>
+            {/*헤더 */}
+            <header className={styles.header}>
+                <Header isHome={isHome} />
+            </header>
+
 
                 {/* 메인 (컨텐츠) */}
                 <main className={styles.main}>
@@ -39,7 +42,9 @@ const ContentMain = () => {
                         </Routes>
                     </section>
                 </main>
+
         </div>
+      
     );
 };
 

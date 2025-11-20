@@ -1,70 +1,218 @@
-/* .header {
-    height: 60px;
-    background: #fff;
-    border-bottom: 1px solid #ddd;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 20px;
-    flex-shrink: 0; 
-} */
+/* 오버레이 */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(2px);
+  z-index: 900;
+}
 
+/* 헤더 전체 */
+.header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 60px;
+  z-index: 1000;
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  transition: transform 0.4s ease-out;
+}
 
-/* 네비바 전체영역: 100% width */
-.navbar {
-  min-height: 20px !important;
-  padding-top: 0 !important;
-  padding-bottom: 0 !important;
-  transition: transform 0.6s ease-out;
+.hide {
   transform: translateY(-100%);
 }
 
-/* 나타날 때 */
-.show {
-  transform: translateY(0);
-}
-
-.navWrapper {
-  width: 100%;
-  max-width: 100%;
-  padding: 0 30px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.menuArea {
-  display: flex;
-  justify-content: flex-end;
-  flex-grow: 1;
-  font-size: 20px;
-  font-weight: 800;
-}
-
-/* 로고 */
-.logo {
-  font-size: 40px !important;
-  font-weight: 800 !important;
-  letter-spacing: 1px;
-  padding: 0;
-  margin: 0;
-}
-
-/* 색상 모드 */
+/* 홈 */
 .transparent {
   background: transparent !important;
-  color: white;
 }
 
-.transparent a {
-  color: white !important;
+/* 서브페이지 */
+.subHeader {
+  background: white;
 }
 
+/* 스크롤 시 */
 .solid {
-  background: rgba(255, 200, 220, 0.85) !important;
+  background: rgba(255, 200, 220, 1);
   backdrop-filter: blur(6px);
 }
 
-.solid a {
+/* 홈 텍스트 */
+.homeText a,
+.homeText .logo {
   color: white !important;
+}
+
+/* 로고 */
+.logoArea {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 30px;
+  height: 60px;
+}
+
+.logo {
+  font-size: 40px;
+  font-weight: 800;
+  text-decoration: none;
+  color: rgba(255, 170, 205, 0.85);
+}
+
+/* 햄버거 버튼 */
+.menuToggle {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 28px;
+  cursor: pointer;
+  color: white !important;
+}
+
+/* 탭 영역 */
+.tabArea {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+
+/* 메인탭 */
+
+.mainTabs {
+  display: flex;
+  justify-content: flex-end;
+  padding: 5px 30px;
+  gap: 35px;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.mainTabs a {
+  text-decoration: none !important;
+  color: rgba(255, 170, 205, 0.85);
+  /* 로고색 */
+  font-size: 18px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-weight: 600;
+  transition: all 0.2s ease-in-out;
+}
+
+.mainTab {
+  padding: 6px 10px;
+  border-radius: 4px;
+}
+
+.mainTabActive {
+  background: rgba(255, 150, 200, 1);
+  color: #fff !important;
+  font-weight: 700;
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.18);
+  border: 1px solid rgba(255, 120, 170, 0.9);
+  transform: translateY(1px);
+}
+
+/* 서브탭 */
+.subTabsWrapper {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0 35px 12px 30px;
+}
+
+.subTabs {
+  display: flex;
+  gap: 22px;
+}
+
+.subTabs a {
+  text-decoration: none;
+  color: rgba(255, 180, 210, 0.85);
+}
+
+.subTabActive {
+  color: rgba(220, 50, 120, 1);
+  font-weight: 700;
+  border-bottom: 2px solid rgb(250, 187, 213);
+  padding-bottom: 1px;
+}
+
+/* 반응형 */
+@media (max-width: 768px) {
+
+  .header {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
+  }
+
+  .logoArea {
+    grid-column: 1 / -1;
+    padding: 0 16px;
+  }
+
+  .tabArea {
+    grid-column: 1 / -1;
+  }
+
+  /* 햄버거 버튼 표시 */
+  .menuToggle {
+    display: block;
+    color: rgba(255, 170, 205, 0.85) !important;
+    font-size: 28px;
+    margin-right: 10px;
+  }
+
+  /* 접힘 */
+  .closeMenu {
+    display: none !important;
+  }
+
+  /* 펼침 */
+  .openMenu {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-end;
+    width: 100%;
+    padding: 3px 20px;
+    gap: 8px;
+    animation: slideDown 0.3s ease forwards;
+    background: rgba(255, 200, 220, 1) !important;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+    font-size: 18px;
+    font-weight: 700 !important;
+  }
+
+  /* 모바일 서브탭도 세로 정렬 */
+  .subTabsWrapper {
+    justify-content: flex-start !important;
+    padding: 0px 28px !important;
+  }
+
+  .subTabs {
+    flex-direction: column !important;
+    gap: 7px;
+  }
+}
+
+/* 애니메이션 */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+a {
+  text-decoration: none !important;
 }

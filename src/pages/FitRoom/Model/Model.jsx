@@ -48,14 +48,22 @@ function Model() {
 
     // 중복 제거
     const filteredModels = (() => {
-        const uniqueUrls = [];
-        return modelData.filter(item => {
-            if (!uniqueUrls.includes(item.modelUrl)) {
-                uniqueUrls.push(item.modelUrl);
-                return true;
+        const uniqueNames = new Set();
+        const result = [];
+
+        modelData.forEach(item => {
+            if (!uniqueNames.has(item.modelName)) {
+                uniqueNames.add(item.modelName); // item.modelName으로 맞춤
+                result.push({
+                    seq: item.seq,
+                    modelName: item.modelName,
+                    modelUrl: item.modelUrl,
+                    sex: item.sex
+                });
             }
-            return false;
         });
+
+        return result;
     })();
 
     // 성별 필터링
@@ -94,23 +102,25 @@ function Model() {
 
                 {displayedModels.map(item => (
 
-
                     <div key={item.seq} style={{ textAlign: "center" }}>
 
                         <div className={styles.itemCard}>
                             <div className={styles.imgWrapper}>
-                                <img src={`data:image/png;base64,${item.modelUrl}`} alt={item.name} />
+                                <img src={item.modelUrl} alt={item.modelName} />
 
                                 <div className={styles.actions}>
                                     <button onClick={() => handleEditClick(item)}>✏️</button>
                                     <button onClick={() => handleDeleteClick(item)}>🗑️</button>
                                 </div>
                             </div>
+                            <div>
+                                <span style={{ fontSize: "0.9em", color: "black" }}>{item.modelName}</span>{" "}{" "}
+                                <span style={{ fontSize: "0.8em", color: "gray" }}>{item.sex}</span>
+
+                            </div>
                         </div>
-                        <p>{item.modelName}</p>
+
                     </div>
-
-
                 ))}
             </div>
 
@@ -125,15 +135,29 @@ function Model() {
                     {modalType === "edit" && selectedModel && (
                         // 수정 로직 연결
                         <div>
-                            <label>이름:</label>
-                            <input type="text" defaultValue={selectedModel.modelName} />
-                            <br></br>
-                            <label> 성별:</label>
-                            <input type="text" defaultValue={selectedModel.sex} />
+
+                            <div>
+                                <div style={{ textAlign: "center", marginBottom: "10px" }}>
+                                    <img
+                                        src={selectedModel.modelUrl}
+                                        alt={selectedModel.modelName}
+                                        style={{ width: "200px" }}
+                                    />
+                                </div>
+                            </div>
+
+
+                            <div>
+                                <label>이름:</label>
+                                <input type="text" defaultValue={selectedModel.modelName} />
+                                <br></br>
+                                <label> 성별:</label>
+                                <input type="text" defaultValue={selectedModel.sex} />
+                            </div>
                         </div>
                     )}
                     {modalType === "delete" && selectedModel && (
-                        <p>정말 {selectedModel.modelName} 모델을 삭제하시겠습니까?</p>
+                        <p>모델명 : {selectedModel.modelName}<br></br> 해당 모델을 삭제하시겠습니까?</p>
                     )}
                 </Modal.Body>
 

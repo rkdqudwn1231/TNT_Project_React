@@ -117,18 +117,6 @@ function Closet() {
 
         closetData.forEach(item => {
 
-            // 한벌
-            if ((clothType === "all" || clothType === "full") && item.upperName) {
-                if (!uniqueUpperNames.has(item.upperName)) {
-                    uniqueUpperNames.add(item.upperName);
-                    result.push({
-                        seq: item.seq,
-                        type: "full",            // DB 값
-                        name: item.upperName,
-                        url: item.upperImageUrl,
-                    });
-                }
-            }
 
             // 상의
             if ((clothType === "all" || clothType === "upper") && item.upperName) {
@@ -264,7 +252,6 @@ function Closet() {
                             <select value={editType} onChange={(e) => setEditType(e.target.value)}>
                                 <option value="upper">상의</option>
                                 <option value="lower">하의</option>
-                                <option value="full">한벌</option>
                             </select>
                         </div>
                     )}

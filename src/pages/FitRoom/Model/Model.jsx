@@ -47,16 +47,24 @@ function Model() {
     }
 
     // 중복 제거
-    const filteredModels = (() => {
-        const uniqueUrls = [];
-        return modelData.filter(item => {
-            if (!uniqueUrls.includes(item.modelUrl)) {
-                uniqueUrls.push(item.modelUrl);
-                return true;
-            }
-            return false;
-        });
-    })();
+   const filteredModels = (() => {
+    const uniqueNames = new Set();
+    const result = [];
+
+    modelData.forEach(item => {
+        if (!uniqueNames.has(item.modelName)) {
+            uniqueNames.add(item.modelName);
+            result.push({
+                seq: item.seq,
+                modelName: item.modelName,
+                modelUrl: item.modelUrl,
+                sex: item.sex // DB 값 그대로
+            });
+        }
+    });
+
+    return result;
+})();
 
     // 성별 필터링
     const displayedModels = filteredModels.filter(item =>

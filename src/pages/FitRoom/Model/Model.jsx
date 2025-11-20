@@ -47,24 +47,24 @@ function Model() {
     }
 
     // 중복 제거
-   const filteredModels = (() => {
-    const uniqueNames = new Set();
-    const result = [];
+    const filteredModels = (() => {
+        const uniqueNames = new Set();
+        const result = [];
 
-    modelData.forEach(item => {
-        if (!uniqueNames.has(item.modelName)) {
-            uniqueNames.add(item.modelName);
-            result.push({
-                seq: item.seq,
-                modelName: item.modelName,
-                modelUrl: item.modelUrl,
-                sex: item.sex // DB 값 그대로
-            });
-        }
-    });
+        modelData.forEach(item => {
+            if (!uniqueNames.has(item.modelName)) {
+                uniqueNames.add(item.modelName); // item.modelName으로 맞춤
+                result.push({
+                    seq: item.seq,
+                    modelName: item.modelName,
+                    modelUrl: item.modelUrl,
+                    sex: item.sex
+                });
+            }
+        });
 
-    return result;
-})();
+        return result;
+    })();
 
     // 성별 필터링
     const displayedModels = filteredModels.filter(item =>
@@ -106,7 +106,7 @@ function Model() {
 
                         <div className={styles.itemCard}>
                             <div className={styles.imgWrapper}>
-                                <img src={item.modelUrl} alt={item.name} />
+                                <img src={item.modelUrl} alt={item.modelName} />
 
                                 <div className={styles.actions}>
                                     <button onClick={() => handleEditClick(item)}>✏️</button>

@@ -26,6 +26,36 @@ function History() {
         Historylist();
     }, []);
 
+    const handleDownload = async () => {
+    try {
+        const res = await caxios.get("/history/download", {
+            params: { seq: selectedHistory.seq },
+            responseType: 'blob'
+        });
+
+        const url = window.URL.createObjectURL(res.data); // Blob 생성
+        const link = document.createElement('a');
+
+        // 서버에서 내려주는 Content-Disposition 헤더에서 파일명 추출 가능하지만
+        // 여기서는 DTO에서 가져온 이름 그대로 사용
+        const fileName = selectedHistory.name || 'file';
+        link.href = url;
+        link.setAttribute('download', fileName);
+
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        window.URL.revokeObjectURL(url);
+
+        handleCloseModal();
+        alert("다운로드 완료");
+    } catch (err) {
+        console.error(err);
+        alert("다운로드 실패");
+    }
+};
+
+
 
 
     // 삭제
@@ -77,6 +107,13 @@ function History() {
         setShowModal(true);
     };
 
+
+    const handleDownloadClick = (item) => {
+        setSelectedHistory(item);
+        setModalType("download");
+        setShowModal(true);
+    };
+
     const handleCloseModal = () => {
         setShowModal(false);
         setSelectedHistory(null);
@@ -111,6 +148,7 @@ function History() {
                                         </div>
                                         <div className={styles.actions}>
                                             <button onClick={() => handleDeleteClick(item)}>🗑️</button>
+                                            <button onClick={() => handleDownloadClick(item)}>⬇</button>
                                         </div>
                                     </div>
                                 );
@@ -126,10 +164,14 @@ function History() {
             <Modal show={showModal} onHide={handleCloseModal}>
 
                 <Modal.Header closeButton>
-                    <Modal.Title>{modalType === "edit" ? "기록 수정" : "기록 삭제"}</Modal.Title>
+                    <Modal.Title>{modalType === "download" ? "다운로드" : "기록 삭제"}</Modal.Title>
                 </Modal.Header>
 
                 <Modal.Body>
+                    {modalType === "download" && selectedHistory && (
+
+                        <p>기록 : {selectedHistory.name}<br></br> 해당 기록을 다운받겠습니까?</p>
+                    )}
 
                     {modalType === "delete" && selectedHistory && (
 
@@ -138,16 +180,21 @@ function History() {
                 </Modal.Body>
 
                 <Modal.Footer>
-                    <button onClick={handleCloseModal}>취소</button>
+
 
                     <button onClick={() => {
-                        if (modalType === "delete") {
+                        if (modalType === "download") {
+                            handleDownload();
+                        }
+                        else if (modalType === "delete") {
                             handleDelete();
                         }
 
                     }}>
-                        {modalType === "edit" ? "저장" : "삭제"}
+                        {modalType === "download" ? "다운받기" : "삭제"}
                     </button>
+
+                    <button onClick={handleCloseModal}>취소</button>
                 </Modal.Footer>
             </Modal>
 

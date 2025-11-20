@@ -117,7 +117,7 @@ function Closet() {
                     <div key={idx} style={{ textAlign: "center" }}>
                         <div className={styles.itemCard}>
                             <div className={styles.imgWrapper}>
-                                <img src={`data:image/png;base64,${item.url}`} />
+                                <img src={item.url} />
 
                                 <div className={styles.actions}>
                                     <button onClick={() => handleEditClick(item)}>✏️</button>
@@ -127,7 +127,7 @@ function Closet() {
                             </div>
                             <div>
                                 <span style={{ fontSize: "0.9em", color: "black" }}>{item.name}</span>{" "}{" "}
-                                <span style={{ fontSize: "0.7em", color: "gray" }}>{item.type}</span>
+                                <span style={{ fontSize: "0.8em", color: "gray" }}>{item.type}</span>
                             </div>
                         </div>
 
@@ -150,7 +150,7 @@ function Closet() {
                             <div>
                                 <div style={{ textAlign: "center", marginBottom: "10px" }}>
                                     <img
-                                        src={`data:image/png;base64,${selectedCloth.url}`}
+                                        src={selectedCloth.url}
                                         alt={selectedCloth.name}
                                         style={{ width: "200px" }}
                                     />

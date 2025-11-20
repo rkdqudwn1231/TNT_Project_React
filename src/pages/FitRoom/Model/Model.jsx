@@ -98,7 +98,7 @@ function Model() {
 
                         <div className={styles.itemCard}>
                             <div className={styles.imgWrapper}>
-                                <img src={`data:image/png;base64,${item.modelUrl}`} alt={item.name} />
+                                <img src={item.modelUrl} alt={item.name} />
 
                                 <div className={styles.actions}>
                                     <button onClick={() => handleEditClick(item)}>✏️</button>
@@ -107,7 +107,7 @@ function Model() {
                             </div>
                             <div>
                                 <span style={{ fontSize: "0.9em", color: "black" }}>{item.modelName}</span>{" "}{" "}
-                                <span style={{ fontSize: "0.7em", color: "gray" }}>{item.sex}</span>
+                                <span style={{ fontSize: "0.8em", color: "gray" }}>{item.sex}</span>
 
                             </div>
                         </div>

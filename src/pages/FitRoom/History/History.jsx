@@ -95,9 +95,6 @@ function History() {
                     <div className="cardContainer">
                         <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
                             {groupedByDate[date].map(item => {
-
-                                const day = new Date(item.saveDate);
-                                const time = day.toTimeString().split(" ")[0]; // HH:MM:SS
                                 return (
 
                                     <div key={item.seq} className={styles.itemCard}>
@@ -106,9 +103,10 @@ function History() {
 
                                         {/* 작은 이미지 오버레이 */}
                                         <div className={styles.overlayImages}>
-                                            <img src={`data:image/png;base64,${item.upperImageUrl}`} className={styles.smallImg} />
+
+                                            <img src={item.upperImageUrl} className={styles.smallImg} />
                                             {item.lowerImageUrl &&
-                                                <img src={`data:image/png;base64,${item.lowerImageUrl}`} className={styles.smallImg} />
+                                                <img src={item.lowerImageUrl} className={styles.smallImg} />
                                             }
                                         </div>
                                         <div className={styles.actions}>
@@ -134,7 +132,7 @@ function History() {
                 <Modal.Body>
 
                     {modalType === "delete" && selectedHistory && (
-                        
+
                         <p>기록 : {selectedHistory.name}<br></br> 해당 기록을 삭제하시겠습니까?</p>
                     )}
                 </Modal.Body>

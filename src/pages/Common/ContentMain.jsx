@@ -5,6 +5,7 @@ import FitRoom from "../FitRoom/FitRoom";
 import Home from "../Home/Home";
 import Header from "./Header";
 import Body from "../PersonalBody/Body";
+import SubTabs from "./SubTabs.jsx";
 
 
 const ContentMain = () => {
@@ -22,6 +23,9 @@ const ContentMain = () => {
             <header className={styles.header}>
                 <Header isHome={isHome} />
             </header>
+
+
+
             {/* 메인 (컨텐츠) */}
             <main className={styles.main}>
                 {/* 컨텐츠 */}

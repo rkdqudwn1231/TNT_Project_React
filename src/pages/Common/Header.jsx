@@ -1,85 +1,115 @@
-import { useEffect, useState } from "react";
-import { Navbar, Nav } from "react-bootstrap";
+import SubTabs from "./SubTabs";
 import styles from "./Header.module.css";
+import { NavLink } from "react-router-dom";
+import { useState, useEffect } from "react";
 
-const Header = ({isHome}) => {
-
-  const [showHeader, setShowHeader] = useState(true); // 기본은 Header 보이게
+const Header = ({ isHome }) => {
+  const [showHeader, setShowHeader] = useState(true);
   const [solid, setSolid] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
-  //const [prevScroll, setPrevScroll] = useState(0);
-
+  // Home 전용 스크롤 이벤트
   useEffect(() => {
-
-    // 홈이 아닐 때 헤더 항상 고정 / 노출
     if (!isHome) {
       setShowHeader(true);
-      setSolid(true); // 서브 페이지에서는 항상 solid 배경 쓰고 싶으면 true
+      setSolid(true);
       return;
     }
 
-    // 홈일 때만 스크롤 이벤트 적용
     const threshold = 10;
     const holdShow = 120;
-
-    let prevScroll = window.scrollY;
+    let prev = window.scrollY;
 
     const handleScroll = () => {
-      const current = window.scrollY;
-      const diff = current - prevScroll;
+      const cur = window.scrollY;
+      const diff = cur - prev;
 
       if (Math.abs(diff) < threshold) return;
 
-      // 스크롤 위로 올림 → 헤더 표시
-      if (diff < 0) {
-        setShowHeader(true);
-      }
+      if (diff < 0) setShowHeader(true);
+      if (diff > 0 && cur > holdShow) setShowHeader(false);
 
-      // 스크롤 아래로 내림 → 일정 거리 이후에만 숨김
-      if (diff > 0 && current > holdShow) {
-        setShowHeader(false);
-      }
-
-      // solid 배경 적용
-      setSolid(current > 150);
-
-      prevScroll=current;
+      setSolid(cur > 150);
+      prev = cur;
     };
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [isHome]);
 
-  // 홈이 아니면 무조건 보이도록 처리
-  const visibleClass = !isHome || showHeader ? styles.show : "";
+  const cx = (base, active) => ({ isActive }) =>
+    isActive ? `${base} ${active}` : base;
 
+  // 메뉴를 닫는 함수
+  const closeMenu = () => setMenuOpen(false);
 
   return (
-    <Navbar
-      expand="lg"
-      fixed="top"
-      className={`
-    ${styles.navbar}
-    ${(!isHome || showHeader) ? styles.show : ""}
-    ${isHome ? (solid ? styles.solid : styles.transparent) : styles.subHeader}
-  `}
-    >
-      <div className={styles.navWrapper}>
-        <Navbar.Brand href="/" className={styles.logo}>
-          TNT
-        </Navbar.Brand>
+    <>
+      {/* 🔥 모바일 오버레이 (메뉴 열릴 때만 표시) */}
+      {menuOpen && <div className={styles.overlay} onClick={closeMenu}></div>}
 
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+      <header
+        className={`
+          ${styles.header}
+            ${isHome ? (solid ? styles.solid : styles.transparent) : styles.subHeader}
+          ${isHome ? styles.homeText : ""}
+          ${showHeader ? "" : styles.hide}
+        `}
+      >
+        <div className={styles.logoArea}>
+          <a href="/" className={styles.logo}>TNT</a>
 
-        <Navbar.Collapse id="basic-navbar-nav" className={styles.menuArea}>
-          <Nav>
-            <Nav.Link href="/color">Personal Color</Nav.Link>
-            <Nav.Link href="/body">Personal Body</Nav.Link>
-            <Nav.Link href="/fitroom">Fitting Room</Nav.Link>
-          </Nav>
-        </Navbar.Collapse>
-      </div>
-    </Navbar>
+          <button
+            className={styles.menuToggle}
+            onClick={() => setMenuOpen(!menuOpen)}
+          >
+            ☰
+          </button>
+        </div>
+
+        <div className={styles.tabArea}>
+          {/* 메인탭 */}
+          <nav
+            className={`${styles.mainTabs} ${menuOpen ? styles.openMenu : styles.closeMenu
+              }`}
+          >
+            <NavLink
+              to="/color"
+              className={cx(styles.mainTab, styles.mainTabActive)}
+              onClick={closeMenu}
+            >
+              Personal Color
+            </NavLink>
+
+            <NavLink
+              to="/body"
+              className={cx(styles.mainTab, styles.mainTabActive)}
+              onClick={closeMenu}
+            >
+              Personal Body
+            </NavLink>
+
+            <NavLink
+              to="/fitroom"
+              className={cx(styles.mainTab, styles.mainTabActive)}
+              onClick={closeMenu}
+            >
+              Fitting Room
+            </NavLink>
+          </nav>
+
+          {/* 서브탭 */}
+          {!isHome && (
+            <div
+              className={`${styles.subTabsWrapper} ${menuOpen ? styles.openMenu : styles.closeMenu
+                }`}
+            >
+              <SubTabs cx={cx} onClickItem={closeMenu} />
+            </div>
+          )}
+        </div>
+      </header>
+    </>
   );
 };
 

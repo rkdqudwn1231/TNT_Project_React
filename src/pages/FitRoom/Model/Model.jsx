@@ -48,14 +48,22 @@ function Model() {
 
     // 중복 제거
     const filteredModels = (() => {
-        const uniqueUrls = [];
-        return modelData.filter(item => {
-            if (!uniqueUrls.includes(item.modelUrl)) {
-                uniqueUrls.push(item.modelUrl);
-                return true;
+        const uniqueNames = new Set();
+        const result = [];
+
+        modelData.forEach(item => {
+            if (!uniqueNames.has(item.modelName)) {
+                uniqueNames.add(item.modelName); // item.modelName으로 맞춤
+                result.push({
+                    seq: item.seq,
+                    modelName: item.modelName,
+                    modelUrl: item.modelUrl,
+                    sex: item.sex
+                });
             }
-            return false;
         });
+
+        return result;
     })();
 
     // 성별 필터링
@@ -98,7 +106,7 @@ function Model() {
 
                         <div className={styles.itemCard}>
                             <div className={styles.imgWrapper}>
-                                <img src={`data:image/png;base64,${item.modelUrl}`} alt={item.name} />
+                                <img src={item.modelUrl} alt={item.modelName} />
 
                                 <div className={styles.actions}>
                                     <button onClick={() => handleEditClick(item)}>✏️</button>
@@ -107,7 +115,7 @@ function Model() {
                             </div>
                             <div>
                                 <span style={{ fontSize: "0.9em", color: "black" }}>{item.modelName}</span>{" "}{" "}
-                                <span style={{ fontSize: "0.7em", color: "gray" }}>{item.sex}</span>
+                                <span style={{ fontSize: "0.8em", color: "gray" }}>{item.sex}</span>
 
                             </div>
                         </div>
@@ -131,7 +139,7 @@ function Model() {
                             <div>
                                 <div style={{ textAlign: "center", marginBottom: "10px" }}>
                                     <img
-                                        src={`data:image/png;base64,${selectedModel.modelUrl}`}
+                                        src={selectedModel.modelUrl}
                                         alt={selectedModel.modelName}
                                         style={{ width: "200px" }}
                                     />

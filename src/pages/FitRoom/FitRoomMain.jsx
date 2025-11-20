@@ -13,7 +13,7 @@ function FitRoomMain() {
   const [lowerClothImage, setLowerClothImage] = useState(null);
   const [sex, setSex] = useState("male");
   const [clothType, setClothType] = useState("upper");
-  const [closetCategory, setClosetCategory] = useState(null);
+  const [closetCategory, setClosetCategory] = useState("tshirt");
   const [resultImage, setResultImage] = useState(null); // 완성 이미지 URL
   const [loading, setLoading] = useState(false);
 
@@ -25,12 +25,10 @@ function FitRoomMain() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (isSubmitting.current) return; // 이미 제출 중이면 무시
     isSubmitting.current = true;
     setLoading(true);
 
-    console.log("aaa");
 
     if (!modelImage) {
       alert("모델 이미지를 선택하세요!");
@@ -67,19 +65,43 @@ function FitRoomMain() {
     formData.append("hd_mode", "false");
 
     try {
+
       // -- 서버에 api 요청 전달
       const res = await caxios.post("/fitroom/wear", formData, {
         headers: { "Content-Type": "multipart/form-data" }
       });
-      // 결과
-      const resultUrl = res.data.imageUrl;
 
+      // -----결과
+      // taskId 받기
+      const { taskId } = res.data;
 
-      // 결과 데이터 관리
-      setResultImage(resultUrl); // 서버에서 반환한 최종 이미지 URL
+      //  const resultUrl = res.data.imageUrl; // 기존에 받던 imageURL 48시간만료
+
+      // taskId로 이미지 URL 가져오기
+      const fetchResultImage = async (taskId) => {
+        let imageUrl = "";
+        for (let i = 0; i < 15; i++) { // 최대 15번 시도
+          const res = await caxios.get(`/fitroom/status?taskId=${taskId}`);
+          if (res.data.status === "completed") {
+            imageUrl = res.data.imageUrl;
+            break; // 완료되면 반복 종료
+          }
+          await new Promise(r => setTimeout(r, 2000)); // 2초 대기
+        }
+        return imageUrl;
+      };
+
+      const imageUrl = await fetchResultImage(taskId); // await 추가!
+      
+      if (!imageUrl) {
+        alert("이미지 생성이 지연되고 있습니다.");
+        return;
+      }
+      setResultImage(imageUrl);
 
       const saveData = new FormData();
-      saveData.append("image_url", resultUrl);       // 합성 결과 URL
+      //  saveData.append("image_url", resultUrl);       // 합성 결과 URL 기존에 image그대로 받기
+      saveData.append("taskId", taskId); //  taskId 11.20 등록
       saveData.append("cloth_type", clothType);
       saveData.append("model_image", modelImage);    // 실제 파일 그대로
       if (clothImage) saveData.append("cloth_image", clothImage);
@@ -87,6 +109,8 @@ function FitRoomMain() {
       saveData.append("memberId", "맴버임시");
       saveData.append("ClosetCategory", closetCategory);
       saveData.append("sex", sex);
+
+
       // DB에 저장
       await caxios.post("/fitroom/save", saveData, {
         headers: { "Content-Type": "multipart/form-data" }
@@ -101,6 +125,7 @@ function FitRoomMain() {
       setLoading(false);
       isSubmitting.current = false; // 요청 완료 후 다시 제출 가능
     }
+
 
   };
 

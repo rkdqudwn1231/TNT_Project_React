@@ -131,7 +131,7 @@ function Model() {
                             <div>
                                 <div style={{ textAlign: "center", marginBottom: "10px" }}>
                                     <img
-                                        src={`data:image/png;base64,${selectedModel.modelUrl}`}
+                                        src={selectedModel.modelUrl}
                                         alt={selectedModel.modelName}
                                         style={{ width: "200px" }}
                                     />

@@ -5,6 +5,7 @@ import FitRoom from "../FitRoom/FitRoom";
 import Home from "../Home/Home";
 import Header from "./Header";
 import Body from "../PersonalBody/Body";
+import ColorResult from "../PersonalColor/ColorResult";
 
 
 const ContentMain = () => {
@@ -30,6 +31,7 @@ const ContentMain = () => {
                         <Routes>
                             <Route path="/" element={<Home />} />
                             <Route path="/color/*" element={<PersonalColor />} />
+                            <Route path="/color/result" element={<ColorResult />} />
                             <Route path="/body/*" element={<Body />} />
                             <Route path="/fitroom/*" element={<FitRoom />} />
                             <Route path="/community/*" element={<PersonalColor />} />

@@ -43,7 +43,7 @@
 }
 
 /* 홈 텍스트 */
-.homeText a,
+.homeText .mainTabs a,
 .homeText .logo {
   color: white !important;
 }
@@ -95,18 +95,21 @@
 
 .mainTabs a {
   text-decoration: none !important;
-  color: rgba(255, 170, 205, 0.85);
-  /* 로고색 */
   font-size: 18px;
   padding: 6px 12px;
   border-radius: 6px;
   font-weight: 600;
   transition: all 0.2s ease-in-out;
+  color: rgba(255, 170, 205, 0.85) !important;
 }
 
 .mainTab {
-  padding: 6px 10px;
+  padding: 2px 10px;
   border-radius: 4px;
+  text-align: end;
+  font-size: 20px;
+  font-weight: 700;
+  color: #fff !important;
 }
 
 .mainTabActive {
@@ -118,11 +121,16 @@
   transform: translateY(1px);
 }
 
+.mainTabs a.mainTabActive {
+  color: #fff !important;
+}
+
+
 /* 서브탭 */
 .subTabsWrapper {
   display: flex;
   justify-content: flex-end;
-  padding: 0 35px 12px 30px;
+  padding: 0 42px 12px 30px;
 }
 
 .subTabs {
@@ -133,6 +141,7 @@
 .subTabs a {
   text-decoration: none;
   color: rgba(255, 180, 210, 0.85);
+  text-align: end;
 }
 
 .subTabActive {
@@ -160,11 +169,18 @@
   }
 
   /* 햄버거 버튼 표시 */
-  .menuToggle {
-    display: block;
+  @media (max-width: 768px) {
+    .menuToggle {
+      display: block;
+    }
+  }
+
+  .menuToggleHome {
+    color: #fff !important;
+  }
+
+  .menuToggleSub {
     color: rgba(255, 170, 205, 0.85) !important;
-    font-size: 28px;
-    margin-right: 10px;
   }
 
   /* 접힘 */
@@ -182,16 +198,37 @@
     gap: 8px;
     animation: slideDown 0.3s ease forwards;
     background: rgba(255, 200, 220, 1) !important;
-    border-bottom-left-radius: 12px;
-    border-bottom-right-radius: 12px;
+
     font-size: 18px;
     font-weight: 700 !important;
   }
+
+  @media (max-width: 768px) {
+    .mainTabs {
+      flex-direction: column !important;
+      align-items: flex-end !important;
+      width: 100%;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .mainTabGroup {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+
 
   /* 모바일 서브탭도 세로 정렬 */
   .subTabsWrapper {
     justify-content: flex-start !important;
     padding: 0px 28px !important;
+  }
+
+  .subDropdown {
+    display: flex;
+    flex-direction: column !important;
+    align-items: flex-end !important;
   }
 
   .subTabs {

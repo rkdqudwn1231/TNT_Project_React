@@ -4,9 +4,9 @@ import PersonalColor from "../PersonalColor/personalColor";
 import FitRoom from "../FitRoom/FitRoom";
 import Home from "../Home/Home";
 import Header from "./Header";
-import Body from "../PersonalBody/Body";
 import ColorResult from "../PersonalColor/ColorResult";
 import SubTabs from "./SubTabs.jsx";
+import PersonalBodyRoute from "../PersonalBody/PersonalBodyRoute.jsx";
 
 
 
@@ -26,7 +26,6 @@ const ContentMain = () => {
                 <Header isHome={isHome} />
             </header>
 
-
                 {/* 메인 (컨텐츠) */}
                 <main className={styles.main}>
                     {/* 컨텐츠 */}
@@ -35,7 +34,7 @@ const ContentMain = () => {
                             <Route path="/" element={<Home />} />
                             <Route path="/color/*" element={<PersonalColor />} />
                             <Route path="/color/result" element={<ColorResult />} />
-                            <Route path="/body/*" element={<Body />} />
+                            <Route path="/body/*" element={<PersonalBodyRoute   />} />
                             <Route path="/fitroom/*" element={<FitRoom />} />
                             <Route path="/community/*" element={<PersonalColor />} />
                             <Route path="*" element={<h2>404 Not Found</h2>} />

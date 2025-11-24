@@ -3,6 +3,7 @@ import styles from "./ContentMain.module.css";
 import PersonalColor from "../PersonalColor/personalColor";
 import FitRoom from "../FitRoom/FitRoom";
 import Home from "../Home/Home";
+import Chatbot from "../Chatbot/Chatbot";
 import Color from "../PersonalColor/Color"; 
 import Header from "./Header";
 import SubTabs from "./SubTabs.jsx";
@@ -41,7 +42,7 @@ const ContentMain = () => {
                         </Routes>
                     </section>
                 </main>
-
+            {/* <Chatbot /> */}
         </div>
       
     );

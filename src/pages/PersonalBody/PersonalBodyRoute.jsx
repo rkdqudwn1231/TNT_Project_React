@@ -1,6 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import PersonalBody from "./PersonalBody";
-import PersonalBodyTest from "./PersonalBodyTest";
+import ImgTest from "./Test/ImgTest";
+import TestMain from "./Test/TestMain";
 
 function PersonalBodyRoute() {
 
@@ -9,7 +10,8 @@ function PersonalBodyRoute() {
     <Routes>
 
       <Route index element={<PersonalBody />} />
-      <Route path="test" element={<PersonalBodyTest />} />
+      <Route path="test" element={<TestMain />} />
+      <Route path="img" element={<ImgTest />} />
 
     </Routes>
   );

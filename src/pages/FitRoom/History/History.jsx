@@ -27,33 +27,33 @@ function History() {
     }, []);
 
     const handleDownload = async () => {
-    try {
-        const res = await caxios.get("/history/download", {
-            params: { seq: selectedHistory.seq },
-            responseType: 'blob'
-        });
+        try {
+            const res = await caxios.get("/history/download", {
+                params: { seq: selectedHistory.seq },
+                responseType: 'blob'
+            });
 
-        const url = window.URL.createObjectURL(res.data); // Blob 생성
-        const link = document.createElement('a');
+            const url = window.URL.createObjectURL(res.data); // Blob 생성
+            const link = document.createElement('a');
 
-        // 서버에서 내려주는 Content-Disposition 헤더에서 파일명 추출 가능하지만
-        // 여기서는 DTO에서 가져온 이름 그대로 사용
-        const fileName = selectedHistory.name || 'file';
-        link.href = url;
-        link.setAttribute('download', fileName);
+            // 서버에서 내려주는 Content-Disposition 헤더에서 파일명 추출 가능하지만
+            // 여기서는 DTO에서 가져온 이름 그대로 사용
+            const fileName = selectedHistory.name || 'file';
+            link.href = url;
+            link.setAttribute('download', fileName);
 
-        document.body.appendChild(link);
-        link.click();
-        link.remove();
-        window.URL.revokeObjectURL(url);
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+            window.URL.revokeObjectURL(url);
 
-        handleCloseModal();
-        alert("다운로드 완료");
-    } catch (err) {
-        console.error(err);
-        alert("다운로드 실패");
-    }
-};
+            handleCloseModal();
+            alert("다운로드 완료");
+        } catch (err) {
+            console.error(err);
+            alert("다운로드 실패");
+        }
+    };
 
 
 
@@ -125,80 +125,85 @@ function History() {
     return (
         <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
 
-            <h1> 기록 내역 </h1>
-            {sortedDates.map(date => (
-                <div key={date}>
-                    <span style={{ fontSize: "25px", color: "black" }}>{date}</span>
-                    <div className="cardContainer">
-                        <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
-                            {groupedByDate[date].map(item => {
-                                return (
+            {/* 헤더 */}
+            <h1 style={{ textAlign: "center" }}>History</h1>
 
-                                    <div key={item.seq} className={styles.itemCard}>
-                                        {/* 큰 이미지 */}
-                                        <img src={item.resultUrl} className={styles.mainImg} />
+            {/* 메인기능 */}
+            <div>
+                {sortedDates.map(date => (
+                    <div key={date}>
+                        <span style={{ fontSize: "25px", color: "black" }}>{date}</span>
+                        <div className="cardContainer">
+                            <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+                                {groupedByDate[date].map(item => {
+                                    return (
 
-                                        {/* 작은 이미지 오버레이 */}
-                                        <div className={styles.overlayImages}>
+                                        <div key={item.seq} className={styles.itemCard}>
+                                            {/* 큰 이미지 */}
+                                            <img src={item.resultUrl} className={styles.mainImg} />
 
-                                            <img src={item.upperImageUrl} className={styles.smallImg} />
-                                            {item.lowerImageUrl &&
-                                                <img src={item.lowerImageUrl} className={styles.smallImg} />
-                                            }
+                                            {/* 작은 이미지 오버레이 */}
+                                            <div className={styles.overlayImages}>
+
+                                                <img src={item.upperImageUrl} className={styles.smallImg} />
+                                                {item.lowerImageUrl &&
+                                                    <img src={item.lowerImageUrl} className={styles.smallImg} />
+                                                }
+                                            </div>
+                                            <div className={styles.actions}>
+                                                <button onClick={() => handleDeleteClick(item)}>🗑️</button>
+                                                <button onClick={() => handleDownloadClick(item)}>⬇</button>
+                                            </div>
                                         </div>
-                                        <div className={styles.actions}>
-                                            <button onClick={() => handleDeleteClick(item)}>🗑️</button>
-                                            <button onClick={() => handleDownloadClick(item)}>⬇</button>
-                                        </div>
-                                    </div>
-                                );
-                            })}
-                            {/* map */}
+                                    );
+                                })}
+                                {/* map */}
+                            </div>
                         </div>
                     </div>
-                </div>
-            ))}
+                ))}
 
 
-            {/* Modal */}
-            <Modal show={showModal} onHide={handleCloseModal}>
+                {/* Modal */}
+                <Modal show={showModal} onHide={handleCloseModal}>
 
-                <Modal.Header closeButton>
-                    <Modal.Title>{modalType === "download" ? "다운로드" : "기록 삭제"}</Modal.Title>
-                </Modal.Header>
+                    <Modal.Header closeButton>
+                        <Modal.Title>{modalType === "download" ? "다운로드" : "기록 삭제"}</Modal.Title>
+                    </Modal.Header>
 
-                <Modal.Body>
-                    {modalType === "download" && selectedHistory && (
+                    <Modal.Body>
+                        {modalType === "download" && selectedHistory && (
 
-                        <p>기록 : {selectedHistory.name}<br></br> 해당 기록을 다운받겠습니까?</p>
-                    )}
+                            <p>기록 : {selectedHistory.name}<br></br> 해당 기록을 다운받겠습니까?</p>
+                        )}
 
-                    {modalType === "delete" && selectedHistory && (
+                        {modalType === "delete" && selectedHistory && (
 
-                        <p>기록 : {selectedHistory.name}<br></br> 해당 기록을 삭제하시겠습니까?</p>
-                    )}
-                </Modal.Body>
+                            <p>기록 : {selectedHistory.name}<br></br> 해당 기록을 삭제하시겠습니까?</p>
+                        )}
+                    </Modal.Body>
 
-                <Modal.Footer>
-
-
-                    <button onClick={() => {
-                        if (modalType === "download") {
-                            handleDownload();
-                        }
-                        else if (modalType === "delete") {
-                            handleDelete();
-                        }
-
-                    }}>
-                        {modalType === "download" ? "다운받기" : "삭제"}
-                    </button>
-
-                    <button onClick={handleCloseModal}>취소</button>
-                </Modal.Footer>
-            </Modal>
+                    <Modal.Footer>
 
 
+                        <button onClick={() => {
+                            if (modalType === "download") {
+                                handleDownload();
+                            }
+                            else if (modalType === "delete") {
+                                handleDelete();
+                            }
+
+                        }}>
+                            {modalType === "download" ? "다운받기" : "삭제"}
+                        </button>
+
+                        <button onClick={handleCloseModal}>취소</button>
+                    </Modal.Footer>
+                </Modal>
+
+
+            </div>
         </div>
     );
 }

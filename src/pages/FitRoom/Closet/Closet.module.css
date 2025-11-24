@@ -20,21 +20,22 @@
 /* 이미지 래퍼 */
 .imgWrapper {
     width: 100%;
-    height: 100%;
-    /* 카드 높이와 동일하게 */
-    position: relative;
+    height: 200px; /* 카드 높이 일부만 이미지 */
 }
 
 .imgWrapper img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    /* 카드 안 꽉 채움 */
-    object-position: center;
-    display: block;
     border-radius: 8px 8px 0 0;
-    /* 카드 상단만 라운딩 */
 }
+
+.itemCard .textWrapper {
+    height: 100px; /* 남은 공간 텍스트용 */
+    text-align: center;
+    padding: 5px;
+}
+
 
 /* 텍스트 */
 .itemCard p {
@@ -108,3 +109,7 @@
         width: 15%;
     }
 }
+
+
+/* 파일 */
+

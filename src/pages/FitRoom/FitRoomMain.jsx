@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useState, useRef } from "react";
-
+import styles from "./FitRoomMain.module.css"
 import { caxios } from "../../config/config";
 
 
@@ -92,7 +92,7 @@ function FitRoomMain() {
       };
 
       const imageUrl = await fetchResultImage(taskId); // await 추가!
-      
+
       if (!imageUrl) {
         alert("이미지 생성이 지연되고 있습니다.");
         return;
@@ -133,100 +133,191 @@ function FitRoomMain() {
 
 
   return (
-    <div style={{ margin: "auto" }}>
-      <form onSubmit={handleSubmit}>
+
+    <div>
+
+      <h1 style={{ textAlign: "center" }}>FitRoom</h1>
+
+      <form className={styles.container} onSubmit={handleSubmit}>
+
         {/* 모델 업로드 */}
 
+        <div className={styles["modelbox"]}>
 
+          <h2>모델 이미지</h2>
+          <label htmlFor="modelInput">
+            {!modelImage ? (
+              <div className={styles["upload-box"]} style={{ fontSize: "30px" }}> 모델 업로드 </div>
+            ) : (
+              <img
+                src={URL.createObjectURL(modelImage)}
+                className={styles["upload-preview"]}
+                alt="모델 미리보기"
+              />
+            )}
+          </label>
 
-        <div>
-          <label>성별:</label>
-          <select value={sex} onChange={(e) => setSex(e.target.value)}>
-            <option value="male">남성</option>
-            <option value="female">여성</option>
-          </select>
-
-          <label>모델 이미지:</label>
-          <input type="file" accept="image/*" onChange={(e) => setModelImage(e.target.files[0])} />
-          {modelImage && <img src={URL.createObjectURL(modelImage)} alt="모델 미리보기" style={{ width: 150 }} />}
-        </div>
-
-
-
-        <label>옷 타입:</label>
-        <select value={clothType} onChange={(e) => setClothType(e.target.value)}>
-          <option value="upper">상의</option>
-          <option value="combo">상하의</option>
-          <option value="full">한벌</option>
-        </select>
-
-        <label>카테고리:</label>
-        <select value={closetCategory} onChange={(e) => setClosetCategory(e.target.value)}>
-          <option value="tshirt">티셔츠</option>
-          <option value="shirt">셔츠</option>
-          <option value="hoodie">후드티</option>
-          <option value="jacket">자켓</option>
-          <option value="sweater">스웨터</option>
-          <option value="cardigan">가디건</option>
-          <option value="coat">코트</option>
-          <option value="jeans">청바지</option>
-          <option value="slacks">슬랙스</option>
-          <option value="longpants">긴바지</option>
-          <option value="shorts">반바지</option>
-          <option value="skirt">스커트</option>
-          <option value="dress">드레스</option>
-          <option value="etc">기타</option>
-        </select>
-
-
-        {/*type이 upper이거나 full 일 때 상의 업로드 */}
-        {(clothType === "upper" || clothType === "full") && (
-          <div>
-            <label>상의 이미지:</label>
-            <input type="file" accept="image/*" onChange={(e) => setClothImage(e.target.files[0])} />
-            {clothImage && <img src={URL.createObjectURL(clothImage)} alt="상의 미리보기" style={{ width: 150 }} />}
+          <input
+            id="modelInput"
+            type="file"
+            accept="image/*"
+            className={styles["hidden-input"]}
+            onChange={(e) => setModelImage(e.target.files[0])}
+          />
+          <div style={{ display: "flex", alignItems: "center", marginBottom: "10px" }}>
+            <label>성별:</label>
+            <select value={sex} onChange={(e) => setSex(e.target.value)}>
+              <option value="male">남성</option>
+              <option value="female">여성</option>
+            </select>
           </div>
-        )}
-
-        {/* type이 combo 일때 상의 하의 업로드 */}
-        {(clothType === "combo") && (
-          <>
-            <div>
-              <label>상의 이미지:</label>
-              <input type="file" accept="image/*" onChange={(e) => setClothImage(e.target.files[0])} />
-              {clothImage && <img src={URL.createObjectURL(clothImage)} alt="상의 미리보기" style={{ width: 150 }} />}
-            </div>
-            <div>
-              <label>하의 이미지:</label>
-              <input type="file" accept="image/*" onChange={(e) => setLowerClothImage(e.target.files[0])} />
-              {lowerClothImage && <img src={URL.createObjectURL(lowerClothImage)} alt="하의 미리보기" style={{ width: 150 }} />}
-            </div>
-          </>
-        )}
-
-        <div>
-
-
-
-          <button type="submit" disabled={loading}>
-            {loading ? "업로드 중..." : "전송"}
-          </button>
         </div>
 
-      </form>
+
+        <div className={styles["clothesbox"]}>
 
 
-      {resultImage && (
-        <div>
-          <h3>완성 이미지:</h3>
-          <img src={resultImage} alt="완성 이미지" style={{ width: 300 }} />
+
+          {/*type이 upper이거나 full 일 때 상의 업로드 */}
+          {/* 상의 이미지 */}
+          <div style={{ textAlign: "center" }}>
+            {(clothType === "upper" || clothType === "full") && (
+              <div>
+                <h2>상의 이미지</h2>
+                <label htmlFor="upperInput">
+                  {!clothImage ? (
+                    <div className={styles["upload-box"]} style={{ fontSize: "30px" }}>상의 업로드</div>
+                  ) : (
+                    <img
+                      src={URL.createObjectURL(clothImage)}
+                      className={styles["upload-preview"]}
+                      alt="상의 미리보기"
+                    />
+                  )}
+                </label>
+                <input
+                  id="upperInput"
+                  type="file"
+                  accept="image/*"
+                  className={styles["hidden-input"]}
+                  onChange={(e) => setClothImage(e.target.files[0])}
+                />
+              </div>
+            )}
+          </div>
+
+          <div>
+            {clothType === "combo" && (
+              <div className={styles["upper-lower-container"]}>
+                {/* 상의 */}
+                <div>
+                  <h3>상의 이미지</h3>
+                  <label htmlFor="upperInput">
+                    {!clothImage ? (
+                      <div className={styles["upload-box"]} style={{ fontSize: "30px" }}>상의 업로드</div>
+                    ) : (
+                      <img
+                        src={URL.createObjectURL(clothImage)}
+                        className={styles["upload-preview"]}
+                        alt="상의 미리보기"
+                      />
+                    )}
+                  </label>
+                  <input
+                    id="upperInput"
+                    type="file"
+                    accept="image/*"
+                    className={styles["hidden-input"]}
+                    onChange={(e) => setClothImage(e.target.files[0])}
+                  />
+                </div>
+
+                {/* 하의 */}
+                <div>
+                  <h3>하의 이미지</h3>
+                  <label htmlFor="lowerInput">
+                    {!lowerClothImage ? (
+                      <div className={styles["upload-box"]} style={{ fontSize: "30px" }}>하의 업로드</div>
+                    ) : (
+                      <img
+                        src={URL.createObjectURL(lowerClothImage)}
+                        className={styles["upload-preview"]}
+                        alt="하의 미리보기"
+                      />
+                    )}
+                  </label>
+                  <input
+                    id="lowerInput"
+                    type="file"
+                    accept="image/*"
+                    className={styles["hidden-input"]}
+                    onChange={(e) => setLowerClothImage(e.target.files[0])}
+                  />
+                </div>
+              </div>
+            )}
+
+            <label>옷 타입:</label>
+            <select value={clothType} onChange={(e) => setClothType(e.target.value)} style={{ marginRight: "20px" }}>
+              <option value="upper">상의</option>
+              <option value="combo">상하의</option>
+              <option value="full">한벌</option>
+            </select>
+
+            <label>카테고리:</label>
+            <select value={closetCategory} onChange={(e) => setClosetCategory(e.target.value)}>
+              <option value="tshirt">티셔츠</option>
+              <option value="shirt">셔츠</option>
+              <option value="hoodie">후드티</option>
+              <option value="jacket">자켓</option>
+              <option value="sweater">스웨터</option>
+              <option value="cardigan">가디건</option>
+              <option value="coat">코트</option>
+              <option value="jeans">청바지</option>
+              <option value="slacks">슬랙스</option>
+              <option value="longpants">긴바지</option>
+              <option value="shorts">반바지</option>
+              <option value="skirt">스커트</option>
+              <option value="dress">드레스</option>
+              <option value="etc">기타</option>
+            </select>
+
+
+          </div>
+         <button type="submit"
+        disabled={loading}
+        style={{
+          display: "block",      // select와 겹치지 않게 block으로
+          width: "30%",
+          backgroundColor: "lightblue",
+          border: "none",
+          borderRadius: "10px",
+          fontSize: "30px",
+          marginTop: "20px"
+        }}>
+  {loading ? "업로드 중..." : "전송"}
+</button>
+
         </div>
-      )}
-      <button onClick={() => navigate("closet")}>임시 옷장 페이지</button>
-      <button onClick={() => navigate("model")}>임시 모델 페이지</button>
-      <button onClick={() => navigate("history")}>임시 기록 페이지</button>
 
-    </div>
+
+
+        <div className={styles["resultbox"]}>
+          {resultImage && (
+            <div style={{ textAlign: "center", marginTop: 20 }}>
+              <h3>완성 이미지:</h3>
+              <img
+                src={resultImage}
+                alt="완성 이미지"
+                className={styles["upload-preview"]}
+              />
+            </div>
+          )}
+        </div>
+
+      </form >
+    </div >
+
   );
 }
 

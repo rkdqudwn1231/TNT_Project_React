@@ -3,10 +3,11 @@ import styles from "./ContentMain.module.css";
 import PersonalColor from "../PersonalColor/personalColor";
 import FitRoom from "../FitRoom/FitRoom";
 import Home from "../Home/Home";
+import Color from "../PersonalColor/Color"; 
 import Header from "./Header";
-import ColorResult from "../PersonalColor/ColorResult";
 import SubTabs from "./SubTabs.jsx";
 import PersonalBodyRoute from "../PersonalBody/PersonalBodyRoute.jsx";
+import { Col } from "react-bootstrap";
 
 
 
@@ -32,11 +33,10 @@ const ContentMain = () => {
                     <section className={styles.content}>
                         <Routes>
                             <Route path="/" element={<Home />} />
-                            <Route path="/color/*" element={<PersonalColor />} />
-                            <Route path="/color/result" element={<ColorResult />} />
+                            <Route path="/color/*" element={<Color />} />
                             <Route path="/body/*" element={<PersonalBodyRoute   />} />
                             <Route path="/fitroom/*" element={<FitRoom />} />
-                            <Route path="/community/*" element={<PersonalColor />} />
+                            <Route path="/community/*" element={<PersonalColor />} /> 
                             <Route path="*" element={<h2>404 Not Found</h2>} />
                         </Routes>
                     </section>

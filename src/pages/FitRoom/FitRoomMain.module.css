@@ -16,8 +16,8 @@
 }
 
 
+/* [파일 업로드] */
 
-/* 파일업로드 */
 /* 상하의 업로드 */
 .upper-lower-container {
     display: flex;
@@ -68,3 +68,4 @@
 .hidden-input {
     display: none;
 }
+

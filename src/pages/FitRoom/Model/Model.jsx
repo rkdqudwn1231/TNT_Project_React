@@ -188,12 +188,13 @@ function Model() {
 
 
     return (
-        <div>
+        <div style={{fontSize:"20px"}}>
             {/* 헤더 */}
             <h1 style={{ textAlign: "center" }}>Model</h1>
 
             {/* 메인기능 */}
             <div>
+                <label> 성별: </label>
                 <select value={sex} onChange={(e) => setSex(e.target.value)}>
                     <option value="all">전체</option>
                     <option value="male">남성</option>

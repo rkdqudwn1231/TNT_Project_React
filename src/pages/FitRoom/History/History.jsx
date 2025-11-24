@@ -127,7 +127,6 @@ function History() {
 
             {/* 헤더 */}
             <h1 style={{ textAlign: "center" }}>History</h1>
-
             {/* 메인기능 */}
             <div>
                 {sortedDates.map(date => (

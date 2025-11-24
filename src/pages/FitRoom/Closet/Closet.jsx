@@ -3,7 +3,6 @@ import React, { useState, useRef, useEffect } from "react";
 import { caxios } from "../../../config/config";
 import styles from "./Closet.module.css"; // 현재 폴더 기준
 import Modal from 'react-bootstrap/Modal';
-import { ModalFooter } from "react-bootstrap";
 
 
 function Closet() {
@@ -26,7 +25,7 @@ function Closet() {
     const [ModalclothType, setModalClothType] = useState("upper");
     const [clothImage, setClothImage] = useState(null);
     const [lowerClothImage, setLowerClothImage] = useState(null);
-    const [closetCategory, setClosetCategory] = useState("tshirt");
+    const [closetCategory, setClosetCategory] = useState("all");
 
 
     useEffect(() => {
@@ -138,8 +137,6 @@ function Closet() {
     }
 
 
-
-
     //모달
     const handleEditClick = (item) => {
         setSelectedCloth(item);
@@ -210,7 +207,7 @@ function Closet() {
 
 
     return (
-        <div>
+        <div style={{ fontSize: "20px" }}>
             {/* 헤더 */}
             <h1 style={{ textAlign: "center" }}>Closet</h1>
 
@@ -381,11 +378,12 @@ function Closet() {
                             </>
                         )}
 
-
+                        <label>유형:</label>
                         <select value={ModalclothType} onChange={(e) => setModalClothType(e.target.value)}>
                             <option value="upper">상의</option>
                             <option value="lower">하의</option>
                         </select>
+                        <br></br>
                         <label>카테고리:</label>
                         <select value={closetCategory} onChange={(e) => setClosetCategory(e.target.value)}>
                             <option value="tshirt">티셔츠</option>

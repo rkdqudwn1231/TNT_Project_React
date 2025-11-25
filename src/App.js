@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import PersonalColor from "./pages/PersonalColor/personalColor.jsx";
 import ContentMain from "./pages/Common/ContentMain.jsx";
 import FitRoom from "./pages/FitRoom/FitRoom.jsx";
+import LoginRoutes from "./pages/Login/LoginRoutes";
 
 function App() {
 
@@ -21,6 +22,7 @@ function App() {
     <BrowserRouter>
       <div className="App">
         <Routes>
+          <Route path="/login/*" element={<LoginRoutes />} />
           <Route path="/*" element={<ContentMain />} />
         </Routes>
       </div>

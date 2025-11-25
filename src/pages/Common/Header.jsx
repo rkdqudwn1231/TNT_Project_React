@@ -11,6 +11,8 @@ const Header = ({ isHome }) => {
   const [activeMainTab, setActiveMainTab] = useState(null);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768)
 
+  const isLoggedIn = !!sessionStorage.getItem("token");
+
   // Home 전용 스크롤 이벤트
   useEffect(() => {
     if (!isHome) {
@@ -123,14 +125,6 @@ const Header = ({ isHome }) => {
                 >
                   Fitting Room
                 </NavLink>
-
-                <NavLink
-                  to="/Login"
-                  className={cx(styles.mainTab, styles.mainTabActive)}
-                  onClick={closeMenu}
-                >
-                  Login
-                </NavLink>
               </>
             )}
 
@@ -177,6 +171,17 @@ const Header = ({ isHome }) => {
                 </div>
               </>
             )}
+
+            {!isLoggedIn && (
+              <NavLink
+                to="/login"
+                className={styles.mainTab}
+                onClick={closeMenu}
+              >
+                Login
+              </NavLink>
+            )}
+
           </nav>
 
           {/* 서브탭 */}

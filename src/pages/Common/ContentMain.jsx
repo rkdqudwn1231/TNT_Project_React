@@ -7,17 +7,14 @@ import Chatbot from "../Chatbot/Chatbot";
 import Color from "../PersonalColor/Color"; 
 import Header from "./Header";
 import SubTabs from "./SubTabs.jsx";
-<<<<<<< HEAD
 import MyPage from "../MyPage/MyPage"
 import SignUp from "../SignUp/SignUp"
 import BoardRoutes from "../Board/BoardRoutes";
 import LoginRoutes from "../Login/LoginRoutes";
-=======
 import PersonalBodyRoute from "../PersonalBody/PersonalBodyRoute.jsx";
 import { Col } from "react-bootstrap";
 
 
->>>>>>> 3ad3e5879c408d3bc0782d1c871c8a3c33f65674
 
 const ContentMain = () => {
 

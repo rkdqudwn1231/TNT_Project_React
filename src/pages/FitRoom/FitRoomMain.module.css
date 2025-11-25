@@ -1,0 +1,71 @@
+.container {
+  display: flex;
+  gap: 20px; 
+  justify-content: space-between;
+  padding: 20px;
+}
+
+/* 3박스 균등 분할 */
+.modelbox,
+.clothesbox,
+.resultbox {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+
+/* [파일 업로드] */
+
+/* 상하의 업로드 */
+.upper-lower-container {
+    display: flex;
+    gap: 20px;
+    /* 상하의 사이 간격 */
+    justify-content: center;
+    /* 가로 중앙 정렬 */
+    align-items: flex-start;
+    /* 높이 맞추기 */
+    margin-bottom: 20px;
+    text-align: center;
+    /* 레이블 중앙 정렬 */
+}
+
+
+/* 업로드 박스 공통 */
+.upload-box {
+    width: 300px;
+    height: 300px;
+    border-radius: 10px;
+    border: 2px dashed #ccc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: 0.2s;
+     background-color: #1000;
+}
+
+.upload-box:hover {
+    border-color: #777;
+}
+
+/* 미리보기  */
+.upload-preview {
+    width: 300px;
+    height: 300px;
+    object-fit: contain;
+    /* 이미지 비율 유지하면서 박스 안에 맞춤 */
+    border-radius: 10px;
+    background-color: #1000;
+    /* 이미지 없는 경우 배경색 */
+}
+
+
+
+/* 숨김 input */
+.hidden-input {
+    display: none;
+}
+

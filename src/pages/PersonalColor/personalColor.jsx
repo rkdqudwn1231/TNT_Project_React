@@ -2,6 +2,10 @@ import { useState, useRef } from "react";
 import { colorPalettes } from "./palettes";
 import { caxios } from "../../config/config";
 import ShareButton from "./ShareButton";
+import ColorModal from "./modal/ColorModal";
+
+//모바일 감지 
+const useIsMobile = () => window.innerWidth < 768;
 
 // =================== 연예인 데이터 ===================
 const celebrityMap = {
@@ -204,9 +208,6 @@ function CelebrityCard({ celeb }) {
     aspectRatio: "3 / 4",
     objectFit: "cover",
     borderRadius: "14px",
-
-    imageRendering: "-webkit-optimize-contrast",
-    imageRendering: "crisp-edges",
     imageRendering: "high-quality"
   }}
 />
@@ -217,14 +218,26 @@ function CelebrityCard({ celeb }) {
     </div>
   );
 }
-
 function CelebritySection({ season }) {
   const list = celebrityMap[season];
   if (!list) return null;
+
+  const isMobile = window.innerWidth < 768;
+
   return (
-    <div style={{ marginTop: 25 }}>
-      <h3 style={{ marginBottom: 12 }}>당신과 비슷한 톤의 연예인</h3>
-      <div style={{ display: "flex", gap: 20, flexWrap: "nowrap" }}>
+    <div style={{ marginTop: 25, width: "100%" }}>
+      <h3 style={{ marginBottom: 12, textAlign: isMobile ? "center" : "left" }}>
+        당신과 비슷한 톤의 연예인
+      </h3>
+
+      <div
+        style={{
+          display: "flex",
+          gap: 20,
+          flexWrap: isMobile ? "wrap" : "nowrap",
+          justifyContent: isMobile ? "center" : "flex-start",
+        }}
+      >
         {list.map((celeb, i) => (
           <CelebrityCard key={i} celeb={celeb} />
         ))}
@@ -417,6 +430,8 @@ function FileUploadBox({ onChange }) {
 
 // =================== 메인 컴포넌트 ===================
 function PersonalColor() {
+  const isMobile = useIsMobile();
+
   const [imageSrc, setImageSrc] = useState(null);
   const [loading, setLoading] = useState(false);
   const [mode, setMode] = useState("Skin");
@@ -430,8 +445,14 @@ function PersonalColor() {
   const [season, setSeason] = useState(null); // Bright Spring 등 12톤 이름
   const [tone, setTone] = useState(null); // warm / cool
 
+  const [showModal, setShowModal] = useState(false);
+  const [selectedColor, setSelectedColor] = useState(null);
 
 
+  const handleColorClick = (color) => {
+  setSelectedColor(color);
+  setShowModal(true);
+};
 
   const imgRef = useRef(null);
   const canvasRef = useRef(null);
@@ -589,14 +610,17 @@ function PersonalColor() {
         style={{ display: "none" }}
       />
 
-      <div
+       <div
         style={{
           display: "flex",
+          flexDirection: isMobile ? "column" : "row",
           justifyContent: "center",
-          alignItems: "flex-start",
-          gap: 40,
+          alignItems: isMobile ? "center" : "flex-start",
+          gap: isMobile ? 20 : 40,
           padding: 20,
           width: "100%",
+          maxWidth: 1200,
+          margin: "0 auto",
         }}
       >
         {/* ========== 왼쪽: 이미지 영역 ========== */}
@@ -604,19 +628,20 @@ function PersonalColor() {
           {!imageSrc && <FileUploadBox />}
 
           {imageSrc && (
-            <div
-              style={{
-                position: "relative",
-                display: "inline-block",
-                width: 350,
-                height: 350,
-                overflow: "hidden",
-                borderRadius: 12,
-              }}
-            >
+           <div
+          style={{
+          position: "relative",
+          display: "inline-block",
+          width: isMobile ? "90vw" : 350,
+          height: isMobile ? "90vw" : 350,
+          overflow: "hidden",
+          borderRadius: 12,
+        }}
+      >
               <img
                 ref={imgRef}
                 src={imageSrc}
+                alt="uploaded face"
                 onMouseMove={handleMouseMove}
                 onClick={handleImageClick}
                 onMouseLeave={() => setHoverColor(null)}
@@ -679,7 +704,7 @@ function PersonalColor() {
         </div>
 
         {/* ========== 오른쪽: 분석 영역 ========== */}
-        <div style={{ width: 480 }}>
+       <div style={{ width: isMobile ? "100%" : 480 }}>
           <div style={{ display: "flex", gap: 10, marginBottom: 20 }}>
             <button onClick={() => setMode("Skin")}>Skin</button>
             <button onClick={() => setMode("Hair")}>Hair</button>
@@ -741,14 +766,15 @@ function PersonalColor() {
               </div>
 
               <div
-                style={{
-                  background: "white",
-                  padding: 24,
-                  borderRadius: 14,
-                  boxShadow: "0 4px 20px rgba(0,0,0,0.08)",
-                  width: "1000px",
-                  marginLeft: "-420px",
-                }}
+              style={{
+              background: "white",
+              padding: 24,
+              borderRadius: 14,
+              boxShadow: "0 4px 20px rgba(0,0,0,0.08)",
+              width: isMobile ? "100%" : "1000px",
+              marginLeft: isMobile ? 0 : "-420px",
+              marginTop: isMobile ? 20 : 0,
+          }}
               >
                 {season && <ExplanationBox season={season} />}
 
@@ -757,11 +783,13 @@ function PersonalColor() {
                     <ColorPalette
                       title="어울리는 색상 (BEST)"
                       colors={colorPalettes[baseSeasonForUI].best}
+                      handleColorClick={handleColorClick}
                     />
 
                     <ColorPalette
                       title="피해야 하는 색상 (WORST)"
                       colors={colorPalettes[baseSeasonForUI].worst}
+                      handleColorClick={handleColorClick}
                     />
 
                     <CelebritySection season={baseSeasonForUI} />
@@ -772,6 +800,12 @@ function PersonalColor() {
           )}
         </div>
       </div>
+  <ColorModal
+      show={showModal}
+      onHide={() => setShowModal(false)}
+      color={selectedColor}
+    />
+
     </>
   );
 }
@@ -794,7 +828,7 @@ function ColorBox({ label, color }) {
   );
 }
 
-function ColorPalette({ title, colors }) {
+function ColorPalette({ title, colors,handleColorClick }) {
   return (
     <div style={{ marginTop: 10 }}>
       <strong>{title}</strong>
@@ -809,6 +843,7 @@ function ColorPalette({ title, colors }) {
         {colors.map((c, i) => (
           <div
             key={i}
+            onClick={()=>handleColorClick(c)}
             style={{
               width: 40,
               height: 40,
@@ -819,7 +854,10 @@ function ColorPalette({ title, colors }) {
           />
         ))}
       </div>
+
     </div>
+
+    
   );
 }
 

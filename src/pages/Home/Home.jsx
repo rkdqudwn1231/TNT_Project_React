@@ -8,12 +8,12 @@ export default function Home() {
       <section className={styles.hero}>
         {/* 흐림 처리된 가로 전체 배경 */}
         <video autoPlay muted loop playsInline className={styles.videoBgBlur}>
-          <source src="/videos/intro8.mp4" type="video/mp4" />
+          <source src="/videos/intro.mp4" type="video/mp4" />
         </video>
 
         {/* 실제 보여줄 세로 영상 */}
         <video autoPlay muted loop playsInline className={styles.videoMain}>
-          <source src="/videos/intro8.mp4" type="video/mp4" />
+          <source src="/videos/intro.mp4" type="video/mp4" />
         </video>
 
         <div className={styles.overlay}>
@@ -35,7 +35,7 @@ export default function Home() {
             </Col>
             <Col lg={6}>
               <img
-                src="/images/personal1.jpg"
+                src="/images/about/personal1.jpg"
                 className="img-fluid rounded"
                 alt="about"
                 style={{
@@ -49,7 +49,7 @@ export default function Home() {
           <Row className="align-items-center">
             <Col lg={6}>
               <img
-                src="/images/personal2.jpg"
+                src="/images/about/personal2.jpg"
                 className="img-fluid rounded"
                 alt="about"
                 style={{
@@ -73,7 +73,7 @@ export default function Home() {
             </Col>
             <Col lg={6}>
               <img
-                src="/images/personal3.jpg"
+                src="/images/about/personal3.jpg"
                 className="img-fluid rounded"
                 alt="about"
                 style={{
@@ -87,7 +87,7 @@ export default function Home() {
           <Row className="align-items-center">
             <Col lg={6}>
               <img
-                src="/images/personal4.jpg"
+                src="/images/about/personal4.jpg"
                 className="img-fluid rounded"
                 alt="about"
                 style={{
@@ -113,7 +113,7 @@ export default function Home() {
             </Col>
             <Col lg={6}>
               <img
-                src="/images/personal5.png"
+                src="/images/about/personal5.png"
                 className="img-fluid rounded"
                 alt="about"
                 style={{

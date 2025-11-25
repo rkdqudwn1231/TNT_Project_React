@@ -3,14 +3,21 @@ import styles from "./ContentMain.module.css";
 import PersonalColor from "../PersonalColor/personalColor";
 import FitRoom from "../FitRoom/FitRoom";
 import Home from "../Home/Home";
+import Chatbot from "../Chatbot/Chatbot";
+import Color from "../PersonalColor/Color"; 
 import Header from "./Header";
-import Body from "../PersonalBody/Body";
-import ColorResult from "../PersonalColor/ColorResult";
 import SubTabs from "./SubTabs.jsx";
+<<<<<<< HEAD
 import MyPage from "../MyPage/MyPage"
 import SignUp from "../SignUp/SignUp"
 import BoardRoutes from "../Board/BoardRoutes";
 import LoginRoutes from "../Login/LoginRoutes";
+=======
+import PersonalBodyRoute from "../PersonalBody/PersonalBodyRoute.jsx";
+import { Col } from "react-bootstrap";
+
+
+>>>>>>> 3ad3e5879c408d3bc0782d1c871c8a3c33f65674
 
 const ContentMain = () => {
 
@@ -28,18 +35,15 @@ const ContentMain = () => {
                 <Header isHome={isHome} />
             </header>
 
-
                 {/* 메인 (컨텐츠) */}
                 <main className={styles.main}>
                     {/* 컨텐츠 */}
                     <section className={styles.content}>
                         <Routes>
                             <Route path="/" element={<Home />} />
-                            <Route path="/color/*" element={<PersonalColor />} />
-                            <Route path="/color/result" element={<ColorResult />} />
-                            <Route path="/body/*" element={<Body />} />
-                            <Route path="/fitroom/*" element={<FitRoom />} />
-                            <Route path="/community/*" element={<PersonalColor />} />
+                            <Route path="/color/*" element={<Color />} />
+                            <Route path="/body/*" element={<PersonalBodyRoute   />} />
+                            <Route path="/fitroom/*" element={<FitRoom />} />ㅋ
                             <Route path="/Login/*" element={<LoginRoutes />} />
                             <Route path="/signup" element={<SignUp />} />
                             <Route path="/MyPage" element={<MyPage />}/>
@@ -49,7 +53,7 @@ const ContentMain = () => {
                         </Routes>
                     </section>
                 </main>
-
+            {/* <Chatbot /> */}
         </div>
       
     );

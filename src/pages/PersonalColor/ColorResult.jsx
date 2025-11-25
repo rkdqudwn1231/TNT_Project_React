@@ -1,8 +1,9 @@
 // src/pages/PersonalColor/ColorResult.jsx
 
 import { useLocation } from "react-router-dom";
+import { useState } from "react";
 import { colorPalettes } from "./palettes";   
-
+import ColorModal from "./modal/ColorModal"; 
 // =================== 연예인 데이터 ===================
 const celebrityMap = {
   spring: [
@@ -205,7 +206,7 @@ function ExplanationBox({ season }) {
   );
 }
 
-function ColorPalette({ title, colors }) {
+function ColorPalette({ title, colors, onColorClick  }) {
   return (
     <div style={{ marginTop: 16 }}>
       <strong>{title}</strong>
@@ -213,6 +214,7 @@ function ColorPalette({ title, colors }) {
         {colors.map((c, i) => (
           <div
             key={i}
+            onClick={()=>onColorClick(c)}
             style={{
               width: 40,
               height: 40,
@@ -295,6 +297,17 @@ function ColorResult() {
   const query = new URLSearchParams(useLocation().search);
   const season = query.get("season");
 
+  //모달 상태
+  const [showModal, setShowModal] = useState(false);
+  const [selectedColor, setSelectedColor] = useState(null);
+
+ //클릭시 모달 오픈 
+  const handleColorClick = (color) => {
+      setSelectedColor(color);
+      setShowModal(true);
+  };
+
+
   if (!season) return <h2>결과가 없습니다.</h2>;
 
   const baseSeason =
@@ -304,7 +317,13 @@ function ColorResult() {
     "winter";
 
   return (
-    <div style={{ padding: 30 }}>
+    <div
+    style={{
+    display: "flex",
+    gap: 20,
+    flexWrap: "wrap",
+    justifyContent: "center"  
+  }}>
       <h2>당신의 퍼스널 컬러: {season}</h2>
 
       <ExplanationBox season={season} />
@@ -312,11 +331,13 @@ function ColorResult() {
       <ColorPalette
         title="어울리는 색상 (BEST)"
         colors={colorPalettes[baseSeason].best}
+        onColorClick={handleColorClick}
       />
 
       <ColorPalette
         title="피해야 하는 색상 (WORST)"
         colors={colorPalettes[baseSeason].worst}
+        onColorClick={handleColorClick}
       />
 
       <CelebritySection season={baseSeason} />
@@ -324,6 +345,12 @@ function ColorResult() {
       <div style={{ marginTop: 40 }}>
         <a href="/color">다시 분석하기</a>
       </div>
+
+       <ColorModal
+        show={showModal}
+        onHide={() => setShowModal(false)}
+        color={selectedColor}
+      />
     </div>
   );
 }

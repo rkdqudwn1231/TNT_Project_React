@@ -1,0 +1,210 @@
+import SubTabs from "./SubTabs";
+import styles from "./Header.module.css";
+import { NavLink } from "react-router-dom";
+import { useState } from "react";
+import { useEffect } from "react";
+
+const Header = ({ isHome }) => {
+
+  const [showHeader, setShowHeader] = useState(true);
+  const [solid, setSolid] = useState(false);
+
+  // Home 전용 스크롤 이벤트
+  useEffect(() => {
+    if (!isHome) {
+      setShowHeader(true);
+      setSolid(true);
+      return;
+    }
+
+    const threshold = 10;
+    const holdShow = 120;
+    let prev = window.scrollY;
+
+    const handleScroll = () => {
+      const cur = window.scrollY;
+      const diff = cur - prev;
+
+      if (Math.abs(diff) < threshold) return;
+
+      if (diff < 0) setShowHeader(true);
+      if (diff > 0 && cur > holdShow) setShowHeader(false);
+
+      setSolid(cur > 150);
+
+      prev = cur;
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+
+  }, [isHome]);
+
+  // 공용 className 활성화 처리 로직
+  const cx = (base, active) => ({ isActive }) =>
+    isActive ? `${base} ${active}` : base;
+
+  return (
+    <header
+      className={`
+    ${styles.header}
+    ${isHome ? (solid ? styles.solid : styles.transparent) : styles.subHeader}
+    ${isHome ? styles.homeText : ""}
+    ${showHeader ? "" : styles.hide}
+  `}
+    >
+      <div className={styles.logoArea}>
+        <a href="/" className={styles.logo}>TNT</a>
+      </div>
+
+      <div className={styles.tabArea}>
+
+        {/* 메인탭 */}
+        <nav className={styles.mainTabs}>
+          <NavLink to="/color" className={cx(styles.mainTab, styles.mainTabActive)}>Personal Color</NavLink>
+          <NavLink to="/body" className={cx(styles.mainTab, styles.mainTabActive)}>Personal Body</NavLink>
+          <NavLink to="/fitroom" className={cx(styles.mainTab, styles.mainTabActive)}>Fitting Room</NavLink>
+          {/* 여기에 커뮤니티 경로 넣으세요 
+          <NavLink to="/community"  className={cx(styles.mainTab, styles.mainTabActive)}>Community</NavLink>*/}
+        </nav>
+
+        {/* 서브탭 */}
+        {!isHome && (
+          <div className={styles.subTabsWrapper}>
+            <SubTabs cx={cx} />
+          </div>
+        )}
+      </div>
+    </header>
+  );
+};
+
+export default Header;
+
+
+/* 헤더 전체 */
+.header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 60px;
+  z-index: 1000;
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  grid-template-rows: auto auto;
+}
+
+/* 홈 전용 텍스트 컬러만 변경 */
+.homeText a,
+.homeText .logo,
+.homeText .mainTabs a,
+.homeText .subTabs a {
+  color: rgb(255, 255, 255) !important;
+}
+
+/* 로고 영역 */
+.logoArea {
+  grid-row: 1 / 3;
+  display: flex;
+  align-items: center;
+  padding-left: 30px;
+  height: 60px;
+}
+
+.logo {
+  height: 60px;
+  font-size: 40px;
+  font-weight: 800;
+  text-decoration: none;
+  color: rgba(255, 170, 205, 0.85);
+}
+
+.tabArea {
+  grid-column: 2 / 3;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* 메인탭*/
+.mainTabs {
+  display: flex;
+  justify-content: flex-end;
+  padding: 5px 30px;
+  gap: 35px;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.mainTabs a {
+  text-decoration: none;
+  border-radius: 10px;
+  font-size: 18px;
+  color: rgba(255, 170, 205, 0.85);
+}
+
+.mainTab {
+  text-decoration: none;
+  padding: 6px 10px;
+  border-radius: 4px;
+}
+
+.transparent {
+  background: transparent !important;
+  color: rgba(255,170,205,0.85);
+}
+
+.transparent a {
+  color: rgba(255,170,205,0.85);
+}
+
+.solid {
+  background: rgba(255, 200, 220, 0.85);
+  backdrop-filter: blur(6px);
+  color: white;
+}
+
+/* 헤더 스크롤 숨김/등장 */
+.header {
+  transform: translateY(0);
+  transition: transform 0.4s ease-out;
+}
+
+.hide {
+  transform: translateY(-100%);
+}
+
+/* 활성화된 메인탭 */
+.mainTabActive {
+  background: rgba(255, 150, 200, 0.9);
+  font-weight: 700;
+  color: white !important;
+  border: 1px solid rgba(240, 120, 170, 0.9);
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.15);
+  transform: translateY(1px);
+  border-radius: 4px;
+}
+
+/* 서브탭 */
+.subTabsWrapper {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0px 35px 12px 30px;
+}
+
+.subTabs {
+  display: flex;
+  gap: 22px;
+}
+
+.subTabs a {
+  text-decoration: none;
+  color: rgba(255, 180, 210, 0.85);
+}
+
+.subTabActive {
+  color: rgba(220, 50, 120, 1);  
+  font-weight: 700;
+  border-bottom: 2px solid rgb(250, 187, 213); 
+  padding-bottom: 1px;            
+}

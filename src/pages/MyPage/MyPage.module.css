@@ -119,3 +119,38 @@
 .editButton:hover {
   opacity: 0.88;
 }
+
+/* 수정 모드 input, select 공통 */
+.input, 
+.select {
+  width: 60%;
+  padding: 6px 10px;
+  border: 1px solid #cccccc;
+  border-radius: 6px;
+  font-size: 14px;
+  background: #fafafa;
+}
+
+/* infoRow 안에서 input/select가 오른쪽 정렬되도록 */
+.infoRow input,
+.infoRow select {
+  text-align: right;
+}
+
+/* 저장 버튼 */
+.saveButton {
+  margin-top: 24px;
+  width: 100%;
+  padding: 10px 0;
+  border-radius: 8px;
+  border: none;
+  font-size: 15px;
+  font-weight: 600;
+  background-color: #0078ff;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.saveButton:hover {
+  opacity: 0.9;
+}

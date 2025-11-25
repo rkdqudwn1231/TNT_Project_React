@@ -113,3 +113,66 @@
 .submitButton:hover {
   opacity: 0.88;
 }
+/* 이메일 인증 input + 버튼 가로 정렬 */
+.emailRow {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+/* 버튼 크기를 회원가입 버튼 스타일과 유사하게 */
+.verifyButton {
+  flex-shrink: 0;
+  padding: 10px 14px;
+  background: #111;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 13px;
+  cursor: pointer;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.verifyButton:hover {
+  opacity: 0.9;
+}
+
+
+.emailRow input {
+  flex: 1;
+}
+
+
+.submitButton {
+  width: 100%;
+  padding: 12px 0;
+  background: #111;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.submitButton:hover {
+  opacity: 0.88;
+}
+
+.matchMessage {
+  margin-top: -4px;
+  font-size: 13px;
+  color: #0a8800; /* 초록색 */
+  font-weight: 600;
+}
+
+.notMatchMessage {
+  margin-top: -4px;
+  font-size: 13px;
+  color: #d80000; /* 빨간색 */
+  font-weight: 600;
+}

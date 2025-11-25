@@ -96,6 +96,15 @@ const Header = ({ isHome }) => {
             >
               Fitting Room
             </NavLink>
+
+              <NavLink
+              to="/Login"
+              className={cx(styles.mainTab, styles.mainTabActive)}
+              onClick={closeMenu}
+            >
+              Login
+            </NavLink>
+
           </nav>
 
           {/* 서브탭 */}

@@ -7,14 +7,16 @@ import Header from "./Header";
 import Body from "../PersonalBody/Body";
 import ColorResult from "../PersonalColor/ColorResult";
 import SubTabs from "./SubTabs.jsx";
-
-
+import MyPage from "../MyPage/MyPage"
+import SignUp from "../SignUp/SignUp"
+import BoardRoutes from "../Board/BoardRoutes";
+import LoginRoutes from "../Login/LoginRoutes";
 
 const ContentMain = () => {
 
     // 홈일 때 헤더 스크롤 이벤트 , 홈이 아닐 때 헤더 fixed
     const location = useLocation();
-    const isHome = location.pathname === "/"; // 홈인지 체크
+    const isHome = location.pathname === "/" || location.pathname === "/Login"; // 홈인지 체크
 
     return (
 
@@ -38,7 +40,12 @@ const ContentMain = () => {
                             <Route path="/body/*" element={<Body />} />
                             <Route path="/fitroom/*" element={<FitRoom />} />
                             <Route path="/community/*" element={<PersonalColor />} />
+                            <Route path="/Login/*" element={<LoginRoutes />} />
+                            <Route path="/signup" element={<SignUp />} />
+                            <Route path="/MyPage" element={<MyPage />}/>
+                            <Route path="/BoardRoutes/*" element={<BoardRoutes/>}/>
                             <Route path="*" element={<h2>404 Not Found</h2>} />
+                            
                         </Routes>
                     </section>
                 </main>

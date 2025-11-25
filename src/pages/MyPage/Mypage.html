@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>마이페이지</title>
   <style>
     body {
@@ -14,7 +14,7 @@
       margin: 40px auto;
       padding: 24px 20px;
       border-radius: 12px;
-      background-color: #ffffff;
+      background: #ffffff;
       box-shadow: 0 4px 12px rgba(0,0,0,0.06);
       box-sizing: border-box;
     }
@@ -37,10 +37,17 @@
       border-radius: 50%;
       overflow: hidden;
       border: 1px solid #ddd;
-      background: #f7f7f7;
       display: flex;
       align-items: center;
       justify-content: center;
+      background: #f7f7f7;
+      flex-shrink: 0;
+    }
+
+    .profileImage {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
 
     .profilePlaceholder {
@@ -49,6 +56,7 @@
     }
 
     .headerInfo {
+      flex: 1;
       display: flex;
       flex-direction: column;
       gap: 4px;
@@ -92,6 +100,7 @@
       justify-content: space-between;
       padding: 8px 0;
       border-bottom: 1px solid #f0f0f0;
+      font-size: 14px;
     }
 
     .infoLabel {
@@ -100,11 +109,10 @@
     }
 
     .infoValue {
-      font-size: 14px;
       font-weight: 500;
     }
 
-    .editButton {
+    .editButton, .saveButton {
       margin-top: 24px;
       width: 100%;
       padding: 10px 0;
@@ -117,14 +125,38 @@
       cursor: pointer;
     }
 
-    .editButton:hover { opacity: 0.88; }
+    .editButton:hover,
+    .saveButton:hover {
+      opacity: 0.88;
+    }
+
+    .formGroup {
+      margin-top: 16px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .label {
+      font-size: 13px;
+      margin-bottom: 6px;
+      color: #555;
+    }
+
+    .input, .select {
+      padding: 8px 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
   </style>
 </head>
+
 <body>
 
 <div class="container">
   <h2 class="title">마이페이지</h2>
 
+  <!-- 상단 프로필 -->
   <div class="header">
     <div class="profileImageBox">
       <span class="profilePlaceholder">이미지 없음</span>
@@ -133,9 +165,8 @@
     <div class="headerInfo">
       <div class="nameRow">
         <span class="name">홍길동</span>
-        <span class="userId">@pink123</span>
+        <span class="userId">@pinky123</span>
       </div>
-
       <div class="subInfo">
         <span>여성</span>
         <span>·</span>
@@ -144,20 +175,27 @@
     </div>
   </div>
 
+  <!-- 기본 정보 -->
   <div class="section">
     <h3 class="sectionTitle">기본 정보</h3>
+
+    <div class="infoRow">
+      <span class="infoLabel">닉네임</span>
+      <span class="infoValue">핑키스타</span>
+    </div>
+
+    <div class="infoRow">
+      <span class="infoLabel">이메일</span>
+      <span class="infoValue">pinky@example.com</span>
+    </div>
 
     <div class="infoRow">
       <span class="infoLabel">휴대전화</span>
       <span class="infoValue">010-0000-0000</span>
     </div>
-
-    <div class="infoRow">
-      <span class="infoLabel">아이디</span>
-      <span class="infoValue">pink123</span>
-    </div>
   </div>
 
+  <!-- 퍼스널 정보 -->
   <div class="section">
     <h3 class="sectionTitle">퍼스널 정보</h3>
 

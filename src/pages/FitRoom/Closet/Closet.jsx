@@ -10,7 +10,7 @@ function Closet() {
 
     const [clothType, setClothType] = useState("all");
     const [closetData, setClosetData] = useState([]);
-
+    const [closetCategory, setClosetCategory] = useState("all");
     // 모달
     const [showModal, setShowModal] = useState(false);
     const [modalType, setModalType] = useState(""); // "edit" 또는 "delete"
@@ -26,9 +26,10 @@ function Closet() {
     const [ModalclothType, setModalClothType] = useState("upper");
     const [clothImage, setClothImage] = useState(null);
     const [lowerClothImage, setLowerClothImage] = useState(null);
-    const [closetCategory, setClosetCategory] = useState("all");
 
     const [colorFilter, setColorFilter] = useState(null);
+    const [modalCategory, setModalCategory] = useState("tshirt"); // 초기값 적절히
+
 
 
     useEffect(() => {
@@ -63,7 +64,7 @@ function Closet() {
 
         const formData = new FormData();
         formData.append("memberId", "맴버임시");
-        formData.append("category", closetCategory);
+        formData.append("category", modalCategory);
         formData.append("clothType", ModalclothType);
 
         // if (clothImage) formData.append("cloth_image", clothImage);
@@ -580,7 +581,7 @@ function Closet() {
                         </select>
                         <br></br>
                         <label>카테고리:</label>
-                        <select value={closetCategory} onChange={(e) => setClosetCategory(e.target.value)}>
+                        <select value={modalCategory} onChange={(e) => setModalCategory(e.target.value)}>
                             <option value="tshirt">티셔츠</option>
                             <option value="shirt">셔츠</option>
                             <option value="hoodie">후드티</option>

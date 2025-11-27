@@ -8,6 +8,7 @@ const SubTabs = ({ cx, onClickItem }) => {
 
   if (pathname.startsWith("/color")) {
     tabs = [
+      { label: "Personal Color mean", path: "/color/test", end: true },
       { label: "Color", path: "/color", end: true },
     ];
   }

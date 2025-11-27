@@ -8,17 +8,21 @@ import { FaXmark } from "react-icons/fa6";
 import { AiFillHome } from "react-icons/ai";
 import { RiNotification2Fill } from "react-icons/ri";
 import { IoChatboxEllipsesSharp } from "react-icons/io5";
-
+import { GiClothes } from "react-icons/gi";
+import { MdOutlineCleaningServices } from "react-icons/md";
 
 const Chatbot = () => {
     const [activeTab, setActiveTab] = useState("home");  // ← 탭 상태
-    const [messages, setMessages] = useState([]);
+    const [messages, setMessages] = useState([{
+        text: "당신의 퍼스널 컬러와 체형에 맞는 스타일을 추천해드립니다. 궁금한 점을 말해보세요.",
+        sender: "bot"
+    }]);
     const [inputValue, setInputValue] = useState("");
     const [isOpen, setIsOpen] = useState(false); //창 껐다 키기용
 
     const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
-    const [chatLoading,setChatLoading] = useState(false);
+    const [chatLoading, setChatLoading] = useState(false);
 
     const messagesEndRef = useRef(null); //메세지 최하단으로 위치하게 하기 용도.
 
@@ -30,8 +34,29 @@ const Chatbot = () => {
         return () => window.removeEventListener("resize", handler); // 이벤트 정리 ( 중복 방지 )
     }, []);
 
+    const MessageList = React.memo(({ messages, chatLoading }) => (
+        <>
+            {messages.map((msg, i) => (
+                <div key={i} className={msg.sender === "user" ? styles.userMessage : styles.botMessage}>
+                    <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                        {msg.text}
+                    </ReactMarkdown>
+                </div>
+            ))}
+            {chatLoading && (
+                <div className={`${styles.botMessage} ${styles.loadingDots}`}>
+                    스타일 추천을 분석 중입니다
+                </div>
+            )}
+        </>
+    ));
 
     const handleSendMessage = async (message) => {
+        if (message == "") {
+            return false;
+        }
+
+        setChatLoading(true);
         setMessages((prev) => [...prev, { text: message, sender: 'user' }]);
         try {
             const token = sessionStorage.getItem('token');
@@ -42,9 +67,10 @@ const Chatbot = () => {
             const botAnswer = res.data.answer;
             setMessages((prev) => [...prev, { text: botAnswer, sender: 'bot' }]);
         } catch (err) {
-            console.error(err);
+            console.error(err + "caxios 에러");
             setMessages((prev) => [...prev, { text: "오류 발생", sender: 'bot' }]);
         }
+        setChatLoading(false);
     };
 
     //메세지 스크롤 최하단으로 이동
@@ -66,6 +92,7 @@ const Chatbot = () => {
             {/* 챗봇 창 */}
             {isOpen && (
                 <div className={styles.chatbotContainer}>
+
                     <div className={styles.contentArea}>
                         {activeTab === "home" && (
                             <div className={styles.homeView}>
@@ -76,21 +103,18 @@ const Chatbot = () => {
 
                         {activeTab === "chat" && (
                             <div className={styles.chatContainer}>
-                                <div className={styles.chatWindow}>
-                                    {messages.map((msg, i) => (
-                                        <div
-                                            key={i}
-                                            className={
-                                                msg.sender === "user"
-                                                    ? styles.userMessage
-                                                    : styles.botMessage
-                                            }
-                                        >
-                                            {msg.text}
-                                        </div>
-                                    ))}
+                                <div className={styles.contentHeader}>
+                                    <div className={styles.contentTitle}>
+                                        <GiClothes /> 스타일 챗봇
+                                    </div>
+                                    <button className={styles.contentTitleBtn}>
+                                        <MdOutlineCleaningServices />
+                                    </button>
 
-                                     <div ref={messagesEndRef} />
+                                </div>
+                                <div className={styles.chatWindow}>
+                                    <MessageList messages={messages} chatLoading={chatLoading} />
+                                    <div ref={messagesEndRef} style={{ display: "inline-block" }} />
                                 </div>
 
                                 <div className={styles.inputArea}>
@@ -104,6 +128,7 @@ const Chatbot = () => {
                                                 setInputValue("");
                                             }
                                         }}
+                                        readOnly={chatLoading}
                                     />
                                 </div>
                             </div>

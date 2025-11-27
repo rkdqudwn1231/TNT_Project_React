@@ -1,7 +1,8 @@
 import React, { useState, useRef } from "react";
 import styles from "./FitRoomMain.module.css"
 import { caxios } from "../../config/config";
-
+import ColorThief from "colorthief";
+import { removeBackground } from "@imgly/background-removal";
 
 import { useNavigate } from "react-router-dom";
 
@@ -74,7 +75,6 @@ function FitRoomMain() {
       // taskId 받기
       const { taskId } = res.data;
 
-      //  const resultUrl = res.data.imageUrl; // 기존에 받던 imageURL 48시간만료
 
       // taskId로 이미지 URL 가져오기
       const fetchResultImage = async (taskId) => {
@@ -98,6 +98,42 @@ function FitRoomMain() {
       }
       setResultImage(imageUrl);
 
+      // 배경제거 , 색상 추출
+      const extractColor = async (file) => {
+        try {
+          // 배경 제거
+          const resultBlob = await removeBackground(file);
+          const resultURL = URL.createObjectURL(resultBlob);
+
+          // ColorThief로 색상 추출
+          return await new Promise((resolve) => {
+            const img = new Image();
+            img.src = resultURL;
+            img.onload = () => {
+              try {
+                const colorThief = new ColorThief();
+                const dominantColor = colorThief.getColor(img);
+                resolve(dominantColor); // [R, G, B]
+              } catch (err) {
+                console.error(err);
+                resolve(null);
+              }
+            };
+          });
+        } catch (err) {
+          console.error(err);
+          return null;
+        }
+      };
+
+      const clothColor = clothImage ? await extractColor(clothImage) : null;
+      const lowerClothColor =
+        clothType === "combo" && lowerClothImage
+          ? await extractColor(lowerClothImage)
+          : null;
+
+      // db 저장
+
       const saveData = new FormData();
       saveData.append("taskId", taskId); //  taskId 11.20 등록
       saveData.append("cloth_type", clothType);
@@ -108,6 +144,17 @@ function FitRoomMain() {
       saveData.append("ClosetCategory", closetCategory);
       saveData.append("sex", sex);
 
+      //색상
+      if (clothColor) {
+        saveData.append("upperClothColorR", clothColor[0]);
+        saveData.append("upperClothColorG", clothColor[1]);
+        saveData.append("upperClothColorB", clothColor[2]);
+      }
+      if (lowerClothColor) {
+        saveData.append("lowerClothColorR", lowerClothColor[0]);
+        saveData.append("lowerClothColorG", lowerClothColor[1]);
+        saveData.append("lowerClothColorB", lowerClothColor[2]);
+      }
 
       // DB에 저장
       await caxios.post("/fitroom/save", saveData, {
@@ -132,7 +179,7 @@ function FitRoomMain() {
 
   return (
 
-    <div style={{fontSize:"20px"}}>
+    <div style={{ fontSize: "20px" }}>
 
       <h1 style={{ textAlign: "center" }}>FitRoom</h1>
 
@@ -176,7 +223,7 @@ function FitRoomMain() {
 
         <div className={styles["clothesbox"]}>
 
-         <div style={{ display: "flex", alignItems: "center", marginBottom: "10px" }}>
+          <div style={{ display: "flex", alignItems: "center", marginBottom: "10px" }}>
 
             <div>
               <label>유형:</label>
@@ -187,7 +234,7 @@ function FitRoomMain() {
               </select>
             </div>
 
-            <div style={{marginLeft:"10px"}}>
+            <div style={{ marginLeft: "10px" }}>
               <label>카테고리:</label>
               <select value={closetCategory} onChange={(e) => setClosetCategory(e.target.value)}>
                 <option value="tshirt">티셔츠</option>
@@ -242,7 +289,7 @@ function FitRoomMain() {
                 {/* 상의 */}
                 <div>
                   <h3>상의 이미지</h3>
-                  <label htmlFor="upperInput">
+                  <label htmlFor="upperInputCombo">
                     {!clothImage ? (
                       <div className={styles["upload-box"]} style={{ fontSize: "30px" }}>상의 업로드</div>
                     ) : (
@@ -254,7 +301,7 @@ function FitRoomMain() {
                     )}
                   </label>
                   <input
-                    id="upperInput"
+                    id="upperInputCombo"
                     type="file"
                     accept="image/*"
                     className={styles["hidden-input"]}

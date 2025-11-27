@@ -9,34 +9,49 @@ const useIsMobile = () => window.innerWidth < 768;
 
 // =================== 연예인 데이터 ===================
 const celebrityMap = {
-  spring: [
-    { name: "아이유", img: "/images/celebrity/아이유.png", desc: "맑고 밝은 라이트 스프링 대표 톤" },
-    { name: "태연", img: "/images/celebrity/태연.png", desc: "중명도의 따뜻한 봄톤" },
-    { name: "박보검", img: "/images/celebrity/박보검.png", desc: "부드럽고 깨끗한 봄 라이트톤" },
-    { name: "차은우", img: "/images/celebrity/차은우.png", desc: "맑고 선명한 봄 브라이트톤" }
-  ],
+  spring: {
+    male: [
+      { name: "박보검", img: "/images/celebrity/박보검.png", desc: "부드럽고 깨끗한 봄 라이트톤" },
+      { name: "차은우", img: "/images/celebrity/차은우.png", desc: "맑고 선명한 봄 브라이트톤" }
+    ],
+    female: [
+      { name: "아이유", img: "/images/celebrity/아이유.png", desc: "맑고 밝은 라이트 스프링 대표 톤" },
+      { name: "태연", img: "/images/celebrity/태연.png", desc: "중명도의 따뜻한 봄톤" }
+    ]
+  },
 
-  summer: [
-    { name: "수지", img: "/images/celebrity/수지.png", desc: "부드럽고 차분한 여름 라이트톤" },
-    { name: "이영애", img: "/images/celebrity/이영애.png", desc: "청초하고 투명한 쿨톤 대표" },
+  summer: {
+    male: [
+      { name: "정해인", img: "/images/celebrity/정해인.png", desc: "맑고 깨끗한 여름 라이트톤" },
+      { name: "뷔", img: "/images/celebrity/뷔.png", desc: "시원하고 부드러운 여름 쿨톤" }
+    ],
+    female: [
+      { name: "수지", img: "/images/celebrity/수지.png", desc: "부드럽고 차분한 여름 라이트톤" },
+      { name: "이영애", img: "/images/celebrity/이영애.png", desc: "청초하고 투명한 쿨톤 대표" }
+    ]
+  },
 
-    { name: "정해인", img: "/images/celebrity/정해인.png", desc: "맑고 깨끗한 여름 라이트톤" },
-    { name: "뷔", img: "/images/celebrity/뷔.png", desc: "시원하고 부드러운 여름 쿨톤" }
-  ],
-  autumn: [
-    { name: "제니", img: "/images/celebrity/제니.png", desc: "고급스럽고 딥한 가을톤" },
-    { name: "한지민", img: "/images/celebrity/한지민.png", desc: "부드럽고 따뜻한 뮤트톤" },
+  autumn: {
+    male: [
+      { name: "공유", img: "/images/celebrity/공유.png", desc: "따뜻하고 차분한 가을 소프트톤" },
+      { name: "남주혁", img: "/images/celebrity/남주혁.png", desc: "깊고 안정적인 가을 딥톤" }
+    ],
+    female: [
+      { name: "제니", img: "/images/celebrity/제니.png", desc: "고급스럽고 딥한 가을톤" },
+      { name: "한지민", img: "/images/celebrity/한지민.png", desc: "부드럽고 따뜻한 뮤트톤" }
+    ]
+  },
 
-    { name: "공유", img: "/images/celebrity/공유.png", desc: "따뜻하고 차분한 가을 소프트톤" },
-    { name: "남주혁", img: "/images/celebrity/남주혁.png", desc: "깊고 안정적인 가을 딥톤" }
-  ],
-  winter: [
-    { name: "송혜교", img: "/images/celebrity/송혜교.png", desc: "선명하고 대비 강한 겨울 딥톤" },
-    { name: "윤아", img: "/images/celebrity/윤아.png", desc: "깨끗하고 투명한 아이시 쿨톤" },
-
-    { name: "현빈", img: "/images/celebrity/현빈.png", desc: "차갑고 강렬한 겨울 딥톤" },
-    { name: "정우성", img: "/images/celebrity/정우성.png", desc: "선명한 대비의 겨울 브라이트톤" }
-  ]
+  winter: {
+    male: [
+      { name: "현빈", img: "/images/celebrity/현빈.png", desc: "차갑고 강렬한 겨울 딥톤" },
+      { name: "정우성", img: "/images/celebrity/정우성.png", desc: "선명한 대비의 겨울 브라이트톤" }
+    ],
+    female: [
+      { name: "송혜교", img: "/images/celebrity/송혜교.png", desc: "선명하고 대비 강한 겨울 딥톤" },
+      { name: "윤아", img: "/images/celebrity/윤아.png", desc: "깨끗하고 투명한 아이시 쿨톤" }
+    ]
+  }
 };
 
 
@@ -188,6 +203,21 @@ const toneDescriptions = {
   }
 };
 
+
+function rgbToHex(rgbString) {
+  const rgb = rgbString.match(/\d+/g);
+  if (!rgb) return null;
+
+  const hex = rgb
+    .map((v) => {
+      const h = parseInt(v).toString(16);
+      return h.length === 1 ? "0" + h : h;
+    })
+    .join("");
+
+  return "#" + hex.toUpperCase();
+}
+
 // =================== 연예인 카드 UI ===================
 function CelebrityCard({ celeb }) {
   return (
@@ -224,27 +254,44 @@ function CelebritySection({ season }) {
 
   const isMobile = window.innerWidth < 768;
 
-  return (
-    <div style={{ marginTop: 25, width: "100%" }}>
-      <h3 style={{ marginBottom: 12, textAlign: isMobile ? "center" : "left" }}>
-        당신과 비슷한 톤의 연예인
-      </h3>
-
-      <div
-        style={{
-          display: "flex",
-          gap: 20,
-          flexWrap: isMobile ? "wrap" : "nowrap",
-          justifyContent: isMobile ? "center" : "flex-start",
-        }}
-      >
-        {list.map((celeb, i) => (
-          <CelebrityCard key={i} celeb={celeb} />
-        ))}
-      </div>
+ return (
+  <div style={{ marginTop: 25, width: "100%" }}>
+    {/* 여자 연예인 */}
+    <h3 style={{ marginBottom: 12, textAlign: isMobile ? "center" : "left" }}>
+      비슷한 톤의 여자 연예인
+    </h3>
+    <div
+      style={{
+        display: "flex",
+        gap: 20,
+        flexWrap: isMobile ? "wrap" : "nowrap",
+        justifyContent: isMobile ? "center" : "flex-start",
+      }}
+    >
+      {list.female?.map((celeb, i) => (
+        <CelebrityCard key={i} celeb={celeb} />
+      ))}
     </div>
-  );
-}
+
+    {/* 남자 연예인 */}
+    <h3 style={{ marginTop: 30, marginBottom: 12, textAlign: isMobile ? "center" : "left" }}>
+      비슷한 톤의 남자 연예인
+    </h3>
+    <div
+      style={{
+        display: "flex",
+        gap: 20,
+        flexWrap: isMobile ? "wrap" : "nowrap",
+        justifyContent: isMobile ? "center" : "flex-start",
+      }}
+    >
+      {list.male?.map((celeb, i) => (
+        <CelebrityCard key={i} celeb={celeb} />
+      ))}
+    </div>
+  </div>
+);
+  }
 
 // =================== 설명 박스 UI ===================
 function ExplanationBox({ season }) {
@@ -366,9 +413,10 @@ function FileUploadBox({ onChange }) {
     
     <div
       style={{
-        width: 350,
-        height: 350,
+        width: 400,
+        height: 400,
         border: "2px dashed #ccc",
+        flexShrink: 0,
         borderRadius: 12,
         display: "flex",
         flexDirection: "column",
@@ -393,10 +441,8 @@ function FileUploadBox({ onChange }) {
     
       <div
   style={{
-    width: 140,
-    height: 140,
-    borderRadius: "50%",
-    backgroundColor: "#eee",
+    width: 300,
+    height: 300,
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
@@ -407,22 +453,34 @@ function FileUploadBox({ onChange }) {
   }}
 >
   <img
-    src="/images/실루엣.png"   
+    src="/images/about/실루엣.png"   
     alt="profile"
     style={{
       width: "100%",
       height: "100%",
-      objectFit: "cover"
+      objectFit: "cover",
     }}
   />
+
+      <div
+        style={{
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -80%)",
+          fontSize: 60,
+          color: "black",
+          fontWeight: "bold",
+          opacity: 0.8
+        }}
+      >
+        +
+      </div>
 
         
       </div>
 
-      {/* 안내 문구 */}
-      <div style={{ fontSize: 15, color: "#666", marginTop: 6 }}>
-        얼굴이 잘 나온 사진을 업로드하세요
-      </div>
+
 
     </div>
   );
@@ -447,8 +505,6 @@ function PersonalColor() {
 
   const [showModal, setShowModal] = useState(false);
   const [selectedColor, setSelectedColor] = useState(null);
-
-
   const handleColorClick = (color) => {
   setSelectedColor(color);
   setShowModal(true);
@@ -529,6 +585,8 @@ function PersonalColor() {
   const rect = img.getBoundingClientRect();
   const boxW = rect.width;
   const boxH = rect.height;
+
+
 
   const imgRatio = naturalW / naturalH;
   const boxRatio = boxW / boxH;
@@ -621,10 +679,11 @@ function PersonalColor() {
           width: "100%",
           maxWidth: 1200,
           margin: "0 auto",
+          flexWrap: "wrap" 
         }}
       >
         {/* ========== 왼쪽: 이미지 영역 ========== */}
-        <div>
+       <div style={{ flexShrink: 0 }}>
           {!imageSrc && <FileUploadBox />}
 
           {imageSrc && (
@@ -632,8 +691,8 @@ function PersonalColor() {
           style={{
           position: "relative",
           display: "inline-block",
-          width: isMobile ? "90vw" : 350,
-          height: isMobile ? "90vw" : 350,
+          width: isMobile ? "90vw" : 400,
+          height: isMobile ? "90vw" : 400,
           overflow: "hidden",
           borderRadius: 12,
         }}
@@ -706,9 +765,22 @@ function PersonalColor() {
         {/* ========== 오른쪽: 분석 영역 ========== */}
        <div style={{ width: isMobile ? "100%" : 480 }}>
           <div style={{ display: "flex", gap: 10, marginBottom: 20 }}>
-            <button onClick={() => setMode("Skin")}>Skin</button>
-            <button onClick={() => setMode("Hair")}>Hair</button>
-            <button onClick={() => setMode("Eye")}>Eye</button>
+            <button onClick={() => setMode("Skin")} 
+            style={tabButtonStyle(mode === "Skin")}>
+            Skin
+            </button>
+
+            <button onClick={() => setMode("Hair")} 
+            style={tabButtonStyle(mode === "Hair")}>
+            Hair
+            </button>
+
+
+            <button onClick={() => setMode("Eye")} 
+            style={tabButtonStyle(mode === "Eye")}>
+            Eye
+            </button>
+            
           </div>
 
           {imageSrc && (
@@ -812,6 +884,9 @@ function PersonalColor() {
 
 // =================== UI 컴포넌트 ===================
 function ColorBox({ label, color }) {
+
+  const hex=color ? rgbToHex(color) : null;
+  
   return (
     <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
       <div
@@ -823,7 +898,16 @@ function ColorBox({ label, color }) {
           border: "1px solid #aaa"
         }}
       />
-      <span>{label}</span>
+       <div style={{ display: "flex", flexDirection: "column" }}>
+        <strong>{label}</strong>
+        
+        {color && (
+          <>
+            <span style={{ fontSize: 13, }}>{color}</span>
+            <span style={{ fontSize: 13 }}>{hex}</span>
+          </>
+        )}
+      </div>
     </div>
   );
 }
@@ -837,10 +921,12 @@ function ColorPalette({ title, colors,handleColorClick }) {
           display: "flex",
           gap: 8,
           marginTop: 8,
-          flexWrap: "wrap"
+          flexWrap: "wrap",
+          alignItems: "center"
         }}
       >
         {colors.map((c, i) => (
+          
           <div
             key={i}
             onClick={()=>handleColorClick(c)}
@@ -860,5 +946,23 @@ function ColorPalette({ title, colors,handleColorClick }) {
     
   );
 }
+
+const tabButtonStyle = (active) => ({
+  padding: "10px 18px",
+  borderRadius: "20px",
+  border: "none",
+  cursor: "pointer",
+  fontSize: "14px",
+  fontWeight: 600,
+  transition: "0.25s",
+  background: active
+    ? "linear-gradient(135deg, #ff8fa3, #ff6f91)"  // 선택됨
+    : "#f2f2f2",                                   // 기본
+  color: active ? "white" : "#555",
+  boxShadow: active
+    ? "0 4px 10px rgba(255, 111, 145, 0.4)"
+    : "0 2px 5px rgba(0,0,0,0.08)",
+});
+
 
 export default PersonalColor;

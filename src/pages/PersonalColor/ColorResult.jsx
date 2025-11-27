@@ -297,16 +297,13 @@ function ColorResult() {
   const query = new URLSearchParams(useLocation().search);
   const season = query.get("season");
 
-  //모달 상태
   const [showModal, setShowModal] = useState(false);
   const [selectedColor, setSelectedColor] = useState(null);
 
- //클릭시 모달 오픈 
   const handleColorClick = (color) => {
-      setSelectedColor(color);
-      setShowModal(true);
+    setSelectedColor(color);
+    setShowModal(true);
   };
-
 
   if (!season) return <h2>결과가 없습니다.</h2>;
 
@@ -318,39 +315,59 @@ function ColorResult() {
 
   return (
     <div
-    style={{
-    display: "flex",
-    gap: 20,
-    flexWrap: "wrap",
-    justifyContent: "center"  
-  }}>
-      <h2>당신의 퍼스널 컬러: {season}</h2>
+      style={{
+        width: "100%",
+        display: "flex",
+        justifyContent: "center",
+      }}
+    >
+      <div
+        style={{
+          width: "100%",
+          maxWidth: "1100px",     // 💥 큰 화면에서도 폭 고정!
+          padding: "20px",
+          display: "flex",
+          flexDirection: "column",
+          gap: "30px",            // 섹션 간 간격
+        }}
+      >
+       
+        <h2 style={{ fontSize: "28px" }}>
+          당신의 퍼스널 컬러: {season}
+        </h2>
 
-      <ExplanationBox season={season} />
+      
+        <ExplanationBox season={season} />
 
-      <ColorPalette
-        title="어울리는 색상 (BEST)"
-        colors={colorPalettes[baseSeason].best}
-        onColorClick={handleColorClick}
-      />
 
-      <ColorPalette
-        title="피해야 하는 색상 (WORST)"
-        colors={colorPalettes[baseSeason].worst}
-        onColorClick={handleColorClick}
-      />
+        <ColorPalette
+          title="어울리는 색상 (BEST)"
+          colors={colorPalettes[baseSeason].best}
+          onColorClick={handleColorClick}
+        />
 
-      <CelebritySection season={baseSeason} />
 
-      <div style={{ marginTop: 40 }}>
-        <a href="/color">다시 분석하기</a>
+        <ColorPalette
+          title="피해야 하는 색상 (WORST)"
+          colors={colorPalettes[baseSeason].worst}
+          onColorClick={handleColorClick}
+        />
+
+       
+        <CelebritySection season={baseSeason} />
+
+       
+        <div style={{ marginTop: 20 }}>
+          <a href="/color" style={{ color: "#2b6ef5" }}>다시 분석하기</a>
+        </div>
+
+       
+        <ColorModal
+          show={showModal}
+          onHide={() => setShowModal(false)}
+          color={selectedColor}
+        />
       </div>
-
-       <ColorModal
-        show={showModal}
-        onHide={() => setShowModal(false)}
-        color={selectedColor}
-      />
     </div>
   );
 }

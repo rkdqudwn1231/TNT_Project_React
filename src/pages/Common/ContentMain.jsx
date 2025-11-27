@@ -50,7 +50,7 @@ const ContentMain = () => {
                         </Routes>
                     </section>
                 </main>
-            {/* <Chatbot /> */}
+            { <Chatbot /> }
         </div>
       
     );

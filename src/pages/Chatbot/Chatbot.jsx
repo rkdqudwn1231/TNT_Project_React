@@ -5,25 +5,45 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
 import { FaXmark } from "react-icons/fa6";
-import { AiFillHome } from "react-icons/ai";
-import { RiNotification2Fill } from "react-icons/ri";
-import { IoChatboxEllipsesSharp } from "react-icons/io5";
 import { GiClothes } from "react-icons/gi";
 import { MdOutlineCleaningServices } from "react-icons/md";
+import { RiSendPlaneFill } from "react-icons/ri";
+
+const MessageList = React.memo(({ messages, chatLoading }) => (
+    <>
+        {messages.map((msg, i) => (
+            <div key={i} className={msg.sender === "user" ? styles.userMessage : styles.botMessage}>
+                <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                    {msg.text}
+                </ReactMarkdown>
+            </div>
+        ))}
+        {chatLoading && (
+            <div className={`${styles.botMessage} ${styles.loadingDots}`}>
+                질문을 분석 중입니다
+            </div>
+        )}
+    </>
+));
 
 const Chatbot = () => {
-    const [activeTab, setActiveTab] = useState("home");  // ← 탭 상태
-    const [messages, setMessages] = useState([{
-        text: "당신의 퍼스널 컬러와 체형에 맞는 스타일을 추천해드립니다. 궁금한 점을 말해보세요.",
-        sender: "bot"
-    }]);
+    const [isLogin, setIsLogin] = useState(false);
+    const [messages, setMessages] = useState([]);
+
     const [inputValue, setInputValue] = useState("");
     const [isOpen, setIsOpen] = useState(false); //창 껐다 키기용
 
-    const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+    const [isMobile, setIsMobile] = useState(window.innerWidth < 768); //반응형 용도
 
     const [chatLoading, setChatLoading] = useState(false);
 
+    //제거 모달용 상태변수
+    const [delModalShow, setDelModalShow] = useState(false);
+
+    const handleClose = () => setDelModalShow(false);
+    const handleShow = () => setDelModalShow(true);
+
+    const textareaRef = useRef(null);
     const messagesEndRef = useRef(null); //메세지 최하단으로 위치하게 하기 용도.
 
     useEffect(() => {
@@ -31,52 +51,110 @@ const Chatbot = () => {
             setIsMobile(window.innerWidth < 768);
         };
         window.addEventListener("resize", handler); // 창 크기 바뀔때마다 적용
+
+        const saved = sessionStorage.getItem("chatHistory");
+
+        if (saved?.length > 1) {
+            setMessages(JSON.parse(saved));
+        }
+        else {
+            setMessages([{
+                text: "당신의 퍼스널 컬러와 체형에 맞는 스타일을 추천해드립니다. 궁금한 점을 말해보세요.",
+                sender: "bot"
+            }])
+        }
+
         return () => window.removeEventListener("resize", handler); // 이벤트 정리 ( 중복 방지 )
     }, []);
 
-    const MessageList = React.memo(({ messages, chatLoading }) => (
-        <>
-            {messages.map((msg, i) => (
-                <div key={i} className={msg.sender === "user" ? styles.userMessage : styles.botMessage}>
-                    <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                        {msg.text}
-                    </ReactMarkdown>
-                </div>
-            ))}
-            {chatLoading && (
-                <div className={`${styles.botMessage} ${styles.loadingDots}`}>
-                    스타일 추천을 분석 중입니다
-                </div>
-            )}
-        </>
-    ));
 
     const handleSendMessage = async (message) => {
         if (message == "") {
             return false;
         }
 
+        setInputValue("");
+        if (textareaRef.current) textareaRef.current.style.height = "40px"; // 초기 높이로 리셋
         setChatLoading(true);
-        setMessages((prev) => [...prev, { text: message, sender: 'user' }]);
+
+        // 1) 먼저 user 메시지를 만든다
+        const newUserMsg = { text: message, sender: 'user' };
+        const newHistory = [...messages, newUserMsg];
+
+        // 2) 대화 목록에 반영
+        setMessages((prev) => {
+            const updated = [...prev, newUserMsg];
+            sessionStorage.setItem("chatHistory", JSON.stringify(updated)); // ★ 즉시 저장
+            return updated;
+        });
+
+
         try {
-            const token = sessionStorage.getItem('token');
+            const userId = sessionStorage.getItem('userId');
+
             const res = await caxios.post("/chatbot/ask", {
-                userId: token, prompt: message
+                userId: userId,
+                prompt: message,
+                history: newHistory
             });
             // 💡 수정된 부분: res.data (객체)에서 .answer 키의 값 (문자열)을 추출
-            const botAnswer = res.data.answer;
-            setMessages((prev) => [...prev, { text: botAnswer, sender: 'bot' }]);
+            const botMsg = { text: res.data.answer, sender: 'bot' };
+            setMessages((prev) => {
+                const updated = [...prev, botMsg];
+                sessionStorage.setItem("chatHistory", JSON.stringify(updated));
+                return updated;
+            });
+
         } catch (err) {
-            console.error(err + "caxios 에러");
-            setMessages((prev) => [...prev, { text: "오류 발생", sender: 'bot' }]);
+            console.error(err, "caxios 에러");
+
+            setMessages((prev) => {
+                const updated = [...prev, { text: "오류 발생", sender: 'bot' }];
+                sessionStorage.setItem("chatHistory", JSON.stringify(updated));
+                return updated;
+            });
         }
+
         setChatLoading(false);
     };
+
 
     //메세지 스크롤 최하단으로 이동
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     }, [messages]);
+
+    const handleCleanMsg = async () => {
+        try {
+            // const token = sessionStorage.getItem('token');
+            // const res = await caxios.delete("/chatbot", {
+            //     data: { userId: token }
+            // });
+
+            setInputValue("");
+            if (textareaRef.current) textareaRef.current.style.height = "40px"; // 초기 높이로 리셋
+            setMessages(() => {
+                const updated = [{
+                    text: "당신의 퍼스널 컬러와 체형에 맞는 스타일을 추천해드립니다. 궁금한 점을 말해보세요.",
+                    sender: "bot"
+                }]
+                sessionStorage.setItem("chatHistory", JSON.stringify(updated));
+                return updated;
+            });
+        } catch (err) {
+            console.error("삭제 실패:", err);
+        }
+        textareaRef.current?.focus();
+        setDelModalShow(false);
+    };
+
+    useEffect(() => {
+        if (isOpen && textareaRef.current) {
+            textareaRef.current?.focus();
+            setInputValue("");
+            messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+        }
+    }, [isOpen]);
 
     return (
         <div className={isMobile ? styles.mobileWrapper : styles.pcWrapper}>
@@ -90,24 +168,30 @@ const Chatbot = () => {
             </button>
 
             {/* 챗봇 창 */}
-            {isOpen && (
-                <div className={styles.chatbotContainer}>
-
-                    <div className={styles.contentArea}>
-                        {activeTab === "home" && (
-                            <div className={styles.homeView}>
-                                <h3>AI 스타일 추천 홈</h3>
-                                <p>개인 설정, 스타일 키워드, 최근 질문 이런 것들 넣으면 됨</p>
+            {
+                isOpen && (
+                    <div className={`${styles.chatbotContainer} ${styles.fadeInUp}`}>
+                        {/* 기존 Modal 대신 내부 모달로 구현 */}
+                        {delModalShow && (
+                            <div className={styles.localModalOverlay}>
+                                <div className={styles.localModalContent}>
+                                    <h5>알림</h5>
+                                    <p>대화 내용을 제거하시겠습니까?</p>
+                                    <div className={styles.localModalBtns}>
+                                        <button onClick={handleCleanMsg}>예</button>
+                                        <button onClick={handleClose}>아니오</button>
+                                    </div>
+                                </div>
                             </div>
                         )}
-
-                        {activeTab === "chat" && (
+                        <div className={styles.contentArea}>
                             <div className={styles.chatContainer}>
                                 <div className={styles.contentHeader}>
                                     <div className={styles.contentTitle}>
-                                        <GiClothes /> 스타일 챗봇
+                                        <GiClothes /> TNT 챗봇
                                     </div>
-                                    <button className={styles.contentTitleBtn}>
+                                    <button className={styles.contentTitleBtn}
+                                        onClick={handleShow}>
                                         <MdOutlineCleaningServices />
                                     </button>
 
@@ -118,62 +202,42 @@ const Chatbot = () => {
                                 </div>
 
                                 <div className={styles.inputArea}>
-                                    <input
-                                        placeholder='스타일을 AI에게 질문해보세요'
+                                    <textarea
+                                        ref={textareaRef}
+                                        placeholder="스타일을 AI에게 질문해보세요"
                                         value={inputValue}
-                                        onChange={(e) => setInputValue(e.target.value)}
+                                        rows={1}
+                                        onChange={(e) => {
+                                            const ta = e.target;
+                                            ta.style.height = "auto";
+                                            ta.style.height = ta.scrollHeight + "px";
+                                            setInputValue(ta.value);
+                                        }}
                                         onKeyDown={(e) => {
-                                            if (e.key === "Enter") {
+                                            if (e.key === "Enter" && !e.shiftKey) {
+                                                e.preventDefault();
                                                 handleSendMessage(inputValue);
-                                                setInputValue("");
                                             }
                                         }}
                                         readOnly={chatLoading}
                                     />
+
+                                    <button
+                                        className={styles.enterBtn}
+                                        onClick={() => {
+                                            handleSendMessage(inputValue);
+                                        }}
+                                    >
+                                        <RiSendPlaneFill />
+                                    </button>
                                 </div>
                             </div>
-                        )}
-
-                        {activeTab === "notification" && (
-                            <div className={styles.notificationWindow}>
-                                test
-                                test
-                                test
-                            </div>
-
-                        )}
+                        </div>
                     </div>
-                    <div className={styles.tabMenu}>
-                        <button
-                            className={activeTab === "home" ? styles.activeTab : ""}
-                            onClick={() => setActiveTab("home")}
-                        >
-                            <AiFillHome style={{ fontSize: "21px" }} />
-                            <br />
-                            홈
-                        </button>
+                )
+            }
+        </div >
 
-                        <button
-                            className={activeTab === "chat" ? styles.activeTab : ""}
-                            onClick={() => setActiveTab("chat")}
-                        >
-                            <IoChatboxEllipsesSharp style={{ fontSize: "21px" }} />
-                            <br />
-                            채팅
-                        </button>
-                        <button
-                            className={activeTab === "notification" ? styles.activeTab : ""}
-                            onClick={() => setActiveTab("notification")}
-                        >
-                            <RiNotification2Fill style={{ fontSize: "21px" }} />
-                            <br />
-                            알림
-                        </button>
-                    </div>
-                </div>
-            )}
-
-        </div>
     );
 };
 

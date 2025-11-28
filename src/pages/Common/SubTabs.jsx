@@ -16,7 +16,7 @@ const SubTabs = ({ cx, onClickItem }) => {
   if (pathname.startsWith("/body")) {
     tabs = [
       { label: "Body Insight", path: "/body", end: true },
-      { label: "Shape Diagnosis", path: "/body/test"},
+      { label: "Shape Diagnosis", path: "/body/main"},
     ];
   }
 

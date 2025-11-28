@@ -1,7 +1,8 @@
 import styles from "../PersonalBody.module.css";
 
 
-const ImgTest = () => {
+// 신체 사이즈 입력을 통해 체형 진단
+const SizeTest = () => {
     return (
 
         <div className="container">
@@ -11,4 +12,4 @@ const ImgTest = () => {
     )
 }
 
-export default ImgTest;
+export default SizeTest;

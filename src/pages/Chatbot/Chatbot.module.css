@@ -40,25 +40,27 @@
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    z-index: 9999;
 }
 
 .mobileWrapper .chatbotBtn {
     position: fixed;
     bottom: 20px;
     right: 20px;
-    width: 65px;
-    height: 65px;
+    width: 35px;
+    height: 35px;
     font-size: 30px;
     border-radius: 50%;
     background: #333;
     color: white;
+    display: flex;
 }
 
 .mobileWrapper .chatbotContainer {
     position: fixed;
     width: 100%;
-    height: 60%;
-    bottom: 0;
+    height: 100%;
+    bottom: 5%;
     left: 0;
     background: white;
     border-radius: 18px 18px 0 0;
@@ -270,24 +272,27 @@
 
 /* 채팅창 내부에서만 보이도록 */
 .localModalOverlay {
-  position: absolute; /* 채팅창 내부를 기준 */
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.3); /* 반투명 배경 */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 10; /* 채팅창보다 위 */
+    position: absolute;
+    /* 채팅창 내부를 기준 */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    /* 반투명 배경 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    /* 채팅창보다 위 */
 }
 
 .localModalContent {
-  background: white;
-  padding: 16px;
-  border-radius: 8px;
-  width: 90%;
-  max-width: 300px;
+    background: white;
+    padding: 16px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 300px;
 }
 
 .localModalBtns {
@@ -296,15 +301,15 @@
     gap: 5px;
 }
 
-.localModalBtns :nth-child(1){
+.localModalBtns :nth-child(1) {
     border: 1px solid rgb(162, 162, 162);
     border-radius: 5px;
-    background:none;
+    background: none;
 }
 
 
-.localModalBtns :nth-child(2){
-   border: 1px solid rgb(162, 162, 162);
-   border-radius: 5px;
-   background:none;
+.localModalBtns :nth-child(2) {
+    border: 1px solid rgb(162, 162, 162);
+    border-radius: 5px;
+    background: none;
 }

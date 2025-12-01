@@ -10,6 +10,7 @@ import SubTabs from "./SubTabs.jsx";
 import MyPage from "../MyPage/MyPage"
 import SignUp from "../SignUp/SignUp"
 import BoardRoutes from "../Board/BoardRoutes";
+import ManageRoutes from "../Manage/ManageRoutes";
 import LoginRoutes from "../Login/LoginRoutes";
 import PersonalBodyRoute from "../PersonalBody/PersonalBodyRoute.jsx";
 import { Col } from "react-bootstrap";
@@ -45,8 +46,8 @@ const ContentMain = () => {
                             <Route path="/signup" element={<SignUp />} />
                             <Route path="/MyPage" element={<MyPage />}/>
                             <Route path="/BoardRoutes/*" element={<BoardRoutes/>}/>
+                            <Route path="/Manage/*" element={<ManageRoutes />}/>
                             <Route path="*" element={<h2>404 Not Found</h2>} />
-                            
                         </Routes>
                     </section>
                 </main>

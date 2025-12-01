@@ -70,51 +70,47 @@ function Closet() {
         // if (clothImage) formData.append("cloth_image", clothImage);
         // if (lowerClothImage) formData.append("lower_cloth_image", lowerClothImage);
 
-        const colorThief = new ColorThief();
+
+        // 배경 제거 후 색상 추출 함수
+        const extractColor = async (file) => {
+            try {
+                const resultBlob = await removeBackground(file);
+                const resultURL = URL.createObjectURL(resultBlob);
+
+                return await new Promise((resolve) => {
+                    const img = new Image();
+                    img.src = resultURL;
+                    img.onload = () => {
+                        try {
+                            const colorThief = new ColorThief();
+                            resolve(colorThief.getColor(img)); // [R, G, B]
+                        } catch (err) {
+                            console.error(err);
+                            resolve(null);
+                        }
+                    };
+                });
+            } catch (err) {
+                console.error(err);
+                return null;
+            }
+        };
 
         // 상의 색상 추출
         if (clothImage) {
-            const img = new Image();
-            img.crossOrigin = "Anonymous";
-            img.src = URL.createObjectURL(clothImage);
-
-            await new Promise((resolve) => {
-                img.onload = () => {
-                    try {
-                        const [r, g, b] = colorThief.getColor(img);
-                        formData.append("upperClothColorR", r);
-                        formData.append("upperClothColorG", g);
-                        formData.append("upperClothColorB", b);
-                    } catch (err) {
-                        console.error("색상 추출 실패", err);
-                    }
-                    resolve(true);
-                };
-            });
-
+            const [r, g, b] = await extractColor(clothImage);
+            formData.append("upperClothColorR", r);
+            formData.append("upperClothColorG", g);
+            formData.append("upperClothColorB", b);
             formData.append("cloth_image", clothImage);
         }
 
         // 하의 색상 추출
         if (lowerClothImage) {
-            const img = new Image();
-            img.crossOrigin = "Anonymous";
-            img.src = URL.createObjectURL(lowerClothImage);
-
-            await new Promise((resolve) => {
-                img.onload = () => {
-                    try {
-                        const [r, g, b] = colorThief.getColor(img);
-                        formData.append("lowerClothColorR", r);
-                        formData.append("lowerClothColorG", g);
-                        formData.append("lowerClothColorB", b);
-                    } catch (err) {
-                        console.error("색상 추출 실패", err);
-                    }
-                    resolve(true);
-                };
-            });
-
+            const [r, g, b] = await extractColor(lowerClothImage);
+            formData.append("lowerClothColorR", r);
+            formData.append("lowerClothColorG", g);
+            formData.append("lowerClothColorB", b);
             formData.append("lower_cloth_image", lowerClothImage);
         }
 
@@ -242,14 +238,32 @@ function Closet() {
         const s = max === 0 ? 0 : delta / max;
 
         // 채도가 낮으면 회색/검정/흰색 처리
+        // 카키
+        if (
+            s < 0.25 &&
+            v > 0.35 && v < 0.75 &&
+            (r - b) > 0.03 &&
+            (g - b) > 0.03 &&
+            Math.abs(r - g) < 0.07
+        ) {
+            return "khaki";
+        }
+
+        // 아이보리
+        if (
+            s < 0.2 &&
+            v > 0.85 &&
+            (r - b) > 0.03 &&
+            (g - b) > 0.03
+        ) {
+            return "ivory";
+        }
+
+        // 화이트
+        if (s < 0.2 && v > 0.9) return "white";
+
+        // 블랙/그레이
         if (s < 0.2) {
-            // 거의 회색
-            if (v > 0.9) return "white";
-            if (v > 0.8) {
-                // R,G,B 차이로 아이보리 구분
-                if (r > b && g > b) return "ivory";
-                return "gray";
-            }
             if (v < 0.25) return "black";
             return "gray";
         }
@@ -278,7 +292,13 @@ function Closet() {
         if (h >= 200 && h < 260) return "blue";
         if (h >= 260 && h < 290) return "purple";
         if (h >= 290 && h < 330) return "pink";
-        if (h >= 330 && h <= 360) return "red"; // Hue가 330~360도도 빨강
+        if (h >= 330 && h <= 360) return "red";
+
+
+        // 추가: 브라운/베이지 구분 (주황/노랑 계열 + 낮은 채도)
+        if (h >= 20 && h < 50 && s < 0.5 && v < 0.6) return "brown";
+        if (h >= 20 && h < 50 && s < 0.4 && v > 0.6) return "beige";
+
         return "etc";
     }
 
@@ -339,11 +359,6 @@ function Closet() {
     });
 
 
-
-
-
-
-
     return (
         <div style={{ fontSize: "20px" }}>
             {/* 헤더 */}
@@ -378,31 +393,63 @@ function Closet() {
                     <option value="etc">기타</option>
                 </select>
 
-                <label style={{ marginLeft: "20px" }}>색상:</label>
+                <label style={{ marginLeft: "5px" }}>
+                    <span
+                        style={{
+                            display: "inline-block",
+                            width: "15px",
+                            height: "15px",
+                            borderRadius: "50%",
+                            backgroundColor:
+                                colorFilter === "white" ? "#ffffff" :
+                                    colorFilter === "black" ? "#000000" :
+                                        colorFilter === "gray" ? "#808080" :
+                                            colorFilter === "ivory" ? "#FFFFF0" :
+                                                colorFilter === "red" ? "#FF0000" :
+                                                    colorFilter === "pink" ? "#FFC0CB" :
+                                                        colorFilter === "orange" ? "#FFA500" :
+                                                            colorFilter === "yellow" ? "#FFFF00" :
+                                                                colorFilter === "green" ? "#20cd20ff" :
+                                                                    colorFilter === "teal" ? "#008080" :
+                                                                        colorFilter === "brown" ? "#A52A2A" :
+                                                                            colorFilter === "burgundy" ? "#800020" :
+                                                                                colorFilter === "maroon" ? "#800000" :
+                                                                                    colorFilter === "blue" ? "#0000FF" :
+                                                                                        colorFilter === "navy" ? "#000080" :
+                                                                                            colorFilter === "purple" ? "#800080" :
+                                                                                                colorFilter === "violet" ? "#EE82EE" :
+                                                                                                    colorFilter === "cyan" ? "#00FFFF" :
+                                                                                                        colorFilter === "khaki" ? "#7A796F" :
+                                                                                                            "#CCCCCC", // 기타
+                            marginLeft: "5px",
+                            border: "1px solid #000"
+                        }}
+                    ></span> 색상:
+                </label>
+
                 <select value={colorFilter} onChange={(e) => setColorFilter(e.target.value)}>
                     <option value="all">전체</option>
-                    <option value="white">하양</option>
-                    <option value="ivory">아이보리</option>
+                    <option value="white">흰색</option>
+                    <option value="ivory">아이보리색</option>
                     <option value="gray">회색</option>
-                    <option value="black">검정</option>
-                    <option value="beige">베이지</option>
-                    <option value="yellow">노랑</option>
+                    <option value="black">검정색</option>
+                    <option value="red">빨강색</option>
                     <option value="orange">오렌지</option>
-                    <option value="red">빨강</option>
-                    <option value="pink">핑크</option>
-                    <option value="fuchsia">푸시아</option>
-                    <option value="green">초록</option>
-                    <option value="teal">틸/청록</option>
-                    <option value="brown">갈색</option>
-                    <option value="maroon">마룬</option>
-                    <option value="burgundy">버건디</option>
-                    <option value="cyan">시안</option>
-                    <option value="blue">파랑</option>
+                    <option value="yellow">노랑색</option>
+                    <option value="green">초록색</option>
+                    <option value="teal">청록색</option>
+                    <option value="blue">파랑색</option>
                     <option value="navy">네이비</option>
-                    <option value="purple">보라</option>
-                    <option value="violet">바이올렛</option>
+                    <option value="purple">보라색</option>
+                    <option value="pink">핑크색</option>
+                    <option value="beige">베이지색</option>
+                    <option value="brown">갈색</option>
+                    <option value="maroon">밤색</option>
+                    <option value="burgundy">자주색</option>
+                    <option value="khaki">카키색</option>
                     <option value="etc">기타</option>
                 </select>
+
 
 
                 <button onClick={handleAddClothModal} style={{ float: "right" }}>옷 추가</button>
@@ -423,10 +470,6 @@ function Closet() {
 
                                 </div>
                                 <div>
-                                    <span style={{ fontSize: "0.9em", color: "black" }}>{item.name}</span>{" "}{" "}
-                                    <span style={{ fontSize: "0.8em", color: "gray" }}>
-                                        {item.type === "upper" ? "상의" : item.type === "lower" ? "하의" : null}
-                                    </span>
                                     <span
                                         style={{
                                             display: "inline-block",
@@ -438,10 +481,10 @@ function Closet() {
                                                     item.color === "gray" ? "#808080" :
                                                         item.color === "ivory" ? "#FFFFF0" :
                                                             item.color === "red" ? "#FF0000" :
-                                                                item.color === "pink" ? "#FFC0CB" :
+                                                                item.color === "pink" ? "#EE82EE" :
                                                                     item.color === "orange" ? "#FFA500" :
                                                                         item.color === "yellow" ? "#FFFF00" :
-                                                                            item.color === "green" ? "#00FF00" :
+                                                                            item.color === "green" ? "#20cd20ff" :
                                                                                 item.color === "teal" ? "#008080" :
                                                                                     item.color === "brown" ? "#A52A2A" :
                                                                                         item.color === "burgundy" ? "#800020" :
@@ -449,13 +492,20 @@ function Closet() {
                                                                                                 item.color === "blue" ? "#0000FF" :
                                                                                                     item.color === "navy" ? "#000080" :
                                                                                                         item.color === "purple" ? "#800080" :
-                                                                                                            item.color === "violet" ? "#EE82EE" :
-                                                                                                                item.color === "cyan" ? "#00FFFF" :
+
+                                                                                                            item.color === "cyan" ? "#00FFFF" :
+                                                                                                                item.color === "khaki" ? "#7A796F" :
                                                                                                                     "#CCCCCC", // 기타
                                             marginLeft: "5px",
                                             border: "1px solid #000"
                                         }}
                                     ></span>
+
+                                    <span style={{ marginLeft: "5px", fontSize: "0.9em", color: "black" }}>{item.name}</span>{" "}{" "}
+                                    <span style={{ fontSize: "0.8em", color: "gray" }}>
+                                        {item.type === "upper" ? "상의" : item.type === "lower" ? "하의" : null}
+                                    </span>
+
                                 </div>
                             </div>
 

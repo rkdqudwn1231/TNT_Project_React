@@ -188,7 +188,7 @@ function Model() {
 
 
     return (
-        <div style={{fontSize:"20px"}}>
+        <div style={{ fontSize: "20px" }}>
             {/* 헤더 */}
             <h1 style={{ textAlign: "center" }}>Model</h1>
 

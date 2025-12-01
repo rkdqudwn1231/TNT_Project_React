@@ -3,6 +3,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { caxios } from "../../../config/config";
 import styles from "./Closet.module.css"; // 현재 폴더 기준
 import Modal from 'react-bootstrap/Modal';
+
 import ColorThief from "colorthief";
 import { removeBackground } from "@imgly/background-removal";
 
@@ -32,8 +33,9 @@ function Closet() {
 
     const [colorFilter, setColorFilter] = useState("");
     const [modalCategory, setModalCategory] = useState("etc"); // 초기값 적절히
-    const [modalLowerCategory , setModalLowerCategory] = useState("etc");
+    const [modalLowerCategory, setModalLowerCategory] = useState("etc");
 
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         const Closetlist = async () => {
@@ -51,6 +53,8 @@ function Closet() {
 
     //옷 추가
     const handleAddCloth = async () => {
+
+        setLoading(true);
 
         if ((ModalclothType === "upper" || ModalclothType === "full") && !clothImage) {
             alert("상의 이미지를 선택하세요.");
@@ -73,7 +77,7 @@ function Closet() {
         // if (lowerClothImage) formData.append("lower_cloth_image", lowerClothImage);
 
         // 이미지 리사이즈 (removeBackground 속도 올리는 핵심)
-        const resizeImage = (file, maxSize = 600) => {
+        const resizeImage = (file, maxSize = 250) => {
             return new Promise((resolve) => {
                 const img = new Image();
                 img.src = URL.createObjectURL(file);
@@ -196,7 +200,7 @@ function Closet() {
             setShowAddModal(false); // 모달 닫기
             setClothImage(null);    // 이미지 초기화
             setLowerClothImage(null);
-
+            setLoading(false);
             // 서버에서 전체 리스트 다시 가져오기
             try {
                 const listRes = await caxios.get("/closet/list");
@@ -527,7 +531,7 @@ function Closet() {
                                         colorFilter === "gray" ? "#808080" :
                                             colorFilter === "ivory" ? "#fbfbecff" :
                                                 colorFilter === "red" ? "#FF0000" :
-                                                    colorFilter === "pink" ? "#FFC0CB" :
+                                                    colorFilter === "pink" ? "#EE82EE" :
                                                         colorFilter === "orange" ? "#FFA500" :
                                                             colorFilter === "yellow" ? "#FFFF00" :
                                                                 colorFilter === "green" ? "#20cd20ff" :
@@ -789,6 +793,8 @@ function Closet() {
                     </Modal.Body>
 
                     <Modal.Footer>
+                        <div disabled={loading}>{loading ? "옷장에 추가 중입니다..." : "진행 상태 "}</div>
+
                         <button onClick={handleAddCloth}> 추가 </button>
                         <button onClick={handleCloseAddClothModal}>취소</button>
                     </Modal.Footer>

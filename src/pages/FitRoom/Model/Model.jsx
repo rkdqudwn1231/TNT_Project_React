@@ -300,16 +300,18 @@ function Model() {
 
                     <Modal.Body key={showAddModelModal ? "open" : "closed"}>
 
+                        <select value={modelsexModal} onChange={(e) => setmodelsexModal(e.target.value)}>
+                            <option value="male">남성</option>
+                            <option value="female">여성</option>
+                        </select>
+
                         <div>
                             <label>모델 이미지:</label>
                             <input type="file" accept="image/*" onChange={(e) => setModelImage(e.target.files[0])} />
                             {modeImage && <img src={URL.createObjectURL(modeImage)} alt="상의 미리보기" style={{ width: 200 }} />}
                         </div>
 
-                        <select value={modelsexModal} onChange={(e) => setmodelsexModal(e.target.value)}>
-                            <option value="male">남성</option>
-                            <option value="female">여성</option>
-                        </select>
+
                     </Modal.Body>
 
                     <Modal.Footer>

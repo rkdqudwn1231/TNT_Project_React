@@ -14,6 +14,7 @@ function FitRoomMain() {
   const [sex, setSex] = useState("male");
   const [clothType, setClothType] = useState("upper");
   const [closetCategory, setClosetCategory] = useState("etc");
+  const [lowerCategory, setLowerCategory] = useState("etc");
   const [resultImage, setResultImage] = useState(null); // 완성 이미지 URL
   const [loading, setLoading] = useState(false);
 
@@ -142,6 +143,7 @@ function FitRoomMain() {
       if (lowerClothImage) saveData.append("lower_cloth_image", lowerClothImage);
       saveData.append("memberId", "맴버임시");
       saveData.append("ClosetCategory", closetCategory);
+      if (lowerCategory) saveData.append("lowerCategory", lowerCategory);
       saveData.append("sex", sex);
 
       //색상
@@ -244,15 +246,24 @@ function FitRoomMain() {
                 <option value="sweater">스웨터</option>
                 <option value="cardigan">가디건</option>
                 <option value="coat">코트</option>
-                <option value="jeans">청바지</option>
-                <option value="slacks">슬랙스</option>
-                <option value="longpants">긴바지</option>
-                <option value="shorts">반바지</option>
-                <option value="skirt">스커트</option>
                 <option value="dress">드레스</option>
                 <option value="etc">기타</option>
               </select>
             </div>
+
+            {clothType === "combo" && (
+              <div style={{ marginLeft: "10px" }}>
+                <label>하의 카테고리:</label>
+                <select value={lowerCategory} onChange={(e) => setLowerCategory(e.target.value)}>
+                  <option value="longpants">긴바지</option>
+                  <option value="shorts">반바지</option>
+                  <option value="jeans">청바지</option>
+                  <option value="slacks">슬랙스</option>
+                  <option value="skirt">스커트</option>
+                  <option value="etc">기타</option>
+                </select>
+              </div>
+            )}
           </div>
 
           {/*type이 upper이거나 full 일 때 상의 업로드 */}
@@ -331,6 +342,8 @@ function FitRoomMain() {
                     onChange={(e) => setLowerClothImage(e.target.files[0])}
                   />
                 </div>
+
+
               </div>
             )}
           </div>

@@ -25,12 +25,16 @@ function Model() {
     const [modelsexModal, setmodelsexModal] = useState("male");
     const [modeImage, setModelImage] = useState(null);
 
+    const memberId = sessionStorage.getItem("id");
 
+ 
 
     useEffect(() => {
         const Modellist = async () => {
             try {
-                const res = await caxios.get("/model/list");
+                const res = await caxios.get("/model/list",{
+                     params: { memberId }
+                });
                 setModelData(res.data);
             } catch (err) {
                 console.error(err);
@@ -45,13 +49,14 @@ function Model() {
 
     const handleaddModel = async () => {
 
+
         if (!modeImage) {
             alert("모델을 추가해주세요")
             return;
         }
 
         const formData = new FormData();
-        formData.append("memberId", "맴버임시");
+        formData.append("memberId", memberId);
         formData.append("sex", modelsexModal);
         formData.append("modelUrl", modeImage);
 

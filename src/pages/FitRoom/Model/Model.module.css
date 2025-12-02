@@ -4,6 +4,7 @@
     position: relative;
     width: 100%;
     max-width: 300px;
+    min-width: 150px;
     height: 100%;
     /* 고정 높이 */
     max-height: 300px;

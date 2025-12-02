@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import styles from "./FitRoomMain.module.css"
 import { caxios } from "../../config/config";
 import ColorThief from "colorthief";
@@ -19,9 +19,25 @@ function FitRoomMain() {
   const [loading, setLoading] = useState(false);
 
 
+
   const isSubmitting = useRef(false); // 중복 요청 방지
 
   const navigate = useNavigate();
+
+  const memberId = sessionStorage.getItem("id");
+
+  const [checkedLogin, setCheckedLogin] = useState(false);
+
+  useEffect(() => {
+    if (!checkedLogin) {
+      if (!memberId) {
+
+        navigate("/login");
+      }
+      setCheckedLogin(true); // 다시 실행 방지
+    }
+  }, [memberId, navigate, checkedLogin]);
+
 
 
   const handleSubmit = async (e) => {
@@ -141,7 +157,7 @@ function FitRoomMain() {
       saveData.append("model_image", modelImage);    // 실제 파일 그대로
       if (clothImage) saveData.append("cloth_image", clothImage);
       if (lowerClothImage) saveData.append("lower_cloth_image", lowerClothImage);
-      saveData.append("memberId", "맴버임시");
+      saveData.append("memberId", memberId);
       saveData.append("ClosetCategory", closetCategory);
       if (lowerCategory) saveData.append("lowerCategory", lowerCategory);
       saveData.append("sex", sex);
@@ -236,22 +252,37 @@ function FitRoomMain() {
               </select>
             </div>
 
-            <div style={{ marginLeft: "10px" }}>
-              <label>카테고리:</label>
-              <select value={closetCategory} onChange={(e) => setClosetCategory(e.target.value)}>
-                <option value="tshirt">티셔츠</option>
-                <option value="shirt">셔츠</option>
-                <option value="hoodie">후드티</option>
-                <option value="jacket">자켓</option>
-                <option value="sweater">스웨터</option>
-                <option value="cardigan">가디건</option>
-                <option value="coat">코트</option>
-                <option value="dress">드레스</option>
-                <option value="etc">기타</option>
-              </select>
-            </div>
+            {(clothType === "full") && (
+              <div style={{ marginLeft: "10px" }}>
+                <label>카테고리:</label>
+                <select value={closetCategory} onChange={(e) => setClosetCategory(e.target.value)}>
+                  <option value="coat">코트</option>
+                  <option value="dress">드레스</option>
+                  <option value="etc">기타</option>
+                </select>
+              </div>
+            )}
 
-            {clothType === "combo" && (
+
+
+            {(clothType === "upper" || clothType === "combo") && (
+              <div style={{ marginLeft: "10px" }}>
+                <label>카테고리:</label>
+                <select value={closetCategory} onChange={(e) => setClosetCategory(e.target.value)}>
+                  <option value="tshirt">티셔츠</option>
+                  <option value="shirt">셔츠</option>
+                  <option value="hoodie">후드티</option>
+                  <option value="jacket">자켓</option>
+                  <option value="sweater">스웨터</option>
+                  <option value="cardigan">가디건</option>
+                  <option value="etc">기타</option>
+                </select>
+              </div>
+            )}
+
+
+
+            {(clothType === "combo") && (
               <div style={{ marginLeft: "10px" }}>
                 <label>하의 카테고리:</label>
                 <select value={lowerCategory} onChange={(e) => setLowerCategory(e.target.value)}>
@@ -295,7 +326,7 @@ function FitRoomMain() {
           </div>
 
           <div>
-            {clothType === "combo" && (
+            {(clothType === "combo") && (
               <div className={styles["upper-lower-container"]}>
                 {/* 상의 */}
                 <div>
@@ -366,9 +397,9 @@ function FitRoomMain() {
 
 
         <div className={styles["resultbox"]}>
-          {resultImage && (
+          {(resultImage) && (
             <div style={{ textAlign: "center", marginTop: 20 }}>
-              <h3>완성 이미지:</h3>
+              <h3>완성 이미지</h3>
               <img
                 src={resultImage}
                 alt="완성 이미지"

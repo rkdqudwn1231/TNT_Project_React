@@ -1,8 +1,11 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom"; // navigate import
 import styles from "./BodyAnalyzerSurvery.module.css";
 import { caxios } from "../../../config/config";
 
-const BodyAnalyzerSurvery = ({ onResult }) => {
+const BodyAnalyzerSurvery = () => {
+  const navigate = useNavigate(); // 훅 초기화
+
   const [form, setForm] = useState({
     gender: "",
     answer_q1: "",
@@ -13,20 +16,27 @@ const BodyAnalyzerSurvery = ({ onResult }) => {
   });
 
   const [loading, setLoading] = useState(false);
+
   const handleChange = (name, value) => {
-    setForm(prev => ({ ...prev, [name]: value }));
+    setForm((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    // 유효성 검사
     if (!form.gender || !form.answer_q1 || !form.answer_q2 || !form.answer_q3 || !form.answer_q4 || !form.answer_q5) {
       alert("모든 문항에 응답해 주세요.");
       return;
     }
+
     try {
       setLoading(true);
       const res = await caxios.post("/api/body/survey", form);
-      if (onResult) onResult(res.data);
+      
+      // [핵심 변경] 결과 페이지로 이동하면서 데이터(res.data)를 state로 넘김
+      navigate("/body/result", { state: { result: res.data } });
+
     } catch (err) {
       console.error(err);
       alert("진단 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.");

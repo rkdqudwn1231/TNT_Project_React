@@ -12,10 +12,14 @@ function History() {
     const [modalType, setModalType] = useState(""); // "edit" 또는 "delete"
     const [selectedHistory, setSelectedHistory] = useState(null);
 
+    const memberId = sessionStorage.getItem("id");
+
     useEffect(() => {
         const Historylist = async () => {
             try {
-                const res = await caxios.get("/history/list");
+                const res = await caxios.get("/history/list", {
+                    params: { memberId }
+                });
                 setHistoryData(res.data);
             } catch (err) {
                 console.error(err);

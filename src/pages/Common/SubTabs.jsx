@@ -29,6 +29,22 @@ const SubTabs = ({ cx, onClickItem }) => {
     ];
   }
 
+  //  Community (ootd + QnA)
+  if (pathname.startsWith("/Board")) {
+    tabs = [
+      { label: "OOTD Board", path: "/Board", end: true },
+      { label: "Q&A", path: "/Board/qna", end: true }
+    ];
+  }
+
+  // 기존 board/qna 코드 유지 (호환)
+  if (pathname.startsWith("/board") || pathname.startsWith("/qna")) {
+    tabs = [
+      { label: "OOTD 게시판", path: "/board", end: true },
+      { label: "문의 게시판", path: "/qna", end: true }
+    ];
+  }
+
   return (
     <div className={styles.subTabs}>
       {tabs.map((tab) => (
@@ -46,4 +62,4 @@ const SubTabs = ({ cx, onClickItem }) => {
   );
 };
 
-export default SubTabs;        
+export default SubTabs;

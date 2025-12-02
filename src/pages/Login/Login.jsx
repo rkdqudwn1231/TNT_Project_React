@@ -29,7 +29,7 @@ const Login = () => {
       
       // 로그인 성공 시 이동
       navigate("/");
-   console.log(sessionStorage.getItem("id"));
+  
 
     } catch (err) {
       console.error(err);

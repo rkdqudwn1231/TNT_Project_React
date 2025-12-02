@@ -31,7 +31,7 @@ const SignUp = () => {
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  // 📩 이메일 인증번호 요청
+  //  이메일 인증번호 요청
   const sendAuthCode = async () => {
     if (!form.email) {
       alert("이메일을 입력하세요.");
@@ -50,7 +50,7 @@ const SignUp = () => {
     }
   };
 
-  // 🔍 인증코드 체크
+  //  인증코드 체크
   const checkAuthCode = async () => {
     try {
       const res = await caxios.post("/auth/verify-code", {
@@ -70,7 +70,7 @@ const SignUp = () => {
     }
   };
 
-  // 📝 회원가입
+  //  회원가입
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -183,7 +183,7 @@ const SignUp = () => {
             required
           />
 
-          {/* ✔ 실시간 문구 복원 */}
+          {/* 실시간 비밀번호 확인 */}
           {passwordConfirm.length > 0 && (
             <p
               className={

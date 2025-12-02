@@ -45,7 +45,7 @@ const ContentMain = () => {
                             <Route path="/Login/*" element={<LoginRoutes />} />
                             <Route path="/signup" element={<SignUp />} />
                             <Route path="/MyPage" element={<MyPage />}/>
-                            <Route path="/BoardRoutes/*" element={<BoardRoutes/>}/>
+                            <Route path="/Board/*" element={<BoardRoutes />} />
                             <Route path="/Manage/*" element={<ManageRoutes />}/>
                             <Route path="*" element={<h2>404 Not Found</h2>} />
                         </Routes>

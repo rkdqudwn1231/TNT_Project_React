@@ -1,0 +1,50 @@
+.admin_wrap {
+  
+  
+}
+
+h1 {
+  font-size: 32px;
+  font-weight: bold;
+}
+
+h1 span {
+  font-size: 18px;
+  margin-left: 10px;
+}
+
+h2 {
+  margin-top: 40px;
+  font-size: 22px;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  margin-bottom: 40px;
+}
+
+.table th,
+.table td {
+  border: 1px solid #ddd;
+  padding: 12px 10px;
+  text-align: left;
+}
+
+.table th {
+  background: #f5f5f5;
+  font-weight: bold;
+}
+
+.remove_btn {
+  background: none;
+  border: none;
+  color: #1a4cff;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.remove_btn:hover {
+  text-decoration: underline;
+}

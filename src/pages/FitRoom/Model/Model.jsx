@@ -3,6 +3,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { caxios } from "../../../config/config";
 import styles from "./Model.module.css"; // 현재 폴더 기준
 import Modal from 'react-bootstrap/Modal';
+import { useNavigate } from "react-router-dom";
 
 function Model() {
 
@@ -27,13 +28,13 @@ function Model() {
 
     const memberId = sessionStorage.getItem("id");
 
- 
+  const navigate = useNavigate();
 
     useEffect(() => {
         const Modellist = async () => {
             try {
-                const res = await caxios.get("/model/list",{
-                     params: { memberId }
+                const res = await caxios.get("/model/list", {
+                    params: { memberId }
                 });
                 setModelData(res.data);
             } catch (err) {
@@ -191,6 +192,13 @@ function Model() {
         setModelImage(null);
     };
 
+    // 모델 선택시
+    const handleModelSelect = (model) => {
+        sessionStorage.setItem("selectedModelImage", model.modelUrl);
+        alert(`${model.modelName} 선택 완료`);
+        navigate("/fitroom");
+      
+    };
 
     return (
         <div style={{ fontSize: "20px" }}>
@@ -215,7 +223,7 @@ function Model() {
 
                             <div className={styles.itemCard}>
                                 <div className={styles.imgWrapper}>
-                                    <img src={item.modelUrl} alt={item.modelName} />
+                                    <img src={item.modelUrl} alt={item.modelName} onClick={() => handleModelSelect(item)}/>
 
                                     <div className={styles.actions}>
                                         <button onClick={() => handleEditClick(item)}>✏️</button>
@@ -253,6 +261,7 @@ function Model() {
                                             src={selectedModel.modelUrl}
                                             alt={selectedModel.modelName}
                                             style={{ width: "200px" }}
+                                          
                                         />
                                     </div>
                                 </div>

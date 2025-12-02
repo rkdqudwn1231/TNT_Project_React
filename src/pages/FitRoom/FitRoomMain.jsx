@@ -18,41 +18,90 @@ function FitRoomMain() {
   const [resultImage, setResultImage] = useState(null); // 완성 이미지 URL
   const [loading, setLoading] = useState(false);
 
+  const [upperColor, setUpperColor] = useState(null); // 상의 dominant color
+  const [lowerColor, setLowerColor] = useState(null); // 하의 dominant color
 
 
   const isSubmitting = useRef(false); // 중복 요청 방지
 
   const navigate = useNavigate();
 
+  // 사용자 id
   const memberId = sessionStorage.getItem("id");
-
+  // 로그인 확인
   const [checkedLogin, setCheckedLogin] = useState(false);
 
-  useEffect(() => {
-    if (!checkedLogin) {
-      if (!memberId) {
+  // useEffect(() => {
+  //   if (!checkedLogin) {
+  //     if (!memberId) {
 
-        navigate("/login");
-      }
-      setCheckedLogin(true); // 다시 실행 방지
+  //       navigate("/login");
+  //     }
+  //     setCheckedLogin(true); // 다시 실행 방지
+  //   }
+  // }, [memberId, navigate, checkedLogin]);
+
+  useEffect(() => {
+    const selectedImage = sessionStorage.getItem("selectedModelImage");
+    if (selectedImage) {
+      setModelImage(selectedImage); // File로 변환하지 않고 URL 그대로
     }
-  }, [memberId, navigate, checkedLogin]);
+    sessionStorage.removeItem("selectedModelImage");
+  }, []);
 
 
 
   const handleSubmit = async (e) => {
+
+
     e.preventDefault();
     if (isSubmitting.current) return; // 이미 제출 중이면 무시
     isSubmitting.current = true;
     setLoading(true);
 
+    let modelFile = modelImage;
 
-    if (!modelImage) {
+    if (modelImage) {
+      if (modelImage instanceof File) {
+        // 그대로 사용
+      } else if (typeof modelImage === "string") {
+        // URL이면 File로 변환
+        try {
+          const res = await fetch(modelImage);
+          const blob = await res.blob();
+          modelFile = new File([blob], "model.jpg", { type: blob.type });
+        } catch (err) {
+          console.error(err);
+          alert("모델 이미지를 가져오는 데 실패했습니다.");
+          setLoading(false);
+          isSubmitting.current = false;
+          return;
+        }
+      } else {
+        alert("올바르지 않은 모델 이미지입니다.");
+        setLoading(false);
+        isSubmitting.current = false;
+        return;
+      }
+    } else {
       alert("모델 이미지를 추가하세요!");
       setLoading(false);
       isSubmitting.current = false;
       return;
     }
+
+
+    // if (!modelImage) {
+    //   alert("모델 이미지를 추가하세요!");
+    //   setLoading(false);
+    //   isSubmitting.current = false;
+    //   return;
+    // }
+
+
+
+
+
     if ((clothType === "upper" || clothType === "combo" || clothType === "full") && !clothImage) {
       alert("옷 이미지를 추가하세요!");
       setLoading(false);
@@ -69,7 +118,7 @@ function FitRoomMain() {
     // ---- api 스타트
 
     const formData = new FormData();
-    if (modelImage) formData.append("model_image", modelImage);
+    if (modelImage) formData.append("model_image", modelFile);
     if (clothImage) formData.append("cloth_image", clothImage);
 
     // clothType이 'combo'일 때만 하의 추가
@@ -154,7 +203,7 @@ function FitRoomMain() {
       const saveData = new FormData();
       saveData.append("taskId", taskId); //  taskId 11.20 등록
       saveData.append("cloth_type", clothType);
-      saveData.append("model_image", modelImage);    // 실제 파일 그대로
+      saveData.append("model_image", modelFile);    // 실제 파일 그대로
       if (clothImage) saveData.append("cloth_image", clothImage);
       if (lowerClothImage) saveData.append("lower_cloth_image", lowerClothImage);
       saveData.append("memberId", memberId);
@@ -194,6 +243,86 @@ function FitRoomMain() {
 
 
 
+  // 이미지 리사이즈
+  const resizeImage = (file, maxSize = 200) => {
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.src = URL.createObjectURL(file);
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        let { width, height } = img;
+        if (width > height) {
+          if (width > maxSize) {
+            height = height * (maxSize / width);
+            width = maxSize;
+          }
+        } else {
+          if (height > maxSize) {
+            width = width * (maxSize / height);
+            height = maxSize;
+          }
+        }
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0, width, height);
+        canvas.toBlob(resolve);
+      };
+    });
+  };
+
+  // 업로드용 색 추출 extractDominantColor
+  // 이미지 업로드 시 색상 추출
+  const handleUpperImageChange = async (e) => {
+    const file = e.target.files[0];
+    setClothImage(file);
+    const color = await extractDominantColor(file);
+    setUpperColor(color);
+  };
+
+  const handleLowerImageChange = async (e) => {
+    const file = e.target.files[0];
+    setLowerClothImage(file);
+    const color = await extractDominantColor(file);
+    setLowerColor(color); // [R, G, B]
+  };
+
+  // 색상 추출 함수
+  const extractDominantColor = async (file) => {
+    if (!file) return null;
+    try {
+      const smallBlob = await resizeImage(file, 200); // 리사이즈
+      const resultBlob = await removeBackground(smallBlob); // 배경 제거
+      const resultURL = URL.createObjectURL(resultBlob);
+
+      return await new Promise((resolve) => {
+        const img = new Image();
+        img.crossOrigin = "anonymous";
+        img.src = resultURL;
+
+        img.onload = () => {
+          try {
+            const colorThief = new ColorThief();
+            const dominantColor = colorThief.getColor(img);
+            console.log("Dominant Color:", dominantColor); // ✅ 추가
+            resolve(dominantColor);
+          } catch (err) {
+            console.error(err); // 여기서 에러가 찍힐 가능성 높음
+            resolve(null);
+          }
+        };
+
+        img.onerror = (e) => {
+          console.error("Image load error:", e);
+          resolve(null);
+        };
+      });
+    } catch (err) {
+      console.error(err);
+      return null;
+    }
+  };
+
 
   return (
 
@@ -222,7 +351,7 @@ function FitRoomMain() {
               <div className={styles["upload-box"]} style={{ fontSize: "30px" }}> 모델 업로드 </div>
             ) : (
               <img
-                src={URL.createObjectURL(modelImage)}
+                src={modelImage instanceof File ? URL.createObjectURL(modelImage) : modelImage}
                 className={styles["upload-preview"]}
                 alt="모델 미리보기"
               />
@@ -319,8 +448,15 @@ function FitRoomMain() {
                   type="file"
                   accept="image/*"
                   className={styles["hidden-input"]}
-                  onChange={(e) => setClothImage(e.target.files[0])}
+                  onChange={handleUpperImageChange} // <- 여기 수정
                 />
+                {/* <input
+                  id="upperInput"
+                  type="file"
+                  accept="image/*"
+                  className={styles["hidden-input"]}
+                  onChange={(e) => setClothImage(e.target.files[0])}
+                /> */}
               </div>
             )}
           </div>
@@ -347,8 +483,15 @@ function FitRoomMain() {
                     type="file"
                     accept="image/*"
                     className={styles["hidden-input"]}
-                    onChange={(e) => setClothImage(e.target.files[0])}
+                    onChange={handleUpperImageChange}
                   />
+                  {/* <input
+                    id="upperInputCombo"
+                    type="file"
+                    accept="image/*"
+                    className={styles["hidden-input"]}
+                    onChange={(e) => setClothImage(e.target.files[0])}
+                  /> */}
                 </div>
 
                 {/* 하의 */}
@@ -370,11 +513,59 @@ function FitRoomMain() {
                     type="file"
                     accept="image/*"
                     className={styles["hidden-input"]}
-                    onChange={(e) => setLowerClothImage(e.target.files[0])}
+                    onChange={handleLowerImageChange}
                   />
+                  {/* <input
+                    id="lowerInput"
+                    type="file"
+                    accept="image/*"
+                    className={styles["hidden-input"]}
+                    onChange={(e) => setLowerClothImage(e.target.files[0])}
+                  /> */}
                 </div>
 
 
+              </div>
+            )}
+            {/* upper / full 색상 표시 */}
+            {(clothType === "upper" || clothType === "full") && upperColor && (
+              <div style={{ marginTop: "10px" }}>
+                <p>상의 색상:</p>
+                <div style={{
+                  width: 50,
+                  height: 50,
+                  backgroundColor: `rgb(${upperColor[0]},${upperColor[1]},${upperColor[2]})`,
+                  border: "1px solid #000"
+                }} />
+              </div>
+            )}
+
+            {/* combo 색상 표시 */}
+            {clothType === "combo" && (
+              <div className={styles["upper-lower-container"]}>
+                {upperColor && (
+                  <div style={{ marginTop: "10px" }}>
+                    <p>상의 색상</p>
+                    <div style={{
+                      width: 50,
+                      height: 50,
+                      backgroundColor: `rgb(${upperColor[0]},${upperColor[1]},${upperColor[2]})`,
+                      border: "1px solid #000",
+                      margin:"auto"
+                    }} />
+                  </div>
+                )}
+                {lowerColor && (
+                  <div style={{ marginTop: "10px" }}>
+                    <p>하의 색상</p>
+                    <div style={{
+                      width: 50,
+                      height: 50,
+                      backgroundColor: `rgb(${lowerColor[0]},${lowerColor[1]},${lowerColor[2]})`,
+                      border: "1px solid #000"
+                    }} />
+                  </div>
+                )}
               </div>
             )}
           </div>

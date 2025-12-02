@@ -3,6 +3,7 @@ import PersonalBody from "./PersonalBody";
 import BodyAnalyzerImg from "./BodyAnalyzer/BodyAnalyzerImg";
 import BodyAnalyzerMain from "./BodyAnalyzer/BodyAnalyzerMain";
 import BodyAnalyzerSurvery from "./BodyAnalyzer/BodyAnalyzerSurvery";
+import BodyAnalyzerResult from "./BodyAnalyzer/BodyAnalyzerResult";
 
 function PersonalBodyRoute() {
 
@@ -14,7 +15,7 @@ function PersonalBodyRoute() {
       <Route path="main" element={<BodyAnalyzerMain />} />
       <Route path="img" element={<BodyAnalyzerImg />} />
       <Route path="survery" element={<BodyAnalyzerSurvery />} />
-
+      <Route path="result" element={<BodyAnalyzerResult />} />
     </Routes>
   );
 }

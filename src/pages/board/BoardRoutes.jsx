@@ -5,8 +5,11 @@ import BoardDetail from "./BoardDetail";
 function BoardRoutes() {
   return (
     <Routes>
-      <Route path= "" element={<Board />} />
-      <Route path="detail/:id" element={<BoardDetail />} />
+      {/* /Board */}
+      <Route path="" element={<Board />} />
+
+      {/* /Board/detail/:seq */}
+      <Route path="detail/:seq" element={<BoardDetail />} />
     </Routes>
   );
 }

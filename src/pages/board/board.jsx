@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
 import styles from "./Board.module.css";
 import { caxios } from "../../config/config";
+import { useNavigate } from "react-router-dom";
 
 export default function Board() {
+  const navigate = useNavigate();
+
   const [posts, setPosts] = useState([]);
   const [form, setForm] = useState({
     photo: null,
@@ -18,30 +21,27 @@ export default function Board() {
     setForm({ ...form, [name]: files ? files[0] : value });
   };
 
-  // ------------------------------
-  // ✔ DB에서 게시글 전체 가져오기
-  // ------------------------------
   const fetchPosts = async () => {
     try {
       const res = await caxios.get("/board/list");
       setPosts(res.data);
+      console.log('Fetched posts:', res.data);
     } catch (err) {
       console.error("게시글 로드 실패", err);
     }
   };
 
-  // ------------------------------
-  // ✔ 페이지 처음 로딩될 때 실행
-  // ------------------------------
   useEffect(() => {
     fetchPosts();
   }, []);
 
-  // ------------------------------
-  // ✔ 게시글 + 이미지 업로드
-  // ------------------------------
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!sessionStorage.getItem("id")) {
+      alert("로그인 해주세요.");
+      return;
+    }
 
     if (!form.photo) {
       alert("사진을 선택하세요.");
@@ -51,12 +51,10 @@ export default function Board() {
     try {
       const formData = new FormData();
 
-      // 파일 추가
       formData.append("photo", form.photo);
 
-      // JSON 데이터 추가
       const boardJson = JSON.stringify({
-        id: sessionStorage.getItem("id"), // 작성자 ID
+        id: sessionStorage.getItem("id"),
         title: form.title,
         text: form.desc,
         color: form.color,
@@ -69,17 +67,14 @@ export default function Board() {
         new Blob([boardJson], { type: "application/json" })
       );
 
-      // 서버 전송
       await caxios.post("/board/write", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
-      // DB에서 새 목록 다시 불러오기
       await fetchPosts();
 
       alert("게시글이 등록되었습니다!");
 
-      // 폼 초기화
       setForm({
         photo: null,
         title: "",
@@ -88,11 +83,21 @@ export default function Board() {
         body: "",
         desc: "",
       });
-
     } catch (err) {
       console.error("업로드 실패:", err);
       alert("게시글 등록 실패");
     }
+  };
+
+  // ✅ 카드 클릭 시 상세페이지로 이동하는 부분
+  const handleCardClick = (post) => {
+    if (!sessionStorage.getItem("id")) {
+      alert("로그인 해주세요.");
+      return;
+    }
+
+    // ✅ 이 경로가 BoardDetail 라우트랑 같아야 함 (중요)
+    navigate(`/Board/detail/${post.seq}`);
   };
 
   return (
@@ -101,7 +106,6 @@ export default function Board() {
       <section className={styles.uploadBox}>
         <form onSubmit={handleSubmit}>
           <div className={styles.uploadRow}>
-
             {/* 왼쪽 영역 */}
             <div>
               <div className={styles.formGroup}>
@@ -170,7 +174,6 @@ export default function Board() {
                 ></textarea>
               </div>
             </div>
-
           </div>
 
           <div className={styles.uploadActions}>
@@ -184,12 +187,17 @@ export default function Board() {
         </form>
       </section>
 
-      {/* 이미지 카드 영역 */}
+      {/* 카드 영역 */}
       <section className={styles.cardGrid}>
         {posts.map((post) => (
-          <article key={post.seq} className={styles.card}>
+          <article
+            key={post.seq}
+            className={styles.card}
+            onClick={() => handleCardClick(post)}  
+            style={{ cursor: "pointer" }}
+          >
             <div className={styles.cardThumb}>
-              <img src={post.image_url} alt="preview" />
+              <img src={post.image_url} alt="" />
               <div className={styles.badgeGroup}>
                 {post.color && (
                   <span className={styles.badge}>{post.color}</span>

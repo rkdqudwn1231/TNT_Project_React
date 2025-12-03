@@ -1,10 +1,33 @@
+import { useState } from "react";
 import styles from "./Colortest.module.css";
+import { tonePalettes } from "./TonePalettes";   // 추가
+import ColorModal from "./modal/ColorModal";
+
+const seasonMap = {
+  "봄": "Spring",
+  "여름": "Summer",
+  "가을": "Autumn",
+  "겨울": "Winter"
+};
 
 const Colortest = () => {
+    
+    const [selectedTone, setSelectedTone] = useState("봄"); // 기본 페일(p)
+
+    const toneButtons = [
+  { key: "봄", label: "봄🌸" },
+  { key: "여름", label: "여름🌿" },
+  { key: "가을", label: "가을🍁" },
+  { key: "겨울", label: "겨울❄" }
+];
+
+
+    const [selectedColor, setSelectedColor] = useState(null);
+    const [modalShow, setModalShow] = useState(false); 
+
+    
     return (
         <div className={styles.container}>
-
-           
 
             <h2 className={styles.title}>퍼스널 컬러란 무엇인가요?</h2>
 
@@ -27,9 +50,53 @@ const Colortest = () => {
                 자신에게 가장 잘 맞는 <strong>옷 색상, 화장품 컬러, 액세서리 톤</strong>을 선택하는 데 큰 도움을 줍니다.
             </p>
 
-             <div className={styles.brushTitle}>
+            <div className={styles.brushTitle}>
                 My Personal Color가 사계절을 어떻게 분류하는지 알아보겠습니다.
             </div>
+
+
+            <p className={styles.paragraph}>
+        사계절 퍼스널 컬러는 각 계절의 분위기와 조화를 이루는 색상 군으로 나누어집니다.
+        아래 버튼을 눌러 각 계절의 대표 컬러 팔레트를 직접 확인해보세요.
+        </p>
+
+
+            {/* 🔥 톤 선택 버튼 추가 */}
+            <div className={styles.toneButtons}>
+                {toneButtons.map((tone) => (
+                    <button
+                        key={tone.key}
+                        className={`${styles.toneBtn} ${
+                            selectedTone === tone.key ? styles.activeBtn : ""
+                        }`}
+                        onClick={() => setSelectedTone(tone.key)}
+                    >
+                        {tone.label}
+                    </button>
+                ))}
+            </div>
+
+
+            {/* 🔥 선택된 톤의 팔레트 보여주기 */}
+            <div className={styles.paletteContainer}>
+                {tonePalettes[seasonMap[selectedTone]].map((color, i) => (
+                    <div
+                        key={i}
+                        className={styles.colorCircle}
+                        style={{ backgroundColor: color }}
+                        onClick={() => {
+                            setSelectedColor(color);   // 색 저장
+                            setModalShow(true);        // 모달 열기
+                        }}
+                    ></div>
+                ))}
+            </div>
+
+            <ColorModal
+                show={modalShow}
+                onHide={() => setModalShow(false)}
+                color={selectedColor}
+            />
 
         </div>
     );

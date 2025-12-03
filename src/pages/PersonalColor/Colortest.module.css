@@ -11,11 +11,14 @@
 
 /* 제목 */
 .title {
-    font-size: 28px;
-    font-weight: 700;
+    font-family: "Inter", "Noto Sans KR", sans-serif;
+    font-weight: 800;
+    font-size: 32px;
+    letter-spacing: -0.5px;
+    line-height: 1.3;
     margin: 40px 0 20px;
-    color: #222;
 }
+
 
 /* 브러시 타이틀 (CSS-only 브러시 효과) */
 .brushTitle {
@@ -43,9 +46,48 @@
 }
 
 .paragraph {
-  font-size: 16px;
-  margin-bottom: 20px;
-  line-height: 1.9;
+  font-size: 18px;
+  line-height: 1.85;
+  letter-spacing: -0.2px;
+  color: #444;
+}
+
+.toneButtons {
+    display: flex;
+    gap: 10px;
+    margin-top: 30px;
+    justify-content: center;  
+    align-items: center;      
+}
+
+.toneBtn {
+    padding: 8px 14px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background: #fff;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.activeBtn {
+    border: 2px solid #ff69b4;
+    background: #ffeaf4;
+}
+
+.paletteContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 25px;
+    justify-content: center;  /* 중앙 정렬 */
+    align-items: center;
+}
+
+.colorCircle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid #ddd;
 }
 
 @keyframes fadeIn {

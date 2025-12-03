@@ -3,7 +3,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { caxios } from "../../../config/config";
 import styles from "./Closet.module.css"; // 현재 폴더 기준
 import Modal from 'react-bootstrap/Modal';
-
+import { useNavigate } from "react-router-dom";
 import ColorThief from "colorthief";
 import { removeBackground } from "@imgly/background-removal";
 
@@ -37,6 +37,8 @@ function Closet() {
     const [modalLowerCategory, setModalLowerCategory] = useState("etc");
 
     const [loading, setLoading] = useState(false);
+
+    const navigate = useNavigate();
 
     const memberId = sessionStorage.getItem("id");
 
@@ -209,7 +211,7 @@ function Closet() {
                 }
             });
             alert("수정 완료");
-            const list = await caxios.get("/closet/list");
+            const list = await caxios.get("/closet/list", { params: { memberId } });
             setClosetData(list.data);
             handleCloseModal();
 
@@ -227,7 +229,7 @@ function Closet() {
         try {
             await caxios.delete("/closet/delete", { params: { seq: selectedCloth.seq } });
 
-            const list = await caxios.get("/closet/list");
+            const list = await caxios.get("/closet/list", { params: { memberId } });
             setClosetData(list.data);
 
             handleCloseModal();
@@ -406,6 +408,37 @@ function Closet() {
     });
 
 
+    // 옷 선택시
+    const handleClothSelect = (item) => {
+        const confirmed = window.confirm(`"${item.name}" 해당 옷을 FitRoom에 적용하시겠습니까?`);
+        if (!confirmed) return; // 사용자가 취소하면 종료
+
+        if (item.type === "upper") {
+            // 상의만 선택
+            sessionStorage.setItem("selectedUpperImage", item.url);
+            sessionStorage.setItem("selectedUpperName", item.name);
+        } else if (item.type === "lower") {
+            // 하의만 선택
+            sessionStorage.setItem("selectedLowerImage", item.url);
+            sessionStorage.setItem("selectedLowerName", item.name);
+        } else if (item.type === "full") {
+            // full은 item에 upperImageUrl / lowerImageUrl이 있으면 분리
+            const upperUrl = item.upperImageUrl || item.url;
+            const lowerUrl = item.lowerImageUrl || item.url;
+
+            sessionStorage.setItem("selectedUpperImage", upperUrl);
+            sessionStorage.setItem("selectedLowerImage", lowerUrl);
+
+            sessionStorage.setItem("selectedUpperName", item.name);
+            sessionStorage.setItem("selectedLowerName", item.name);
+        }
+
+        alert(`${item.name} 선택 완료!`);
+        navigate("/fitroom");
+    };
+
+
+
     return (
         <div style={{ fontSize: "20px" }}>
             {/* 헤더 */}
@@ -540,7 +573,13 @@ function Closet() {
                         <div key={idx} style={{ textAlign: "center" }}>
                             <div className={styles.itemCard}>
                                 <div className={styles.imgWrapper}>
-                                    <img src={item.url} />
+                                    {/* <img src={item.url} /> */}
+                                    <img
+                                        src={item.url}
+                                        alt={item.name}
+                                        style={{ cursor: "pointer" }}
+                                        onClick={() => handleClothSelect(item)}
+                                    />
 
                                     <div className={styles.actions}>
                                         <button onClick={() => handleEditClick(item)}>✏️</button>

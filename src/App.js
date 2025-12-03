@@ -22,7 +22,6 @@ function App() {
     <BrowserRouter>
       <div className="App">
         <Routes>
-          <Route path="/login/*" element={<LoginRoutes />} />
           <Route path="/*" element={<ContentMain />} />
         </Routes>
       </div>

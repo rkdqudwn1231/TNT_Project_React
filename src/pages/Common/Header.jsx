@@ -53,15 +53,14 @@ const Header = ({ isHome }) => {
     }
   };
 
-  // 메뉴를 닫는 함수
+  // 메뉴 닫기
   const closeMenu = () => {
     setMenuOpen(false);
     setActiveMainTab(null);
-  }
+  };
 
   return (
     <>
-      {/* 반응형 오버레이 (메뉴 열릴 때만 표시) */}
       {menuOpen && <div className={styles.overlay} onClick={closeMenu} />}
 
       <header
@@ -76,8 +75,7 @@ const Header = ({ isHome }) => {
           <a href="/" className={styles.logo}>TNT</a>
 
           <button
-            className={`${styles.menuToggle} ${isHome ? styles.menuToggleHome : styles.menuToggleSub
-              }`}
+            className={`${styles.menuToggle} ${isHome ? styles.menuToggleHome : styles.menuToggleSub}`}
             onClick={() => setMenuOpen(!menuOpen)}
           >
             ☰
@@ -94,6 +92,11 @@ const Header = ({ isHome }) => {
                 <NavLink to="/color" className={styles.mainTab}>Personal Color</NavLink>
                 <NavLink to="/body" className={styles.mainTab}>Personal Body</NavLink>
                 <NavLink to="/fitroom" className={styles.mainTab}>Fitting Room</NavLink>
+
+                {/* PC Community */}
+                <NavLink to="/Board" className={styles.mainTab}>
+                  Community
+                </NavLink>
               </>
             )}
 
@@ -108,6 +111,7 @@ const Header = ({ isHome }) => {
                 >
                   Personal Color
                 </NavLink>
+
                 <NavLink
                   to="/body"
                   className={({ isActive }) =>
@@ -125,10 +129,20 @@ const Header = ({ isHome }) => {
                 >
                   Fitting Room
                 </NavLink>
+
+                {/* PC Community */}
+                <NavLink
+                  to="/Board"
+                  className={({ isActive }) =>
+                    isActive ? `${styles.mainTab} ${styles.mainTabActive}` : styles.mainTab
+                  }
+                >
+                  Community
+                </NavLink>
               </>
             )}
 
-            {/* 반응형 */}
+            {/* 모바일 */}
             {isMobile && (
               <>
                 {/* COLOR */}
@@ -169,6 +183,22 @@ const Header = ({ isHome }) => {
                     </div>
                   )}
                 </div>
+
+                {/* MOBILE Community */}
+                <div className={styles.mainTabGroup}>
+                  {/* key값을 community → Board로 통일 */}
+                  <div className={styles.mainTab} onClick={() => toggleMainTab("Board")}>
+                    Community
+                  </div>
+
+                  {activeMainTab === "Board" && (
+                    <div className={styles.subDropdown}>
+                      {/* 잘못된 /Board/Board → /Board 로 수정 */}
+                      <NavLink to="/Board" onClick={closeMenu}>Free Board</NavLink>
+                      <NavLink to="/Board" onClick={closeMenu}>Q&A</NavLink>
+                    </div>
+                  )}
+                </div>
               </>
             )}
 
@@ -181,7 +211,6 @@ const Header = ({ isHome }) => {
                 Login
               </NavLink>
             )}
-
           </nav>
 
           {/* 서브탭 */}

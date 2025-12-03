@@ -1,5 +1,6 @@
 /* 카드 전체 */
 .itemCard {
+    margin-top: 10px;
     position: relative;
     width: 100%;
     max-width: 300px;
@@ -45,7 +46,7 @@
 .actions {
     position: absolute;
     top: 5px;
-    right: 5px;
+    right: 0px;
     display: flex;
     gap: 5px;
     opacity: 0;

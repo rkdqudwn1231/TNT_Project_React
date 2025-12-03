@@ -5,7 +5,7 @@ import BoardDetail from "./BoardDetail";
 function BoardRoutes() {
   return (
     <Routes>
-      <Route path= "Board" element={<Board />} />
+      <Route path= "" element={<Board />} />
       <Route path="detail/:id" element={<BoardDetail />} />
     </Routes>
   );

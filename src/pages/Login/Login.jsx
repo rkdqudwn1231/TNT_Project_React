@@ -14,21 +14,22 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const res = await caxios.post("/auth/login", {
+      const resp = await caxios.post("/auth/login", {
         id: id,
         pw: pw
       });
 
       // 받아온 토큰 저장
-      const token = res.data.token;
+      const token = resp.data.token;
       sessionStorage.setItem("token", token);
 
       // 사용자 정보 저장할 수도 있음 (선택)
-      sessionStorage.setItem("userId", id);
-      sessionStorage.setItem("roles", res.data.roles);
-
+      sessionStorage.setItem("id", resp.data.id);
+      sessionStorage.setItem("roles", resp.data.roles);
+      
       // 로그인 성공 시 이동
       navigate("/");
+  
 
     } catch (err) {
       console.error(err);

@@ -3,6 +3,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { caxios } from "../../../config/config";
 import styles from "./Closet.module.css"; // 현재 폴더 기준
 import Modal from 'react-bootstrap/Modal';
+
 import ColorThief from "colorthief";
 import { removeBackground } from "@imgly/background-removal";
 
@@ -11,10 +12,13 @@ function Closet() {
     const [clothType, setClothType] = useState("all");
     const [closetData, setClosetData] = useState([]);
     const [closetCategory, setClosetCategory] = useState("all");
+    const [lowerCategory, setLowerCategory] = useState("all");
+    const [fullCategory, setFullCategory] = useState("all");
+
     // 모달
     const [showModal, setShowModal] = useState(false);
     const [modalType, setModalType] = useState(""); // "edit" 또는 "delete"
-    const [selectedCloth, setSelectedCloth] = useState(null);
+    const [selectedCloth, setSelectedCloth] = useState("");
     const [showAddModal, setShowAddModal] = useState(false);
 
     // Modal 수정용
@@ -24,24 +28,27 @@ function Closet() {
 
     // 옷장 추가용
     const [ModalclothType, setModalClothType] = useState("upper");
-    const [clothImage, setClothImage] = useState(null);
-    const [lowerClothImage, setLowerClothImage] = useState(null);
-
-    const [colorFilter, setColorFilter] = useState(null);
-    const [modalCategory, setModalCategory] = useState("tshirt"); // 초기값 적절히
+    const [clothImage, setClothImage] = useState("");
+    const [lowerClothImage, setLowerClothImage] = useState("");
 
 
+    const [colorFilter, setColorFilter] = useState("");
+    const [modalCategory, setModalCategory] = useState("etc"); // 초기값 적절히
+    const [modalLowerCategory, setModalLowerCategory] = useState("etc");
+
+    const [loading, setLoading] = useState(false);
+
+    const memberId = sessionStorage.getItem("id");
 
     useEffect(() => {
         const Closetlist = async () => {
             try {
-                const res = await caxios.get("/closet/list");
+                const res = await caxios.get("/closet/list", {
+                    params: { memberId }
+                });
                 setClosetData(res.data);
-                console.log("Closet list:", res.data);
-
             } catch (err) {
                 console.error(err);
-
             }
         };
 
@@ -49,8 +56,11 @@ function Closet() {
     }, []);
 
 
+
     //옷 추가
     const handleAddCloth = async () => {
+
+        setLoading(true);
 
         if ((ModalclothType === "upper" || ModalclothType === "full") && !clothImage) {
             alert("상의 이미지를 선택하세요.");
@@ -63,18 +73,58 @@ function Closet() {
         }
 
         const formData = new FormData();
-        formData.append("memberId", "맴버임시");
+        formData.append("memberId", memberId);
         formData.append("category", modalCategory);
         formData.append("clothType", ModalclothType);
+        if (lowerCategory) formData.append("lowerCategory", modalLowerCategory);
 
-        // if (clothImage) formData.append("cloth_image", clothImage);
-        // if (lowerClothImage) formData.append("lower_cloth_image", lowerClothImage);
+        // 이미지 리사이즈 (removeBackground 속도 올리는 핵심)
+        const resizeImage = (file, maxSize = 250) => {
+            return new Promise((resolve) => {
+                const img = new Image();
+                img.src = URL.createObjectURL(file);
 
+                img.onload = () => {
+                    const canvas = document.createElement("canvas");
 
-        // 배경 제거 후 색상 추출 함수
+                    let { width, height } = img;
+
+                    if (width > maxSize || height > maxSize) {
+                        if (width > height) {
+                            height = (height * maxSize) / width;
+                            width = maxSize;
+                        } else {
+                            width = (width * maxSize) / height;
+                            height = maxSize;
+                        }
+                    }
+
+                    canvas.width = width;
+                    canvas.height = height;
+
+                    const ctx = canvas.getContext("2d");
+                    ctx.drawImage(img, 0, 0, width, height);
+
+                    canvas.toBlob(
+                        (blob) => {
+                            // Blob → File 변환 (속도 최적화 핵심)
+                            const resizedFile = new File([blob], "resized.jpg", { type: "image/jpeg" });
+                            resolve(resizedFile);
+                        },
+                        "image/jpeg",
+                        0.85
+                    );
+                };
+            });
+        };
+
+        // 최종 색상 추출
         const extractColor = async (file) => {
             try {
-                const resultBlob = await removeBackground(file);
+                const resizedFile = await resizeImage(file, 350);
+
+                // removeBackground는 File로 넘겨야 가장 빠름
+                const resultBlob = await removeBackground(resizedFile);
                 const resultURL = URL.createObjectURL(resultBlob);
 
                 return await new Promise((resolve) => {
@@ -83,7 +133,7 @@ function Closet() {
                     img.onload = () => {
                         try {
                             const colorThief = new ColorThief();
-                            resolve(colorThief.getColor(img)); // [R, G, B]
+                            resolve(colorThief.getColor(img));
                         } catch (err) {
                             console.error(err);
                             resolve(null);
@@ -95,6 +145,8 @@ function Closet() {
                 return null;
             }
         };
+
+
 
         // 상의 색상 추출
         if (clothImage) {
@@ -124,7 +176,7 @@ function Closet() {
             setShowAddModal(false); // 모달 닫기
             setClothImage(null);    // 이미지 초기화
             setLowerClothImage(null);
-
+            setLoading(false);
             // 서버에서 전체 리스트 다시 가져오기
             try {
                 const listRes = await caxios.get("/closet/list");
@@ -221,135 +273,130 @@ function Closet() {
         setModalClothType("upper");
     };
 
-    // 색상 구분
     function rgbToColorName([r, g, b]) {
-        // 0~1 범위로 정규화
-        r /= 255;
-        g /= 255;
-        b /= 255;
+        r /= 255; g /= 255; b /= 255;
 
         const max = Math.max(r, g, b);
         const min = Math.min(r, g, b);
         const delta = max - min;
-
-        // 명도(Value)
         const v = max;
-        // 채도(Saturation)
         const s = max === 0 ? 0 : delta / max;
 
-        // 채도가 낮으면 회색/검정/흰색 처리
-        // 카키
-        if (
-            s < 0.25 &&
-            v > 0.35 && v < 0.75 &&
-            (r - b) > 0.03 &&
-            (g - b) > 0.03 &&
-            Math.abs(r - g) < 0.07
-        ) {
-            return "khaki";
-        }
-
-        // 아이보리
-        if (
-            s < 0.2 &&
-            v > 0.85 &&
-            (r - b) > 0.03 &&
-            (g - b) > 0.03
-        ) {
-            return "ivory";
-        }
-
-        // 화이트
-        if (s < 0.2 && v > 0.9) return "white";
-
-        // 블랙/그레이
-        if (s < 0.2) {
-            if (v < 0.25) return "black";
+        // 회색/검정/화이트
+        if (s < 0.15) {  // 채도가 너무 낮으면
+            if (v < 0.2) return "black";
+            if (v > 0.85) return "white";
             return "gray";
         }
 
-
         // Hue 계산
         let h;
-        if (delta === 0) {
-            h = 0;
-        } else if (max === r) {
-            h = ((g - b) / delta) % 6;
-        } else if (max === g) {
-            h = (b - r) / delta + 2;
-        } else {
-            h = (r - g) / delta + 4;
-        }
-        h = Math.round(h * 60);
+        if (delta === 0) h = 0;
+        else if (max === r) h = ((g - b) / delta);
+        else if (max === g) h = ((b - r) / delta + 2);
+        else h = ((r - g) / delta + 4);
+        h *= 60;
         if (h < 0) h += 360;
+        h = Math.round(h);
 
-        // Hue 기준 색상 매핑(divmagic 참고)
+        // 낮은 밝기 & 낮은 채도 → 카키/올리브
+        if (v < 0.5 && s < 0.25 && h >= 40 && h <= 75) return "khaki";
+
+        // 기존 보정
+        if (h >= 320 && h < 350 && v > 0.5) return "pink";
+        if (h >= 20 && h <= 60 && s < 0.8 && v < 0.55) return "brown";
+        if (v > 0.85 && s < 0.35) return "ivory";
+        if (v > 0.7 && s < 0.6) {
+            if (r > g && g > b) return "beige";
+            if (g > r && g > b) return "light green";
+        }
+
+        // Hue 기반 색상
         if (h >= 0 && h < 15) return "red";
-        if (h >= 15 && h < 45) return "orange";
-        if (h >= 45 && h < 70) return "yellow";
-        if (h >= 70 && h < 170) return "green";
+        if (h >= 15 && h < 40) return "orange";
+        if (h >= 40 && h < 75) return "yellow";
+        if (h >= 75 && h < 170) return "green";
         if (h >= 170 && h < 200) return "teal";
         if (h >= 200 && h < 260) return "blue";
-        if (h >= 260 && h < 290) return "purple";
-        if (h >= 290 && h < 330) return "pink";
-        if (h >= 330 && h <= 360) return "red";
-
-
-        // 추가: 브라운/베이지 구분 (주황/노랑 계열 + 낮은 채도)
-        if (h >= 20 && h < 50 && s < 0.5 && v < 0.6) return "brown";
-        if (h >= 20 && h < 50 && s < 0.4 && v > 0.6) return "beige";
+        if (h >= 260 && h < 320) return "purple";
+        if (h >= 350 && h <= 360) return "red";
 
         return "etc";
     }
 
-
-
-
-
-
-    // 상의 하의 구분 + combo 지원
+    // 상의 하의 구분 + combo 지원 (12.01 개선)
     const filteredData = closetData.flatMap(item => {
         const arr = [];
 
+        if ((clothType === "all" || clothType === "full") && item.clothType === "full") {
+
+            // full 카테고리 확인
+            if (fullCategory === "all" || item.category === fullCategory) {
+
+                const fullColorName =
+                    (item.upperColorR != null && item.upperColorG != null && item.upperColorB != null)
+                        ? rgbToColorName([item.upperColorR, item.upperColorG, item.upperColorB])
+                        : (item.lowerColorR != null && item.lowerColorG != null && item.lowerColorB != null)
+                            ? rgbToColorName([item.lowerColorR, item.lowerColorG, item.lowerColorB])
+                            : "기타";
+
+                if (!colorFilter || colorFilter === "all" || fullColorName === colorFilter) {
+                    arr.push({
+                        seq: item.seq,
+                        type: "full",
+                        name: item.upperName || item.lowerName || "full",
+                        url: item.fullImageUrl || item.upperImageUrl || item.lowerImageUrl, // full 이미지 URL 우선
+                        category: item.category, // 실제 DB category
+                        color: fullColorName
+                    });
+                }
+            }
+        }
+
         // 상의
-        if ((clothType === "all" || clothType === "upper") && item.upperName &&
+        if ((clothType === "all" || clothType === "upper") && (item.upperName || item.lowerName) &&
             (closetCategory === "all" || item.category === closetCategory) &&
-            (item.clothType === "upper" || item.clothType === "combo" || item.clothType === "full")) {
+            (item.clothType === "upper" || item.clothType === "combo")) {
 
             const upperColorName =
                 (item.upperColorR != null && item.upperColorG != null && item.upperColorB != null)
                     ? rgbToColorName([item.upperColorR, item.upperColorG, item.upperColorB])
-                    : "기타";
+                    : (item.lowerColorR != null && item.lowerColorG != null && item.lowerColorB != null)
+                        ? rgbToColorName([item.lowerColorR, item.lowerColorG, item.lowerColorB])
+                        : "기타";
 
             if (!colorFilter || colorFilter === "all" || upperColorName === colorFilter) {
                 arr.push({
                     seq: item.seq,
                     type: "upper",
-                    name: item.upperName,
-                    url: item.upperImageUrl,
+                    name: item.upperName || item.lowerName,
+                    url: item.upperImageUrl || item.lowerImageUrl,
                     category: item.category,
                     color: upperColorName
                 });
             }
+
         }
 
         // 하의
-        if ((clothType === "all" || clothType === "lower") && item.lowerName &&
-            (closetCategory === "all" || item.category === closetCategory) &&
-            (item.clothType === "lower" || item.clothType === "combo" || item.clothType === "full")) {
+        if ((clothType === "all" || clothType === "lower") && (item.lowerName || item.upperName) &&
+            (lowerCategory === "all" || item.lowerCategory === lowerCategory) &&
+            (item.clothType === "lower" || item.clothType === "combo")) {
 
             const lowerColorName =
                 (item.lowerColorR != null && item.lowerColorG != null && item.lowerColorB != null)
                     ? rgbToColorName([item.lowerColorR, item.lowerColorG, item.lowerColorB])
-                    : "기타";
+                    : (item.upperColorR != null && item.upperColorG != null && item.upperColorB != null)
+                        ? rgbToColorName([item.upperColorR, item.upperColorG, item.upperColorB])
+                        : "기타";
 
             if (!colorFilter || colorFilter === "all" || lowerColorName === colorFilter) {
                 arr.push({
                     seq: item.seq,
                     type: "lower",
-                    name: item.lowerName,
-                    url: item.lowerImageUrl,
-                    category: item.category,
+                    name: item.lowerName || item.upperName,
+                    url: item.lowerImageUrl || item.upperImageUrl,
+                    category: item.lowerCategory,
                     color: lowerColorName
                 });
             }
@@ -371,27 +418,59 @@ function Closet() {
                     <option value="all">전체</option>
                     <option value="upper">상의</option>
                     <option value="lower">하의</option>
+                    <option value="full">한벌</option>
                 </select>
 
                 {/* 카테고리 선택 */}
-                <label style={{ marginLeft: "20px" }}>카테고리:</label>
-                <select value={closetCategory} onChange={(e) => setClosetCategory(e.target.value)}>
-                    <option value="all">전체</option>
-                    <option value="tshirt">티셔츠</option>
-                    <option value="shirt">셔츠</option>
-                    <option value="hoodie">후드티</option>
-                    <option value="jacket">자켓</option>
-                    <option value="sweater">스웨터</option>
-                    <option value="cardigan">가디건</option>
-                    <option value="coat">코트</option>
-                    <option value="jeans">청바지</option>
-                    <option value="slacks">슬랙스</option>
-                    <option value="longpants">긴바지</option>
-                    <option value="shorts">반바지</option>
-                    <option value="skirt">스커트</option>
-                    <option value="dress">드레스</option>
-                    <option value="etc">기타</option>
-                </select>
+
+                {(clothType === "full") && (
+                    <>
+                        <label>한벌 카테고리:</label>
+                        <select value={fullCategory} onChange={(e) => setFullCategory(e.target.value)}>
+                            <option value="all">전체</option>
+                            <option value="coat">코트</option>
+                            <option value="dress">드레스</option>
+                            <option value="etc">기타</option>
+                        </select>
+                    </>
+                )}
+
+
+                {(clothType === "upper" || clothType === "all") && (
+                    <>
+                        <label style={{ marginLeft: "10px" }}>상의 카테고리:</label>
+                        <select value={closetCategory} onChange={(e) => setClosetCategory(e.target.value)}>
+                            <option value="all">전체</option>
+                            <option value="tshirt">티셔츠</option>
+                            <option value="shirt">셔츠</option>
+                            <option value="hoodie">후드티</option>
+                            <option value="jacket">자켓</option>
+                            <option value="sweater">스웨터</option>
+                            <option value="cardigan">가디건</option>
+                            <option value="coat">코트</option>
+                            <option value="dress">드레스</option>
+                            <option value="etc">기타</option>
+                        </select>
+                    </>
+                )}
+
+                {(clothType === "lower" || clothType === "all") && (
+                    <>
+
+                        <label style={{ marginLeft: "10px" }}>하의 카테고리:</label>
+                        <select value={lowerCategory} onChange={(e) => setLowerCategory(e.target.value)}>
+                            <option value="all">전체</option>
+                            <option value="longpants">긴바지</option>
+                            <option value="shorts">반바지</option>
+                            <option value="jeans">청바지</option>
+                            <option value="slacks">슬랙스</option>
+                            <option value="skirt">스커트</option>
+                            <option value="etc">기타</option>
+                        </select>
+
+                    </>
+                )}
+
 
                 <label style={{ marginLeft: "5px" }}>
                     <span
@@ -404,9 +483,9 @@ function Closet() {
                                 colorFilter === "white" ? "#ffffff" :
                                     colorFilter === "black" ? "#000000" :
                                         colorFilter === "gray" ? "#808080" :
-                                            colorFilter === "ivory" ? "#FFFFF0" :
+                                            colorFilter === "ivory" ? "#fbfbecff" :
                                                 colorFilter === "red" ? "#FF0000" :
-                                                    colorFilter === "pink" ? "#FFC0CB" :
+                                                    colorFilter === "pink" ? "#EE82EE" :
                                                         colorFilter === "orange" ? "#FFA500" :
                                                             colorFilter === "yellow" ? "#FFFF00" :
                                                                 colorFilter === "green" ? "#20cd20ff" :
@@ -414,7 +493,7 @@ function Closet() {
                                                                         colorFilter === "brown" ? "#A52A2A" :
                                                                             colorFilter === "burgundy" ? "#800020" :
                                                                                 colorFilter === "maroon" ? "#800000" :
-                                                                                    colorFilter === "blue" ? "#0000FF" :
+                                                                                    colorFilter === "blue" ? "#4444f0ff" :
                                                                                         colorFilter === "navy" ? "#000080" :
                                                                                             colorFilter === "purple" ? "#800080" :
                                                                                                 colorFilter === "violet" ? "#EE82EE" :
@@ -434,7 +513,7 @@ function Closet() {
                     <option value="gray">회색</option>
                     <option value="black">검정색</option>
                     <option value="red">빨강색</option>
-                    <option value="orange">오렌지</option>
+                    <option value="orange">주황색</option>
                     <option value="yellow">노랑색</option>
                     <option value="green">초록색</option>
                     <option value="teal">청록색</option>
@@ -479,7 +558,7 @@ function Closet() {
                                             backgroundColor: item.color === "white" ? "#ffffff" :
                                                 item.color === "black" ? "#000000" :
                                                     item.color === "gray" ? "#808080" :
-                                                        item.color === "ivory" ? "#FFFFF0" :
+                                                        item.color === "ivory" ? "#fbfbecff" :
                                                             item.color === "red" ? "#FF0000" :
                                                                 item.color === "pink" ? "#EE82EE" :
                                                                     item.color === "orange" ? "#FFA500" :
@@ -494,7 +573,7 @@ function Closet() {
                                                                                                         item.color === "purple" ? "#800080" :
 
                                                                                                             item.color === "cyan" ? "#00FFFF" :
-                                                                                                                item.color === "khaki" ? "#7A796F" :
+                                                                                                                item.color === "khaki" ? "#8f784b" :
                                                                                                                     "#CCCCCC", // 기타
                                             marginLeft: "5px",
                                             border: "1px solid #000"
@@ -503,7 +582,7 @@ function Closet() {
 
                                     <span style={{ marginLeft: "5px", fontSize: "0.9em", color: "black" }}>{item.name}</span>{" "}{" "}
                                     <span style={{ fontSize: "0.8em", color: "gray" }}>
-                                        {item.type === "upper" ? "상의" : item.type === "lower" ? "하의" : null}
+                                        {item.type === "upper" ? "상의" : item.type === "lower" ? "하의" : item.type === "full" ? "한벌" : null}
                                     </span>
 
                                 </div>
@@ -548,6 +627,7 @@ function Closet() {
                                 <select value={editType} onChange={(e) => setEditType(e.target.value)}>
                                     <option value="upper">상의</option>
                                     <option value="lower">하의</option>
+                                    <option value="full">한벌</option>
                                 </select>
                                 <br></br>
 
@@ -603,6 +683,46 @@ function Closet() {
 
                     <Modal.Body key={showAddModal ? "open" : "closed"}>
 
+                        <label>유형:</label>
+                        <select value={ModalclothType} onChange={(e) => setModalClothType(e.target.value)}>
+                            <option value="upper">상의</option>
+                            <option value="lower">하의</option>
+                            <option value="full">한벌</option>
+                        </select>
+                        <br></br>
+                        {/* 상의 카테고리 */}
+                        {(ModalclothType === "upper" || ModalclothType === "combo" || ModalclothType === "full") && (
+                            <div>
+                                <label>상의 카테고리:</label>
+                                <select value={modalCategory} onChange={(e) => setModalCategory(e.target.value)}>
+                                    <option value="tshirt">티셔츠</option>
+                                    <option value="shirt">셔츠</option>
+                                    <option value="hoodie">후드티</option>
+                                    <option value="jacket">자켓</option>
+                                    <option value="sweater">스웨터</option>
+                                    <option value="cardigan">가디건</option>
+                                    <option value="coat">코트</option>
+                                    <option value="dress">드레스</option>
+                                    <option value="etc">기타</option>
+                                </select>
+                            </div>
+                        )}
+
+                        {/* 하의 카테고리 */}
+                        {(ModalclothType === "lower" || ModalclothType === "combo") && (
+                            <div>
+                                <label>하의 카테고리:</label>
+                                <select value={modalLowerCategory} onChange={(e) => setModalLowerCategory(e.target.value)}>
+                                    <option value="longpants">긴바지</option>
+                                    <option value="shorts">반바지</option>
+                                    <option value="jeans">청바지</option>
+                                    <option value="slacks">슬랙스</option>
+                                    <option value="skirt">스커트</option>
+                                    <option value="etc">기타</option>
+                                </select>
+                            </div>
+                        )}
+
 
                         {/*type이 upper이거나 full 일 때 상의 업로드 */}
                         {(ModalclothType === "upper" || ModalclothType === "full") && (
@@ -624,40 +744,19 @@ function Closet() {
                             </>
                         )}
 
-                        <label>유형:</label>
-                        <select value={ModalclothType} onChange={(e) => setModalClothType(e.target.value)}>
-                            <option value="upper">상의</option>
-                            <option value="lower">하의</option>
-                        </select>
-                        <br></br>
-                        <label>카테고리:</label>
-                        <select value={modalCategory} onChange={(e) => setModalCategory(e.target.value)}>
-                            <option value="tshirt">티셔츠</option>
-                            <option value="shirt">셔츠</option>
-                            <option value="hoodie">후드티</option>
-                            <option value="jacket">자켓</option>
-                            <option value="sweater">스웨터</option>
-                            <option value="cardigan">가디건</option>
-                            <option value="coat">코트</option>
-                            <option value="jeans">청바지</option>
-                            <option value="slacks">슬랙스</option>
-                            <option value="longpants">긴바지</option>
-                            <option value="shorts">반바지</option>
-                            <option value="skirt">스커트</option>
-                            <option value="dress">드레스</option>
-                            <option value="etc">기타</option>
-                        </select>
 
                     </Modal.Body>
 
                     <Modal.Footer>
+                        <div disabled={loading}>{loading ? "옷장에 추가 중입니다..." : "진행 상태 "}</div>
+
                         <button onClick={handleAddCloth}> 추가 </button>
                         <button onClick={handleCloseAddClothModal}>취소</button>
                     </Modal.Footer>
                 </Modal>
 
             </div>
-        </div>
+        </div >
     );
 }
 

@@ -1,9 +1,29 @@
+import { useState } from "react";
 import styles from "./Home.module.css";
 import { Container, Row, Col } from "react-bootstrap";
 import colorstyles from "../PersonalColor/Colortest.module.css";
+import { tonePalettes } from "../PersonalColor/TonePalettes";
+import ColorModal from "../PersonalColor/modal/ColorModal";
 
+const seasonMap = {
+  "봄": "Spring",
+  "여름": "Summer",
+  "가을": "Autumn",
+  "겨울": "Winter"
+};
+
+const toneButtons = [
+  { key: "봄", label: "봄🌸" },
+  { key: "여름", label: "여름🌿" },
+  { key: "가을", label: "가을🍁" },
+  { key: "겨울", label: "겨울❄" }
+];
 
 export default function Home() {
+  const [selectedTone, setSelectedTone] = useState("봄");
+  const [selectedColor, setSelectedColor] = useState(null);
+  const [modalShow, setModalShow] = useState(false);
+
   return (
     <div className={styles.home}>
       {/* HERO SECTION */}
@@ -80,25 +100,63 @@ export default function Home() {
             </Col>
           <Col lg={6} style={{ textAlign: "left", paddingRight: "40px" }}>
               <h2 className="mb-4 fw-bold">Personel Color</h2>
- <p className={styles.paragraph}>
+ <p className={colorstyles.paragraph}>
   퍼스널 컬러는 피부톤·명도·채도·대비를 분석해 나에게 가장 조화로운 색을 찾아주는
   이미지 컨설팅 이론입니다.  
   단순히 ‘예쁜 색 고르기’가 아니라, 얼굴의 생기와 선명도, 입체감을 자연스럽게
   끌어올려 나만의 분위기를 극대화하는 과정이기도 합니다.
 </p>
 
-<p className={styles.paragraph}>
+<p className={colorstyles.paragraph}>
   사계절 퍼스널 컬러는 봄·여름·가을·겨울 4가지 계절의 온도감과 분위기를 바탕으로
   어울리는 색상 흐름을 정리한 체계입니다.  
   예를 들어 위의 <b>브라이트 스프링</b> 이미지는 ‘따뜻함 ,선명함(Warm & Clear)’을
   특징으로 하며, 밝고 채도가 높은 컬러가 얼굴을 환하게 표현해 줍니다.
 </p>
 
-<p className={styles.paragraph}>
+<p className={colorstyles.paragraph}>
   각 계절의 팔레트는 의상 색 조합은 물론, 헤어 컬러, 메이크업 톤(파운데이션·섀도우·립)
   선택에도 직접적으로 활용됩니다.  
   아래 팔레트를 통해 나와 맞는 계절 감성과 컬러 분위기를 한눈에 확인해보세요.
 </p>
+
+
+
+<div className={colorstyles.toneButtons}>
+    {toneButtons.map((tone) => (
+      <button
+        key={tone.key}
+        className={`${colorstyles.toneBtn} ${
+          selectedTone === tone.key ? colorstyles.activeBtn : ""
+        }`}
+        onClick={() => setSelectedTone(tone.key)}
+      >
+        {tone.label}
+      </button>
+    ))}
+  </div>
+
+    <div className={colorstyles.paletteContainer}>
+                {tonePalettes[seasonMap[selectedTone]].map((color, i) => (
+                  <div
+                    key={i}
+                    className={colorstyles.colorCircle}
+                    style={{ backgroundColor: color }}
+                    onClick={() => {
+                      setSelectedColor(color);
+                      setModalShow(true);
+                    }}
+                  ></div>
+                ))}
+              </div>
+
+  <ColorModal
+      show={modalShow}
+      onHide={() => setModalShow(false)}
+      color={selectedColor}
+     />
+  
+
 
             </Col>
 

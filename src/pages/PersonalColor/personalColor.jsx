@@ -3,6 +3,10 @@ import { colorPalettes } from "./palettes";
 import { caxios } from "../../config/config";
 import ShareButton from "./ShareButton";
 import ColorModal from "./modal/ColorModal";
+import {jwtDecode} from "jwt-decode";
+
+
+
 
 //모바일 감지 
 const useIsMobile = () => window.innerWidth < 768;
@@ -488,6 +492,24 @@ function FileUploadBox({ onChange }) {
 
 // =================== 메인 컴포넌트 ===================
 function PersonalColor() {
+   // 로그인된 사용자 ID 가져오기
+  const getUserId = () => {
+    const token = sessionStorage.getItem("token");
+    if (token) {
+      try {
+        const decoded = jwtDecode(token);
+        return decoded.sub;   // JWT의 subject = userId
+      } catch (err) {
+        console.error("JWT decode error:", err);
+      }
+    }
+    // 혹시 이상하면 fallback
+    return sessionStorage.getItem("id");
+  };
+
+  const userId = getUserId();
+  console.log("Final UserId:", userId);
+
   const isMobile = useIsMobile();
 
   const [imageSrc, setImageSrc] = useState(null);
@@ -564,6 +586,7 @@ function PersonalColor() {
       : "winter";
 
     caxios.post("/color", {
+      member_id: userId,
       season: result,
       tone_type: toneType,
       best_color: colorPalettes[baseSeason].best.join(","),
@@ -641,6 +664,19 @@ function PersonalColor() {
     if (mode === "Hair") setHair(color);
     if (mode === "Eye") setEye(color);
   };
+
+  const handleSaveColor = () => {
+  caxios.put("color/update", {
+    member_id: userId,
+    season: season 
+  })
+  .then(() => {
+    alert("내 정보에 저장되었습니다!");
+  })
+  .catch(() => {
+    alert("저장 중 오류가 발생했습니다.");
+  });
+};
 
 
 
@@ -829,12 +865,42 @@ function PersonalColor() {
                     {season}
                   </div>
                 )}
+                
+
 
                 {season && (
                  <div style={{ marginTop: 20 }}>
                 <ShareButton season={season} />
                 </div>
+                  )}
+
+                  {season && userId && (
+  <button
+    onClick={handleSaveColor}
+    style={{
+      padding: "10px 18px",
+      borderRadius: 10,
+      border: "none",
+      cursor: "pointer",
+      background: "linear-gradient(135deg, #6c5ce7, #a29bfe)",
+      color: "white",
+      fontWeight: "bold",
+      fontSize: 15,
+      marginTop: 10
+    }}
+  >
+    내 정보에 퍼스널 컬러 저장하기
+  </button>
 )}
+
+
+{season && !userId && (
+  <p style={{ marginTop: 10, color: "#888" }}>
+    로그인하면 내 정보에 저장할 수 있어요 😊
+  </p>
+)}
+
+
               </div>
 
               <div

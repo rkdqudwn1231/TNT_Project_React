@@ -1,4 +1,4 @@
-// src/pages/PersonalColor/ColorResult.jsx
+
 
 import { useLocation } from "react-router-dom";
 import { useState } from "react";
@@ -293,9 +293,12 @@ function CelebritySection({ season }) {
 }
 
 // =================== 최종 결과 페이지 ===================
-function ColorResult() {
+function ColorResult({ season: propSeason }) {
   const query = new URLSearchParams(useLocation().search);
-  const season = query.get("season");
+  const querySeason = query.get("season");
+
+  // 기존 쿼리에 있으면 우선 사용, 없으면 props 사용
+  const season = querySeason || propSeason;
 
   const [showModal, setShowModal] = useState(false);
   const [selectedColor, setSelectedColor] = useState(null);

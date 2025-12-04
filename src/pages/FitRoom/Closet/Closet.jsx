@@ -4,8 +4,8 @@ import { caxios } from "../../../config/config";
 import styles from "./Closet.module.css"; // 현재 폴더 기준
 import Modal from 'react-bootstrap/Modal';
 import { useNavigate } from "react-router-dom";
-import ColorThief from "colorthief";
-import { removeBackground } from "@imgly/background-removal";
+// import ColorThief from "colorthief";
+// import { removeBackground } from "@imgly/background-removal";
 
 function Closet() {
 
@@ -78,94 +78,105 @@ function Closet() {
         formData.append("memberId", memberId);
         formData.append("category", modalCategory);
         formData.append("clothType", ModalclothType);
+
         if (lowerCategory) formData.append("lowerCategory", modalLowerCategory);
 
-        // 이미지 리사이즈 (removeBackground 속도 올리는 핵심)
-        const resizeImage = (file, maxSize = 250) => {
-            return new Promise((resolve) => {
-                const img = new Image();
-                img.src = URL.createObjectURL(file);
+        // // 이미지 리사이즈 (removeBackground 속도 올리는 핵심)
+        // const resizeImage = (file, maxSize = 250) => {
+        //     return new Promise((resolve) => {
+        //         const img = new Image();
+        //         img.src = URL.createObjectURL(file);
 
-                img.onload = () => {
-                    const canvas = document.createElement("canvas");
+        //         img.onload = () => {
+        //             const canvas = document.createElement("canvas");
 
-                    let { width, height } = img;
+        //             let { width, height } = img;
 
-                    if (width > maxSize || height > maxSize) {
-                        if (width > height) {
-                            height = (height * maxSize) / width;
-                            width = maxSize;
-                        } else {
-                            width = (width * maxSize) / height;
-                            height = maxSize;
-                        }
-                    }
+        //             if (width > maxSize || height > maxSize) {
+        //                 if (width > height) {
+        //                     height = (height * maxSize) / width;
+        //                     width = maxSize;
+        //                 } else {
+        //                     width = (width * maxSize) / height;
+        //                     height = maxSize;
+        //                 }
+        //             }
 
-                    canvas.width = width;
-                    canvas.height = height;
+        //             canvas.width = width;
+        //             canvas.height = height;
 
-                    const ctx = canvas.getContext("2d");
-                    ctx.drawImage(img, 0, 0, width, height);
+        //             const ctx = canvas.getContext("2d");
+        //             ctx.drawImage(img, 0, 0, width, height);
 
-                    canvas.toBlob(
-                        (blob) => {
-                            // Blob → File 변환 (속도 최적화 핵심)
-                            const resizedFile = new File([blob], "resized.jpg", { type: "image/jpeg" });
-                            resolve(resizedFile);
-                        },
-                        "image/jpeg",
-                        0.85
-                    );
-                };
-            });
-        };
+        //             canvas.toBlob(
+        //                 (blob) => {
+        //                     // Blob → File 변환 (속도 최적화 핵심)
+        //                     const resizedFile = new File([blob], "resized.jpg", { type: "image/jpeg" });
+        //                     resolve(resizedFile);
+        //                 },
+        //                 "image/jpeg",
+        //                 0.85
+        //             );
+        //         };
+        //     });
+        // };
 
-        // 최종 색상 추출
-        const extractColor = async (file) => {
-            try {
-                const resizedFile = await resizeImage(file, 350);
+        // // 최종 색상 추출
+        // const extractColor = async (file) => {
+        //     try {
+        //         const resizedFile = await resizeImage(file, 350);
 
-                // removeBackground는 File로 넘겨야 가장 빠름
-                const resultBlob = await removeBackground(resizedFile);
-                const resultURL = URL.createObjectURL(resultBlob);
+        //         // removeBackground는 File로 넘겨야 가장 빠름
+        //         const resultBlob = await removeBackground(resizedFile);
+        //         const resultURL = URL.createObjectURL(resultBlob);
 
-                return await new Promise((resolve) => {
-                    const img = new Image();
-                    img.src = resultURL;
-                    img.onload = () => {
-                        try {
-                            const colorThief = new ColorThief();
-                            resolve(colorThief.getColor(img));
-                        } catch (err) {
-                            console.error(err);
-                            resolve(null);
-                        }
-                    };
-                });
-            } catch (err) {
-                console.error(err);
-                return null;
-            }
-        };
+        //         return await new Promise((resolve) => {
+        //             const img = new Image();
+        //             img.src = resultURL;
+        //             img.onload = () => {
+        //                 try {
+        //                     const colorThief = new ColorThief();
+        //                     resolve(colorThief.getColor(img));
+        //                 } catch (err) {
+        //                     console.error(err);
+        //                     resolve(null);
+        //                 }
+        //             };
+        //         });
+        //     } catch (err) {
+        //         console.error(err);
+        //         return null;
+        //     }
+        // };
 
 
 
+        // // 상의 색상 추출
+        // if (clothImage) {
+        //     const [r, g, b] = await extractColor(clothImage);
+        //     formData.append("upperClothColorR", r);
+        //     formData.append("upperClothColorG", g);
+        //     formData.append("upperClothColorB", b);
+        //     formData.append("cloth_image", clothImage);
+        // }
+
+        // // 하의 색상 추출
+        // if (lowerClothImage) {
+        //     const [r, g, b] = await extractColor(lowerClothImage);
+        //     formData.append("lowerClothColorR", r);
+        //     formData.append("lowerClothColorG", g);
+        //     formData.append("lowerClothColorB", b);
+        //formData.append("lower_cloth_image", lowerClothImage);
+        // }
         // 상의 색상 추출
         if (clothImage) {
-            const [r, g, b] = await extractColor(clothImage);
-            formData.append("upperClothColorR", r);
-            formData.append("upperClothColorG", g);
-            formData.append("upperClothColorB", b);
             formData.append("cloth_image", clothImage);
         }
 
         // 하의 색상 추출
         if (lowerClothImage) {
-            const [r, g, b] = await extractColor(lowerClothImage);
-            formData.append("lowerClothColorR", r);
-            formData.append("lowerClothColorG", g);
-            formData.append("lowerClothColorB", b);
             formData.append("lower_cloth_image", lowerClothImage);
+
         }
 
         try {
@@ -181,7 +192,9 @@ function Closet() {
             setLoading(false);
             // 서버에서 전체 리스트 다시 가져오기
             try {
-                const listRes = await caxios.get("/closet/list");
+                const listRes = await caxios.get("/closet/list", {
+                    params: { memberId }
+                });
                 setClosetData(listRes.data);
             } catch (err) {
                 console.error("리스트 갱신 실패", err);
@@ -447,7 +460,7 @@ function Closet() {
             {/* 메인기능 */}
             <div>
                 <label>유형:</label>
-                <select value={clothType} onChange={(e) => setClothType(e.target.value)}>
+                <select value={clothType} onChange={(e) => setClothType(e.target.value)} style={{ fontSize: "15px" }}>
                     <option value="all">전체</option>
                     <option value="upper">상의</option>
                     <option value="lower">하의</option>
@@ -459,7 +472,7 @@ function Closet() {
                 {(clothType === "full") && (
                     <>
                         <label>한벌 카테고리:</label>
-                        <select value={fullCategory} onChange={(e) => setFullCategory(e.target.value)}>
+                        <select value={fullCategory} onChange={(e) => setFullCategory(e.target.value)} style={{ fontSize: "15px" }}>
                             <option value="all">전체</option>
                             <option value="coat">코트</option>
                             <option value="dress">드레스</option>
@@ -472,7 +485,7 @@ function Closet() {
                 {(clothType === "upper" || clothType === "all") && (
                     <>
                         <label style={{ marginLeft: "10px" }}>상의 카테고리:</label>
-                        <select value={closetCategory} onChange={(e) => setClosetCategory(e.target.value)}>
+                        <select value={closetCategory} onChange={(e) => setClosetCategory(e.target.value)} style={{ fontSize: "15px" }}>
                             <option value="all">전체</option>
                             <option value="tshirt">티셔츠</option>
                             <option value="shirt">셔츠</option>
@@ -491,7 +504,7 @@ function Closet() {
                     <>
 
                         <label style={{ marginLeft: "10px" }}>하의 카테고리:</label>
-                        <select value={lowerCategory} onChange={(e) => setLowerCategory(e.target.value)}>
+                        <select value={lowerCategory} onChange={(e) => setLowerCategory(e.target.value)} style={{ fontSize: "15px" }}>
                             <option value="all">전체</option>
                             <option value="longpants">긴바지</option>
                             <option value="shorts">반바지</option>
@@ -505,7 +518,7 @@ function Closet() {
                 )}
 
 
-                <label style={{ marginLeft: "5px" }}>
+                {/* <label style={{ marginLeft: "5px" }}>
                     <span
                         style={{
                             display: "inline-block",
@@ -537,8 +550,8 @@ function Closet() {
                             border: "1px solid #000"
                         }}
                     ></span> 색상:
-                </label>
-
+                </label> */}
+                {/* 
                 <select value={colorFilter} onChange={(e) => setColorFilter(e.target.value)}>
                     <option value="all">전체</option>
                     <option value="white">흰색</option>
@@ -560,11 +573,11 @@ function Closet() {
                     <option value="burgundy">자주색</option>
                     <option value="khaki">카키색</option>
                     <option value="etc">기타</option>
-                </select>
+                </select> */}
 
 
 
-                <button onClick={handleAddClothModal} style={{ float: "right" }}>옷 추가</button>
+                <button onClick={handleAddClothModal} className={styles.tabButtonStyle}>옷 추가</button>
 
                 <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
 
@@ -588,7 +601,7 @@ function Closet() {
 
                                 </div>
                                 <div>
-                                    <span
+                                    {/* <span
                                         style={{
                                             display: "inline-block",
                                             width: "15px",
@@ -617,7 +630,7 @@ function Closet() {
                                             marginLeft: "5px",
                                             border: "1px solid #000"
                                         }}
-                                    ></span>
+                                    ></span> */}
 
                                     <span style={{ marginLeft: "5px", fontSize: "0.9em", color: "black" }}>{item.name}</span>{" "}{" "}
                                     <span style={{ fontSize: "0.8em", color: "gray" }}>
@@ -630,16 +643,13 @@ function Closet() {
                         </div>
                     ))}
 
-
-
-
                 </div>
 
                 {/* Modal */}
                 <Modal show={showModal} onHide={handleCloseModal}>
 
-                    <Modal.Header closeButton>
-                        <Modal.Title>{modalType === "edit" ? "의류 수정" : "의류 삭제"}</Modal.Title>
+                    <Modal.Header closeButton style={{ justifyContent: "center" }}>
+                        <Modal.Title style={{ textAlign: "center", flex: 1 }}>{modalType === "edit" ? "옷 수정" : "옷 삭제"}</Modal.Title>
                     </Modal.Header>
 
                     <Modal.Body>
@@ -663,7 +673,7 @@ function Closet() {
                                 <br></br>
 
                                 <label>유형:</label>
-                                <select value={editType} onChange={(e) => setEditType(e.target.value)}>
+                                <select value={editType} onChange={(e) => setEditType(e.target.value)} style={{ fontSize: "15px" }}>
                                     <option value="upper">상의</option>
                                     <option value="lower">하의</option>
                                     <option value="full">한벌</option>
@@ -671,7 +681,7 @@ function Closet() {
                                 <br></br>
 
                                 <label>카테고리:</label>
-                                <select value={editCategory} onChange={(e) => setEditCategory(e.target.value)}>
+                                <select value={editCategory} onChange={(e) => setEditCategory(e.target.value)} style={{ fontSize: "15px" }}>
                                     <option value="tshirt">티셔츠</option>
                                     <option value="shirt">셔츠</option>
                                     <option value="hoodie">후드티</option>
@@ -687,9 +697,6 @@ function Closet() {
                                     <option value="dress">드레스</option>
                                     <option value="etc">기타</option>
                                 </select>
-
-
-
                             </div>
                         )}
                         {modalType === "delete" && selectedCloth && (
@@ -698,32 +705,31 @@ function Closet() {
                     </Modal.Body>
 
                     <Modal.Footer>
-                        <button onClick={() => {
+                        <button className={styles.tabButtonStyle} onClick={() => {
                             if (modalType === "edit") {
                                 handlEdit();
                             } else if (modalType === "delete") {
                                 handleDelete();
                             }
-
                         }}>
                             {modalType === "edit" ? "저장" : "삭제"}
                         </button>
 
-                        <button onClick={handleCloseModal}>취소</button>
+                        <button onClick={handleCloseModal} className={styles.tab2ButtonStyle}>취소</button>
                     </Modal.Footer>
                 </Modal>
 
 
                 {/*두번째 Modal 옷장 추가 */}
                 <Modal show={showAddModal} onHide={handleCloseAddClothModal}>
-                    <Modal.Header>
-                        <Modal.Title> 추가 </Modal.Title>
+                    <Modal.Header style={{ justifyContent: "center" }}>
+                        <Modal.Title style={{ textAlign: "center", flex: 1 }}>새로운 옷 추가 </Modal.Title>
                     </Modal.Header>
 
                     <Modal.Body key={showAddModal ? "open" : "closed"}>
 
                         <label>유형:</label>
-                        <select value={ModalclothType} onChange={(e) => setModalClothType(e.target.value)}>
+                        <select value={ModalclothType} onChange={(e) => setModalClothType(e.target.value)} style={{ fontSize: "15px" }}>
                             <option value="upper">상의</option>
                             <option value="lower">하의</option>
                             <option value="full">한벌</option>
@@ -733,7 +739,7 @@ function Closet() {
                         {(ModalclothType === "upper" || ModalclothType === "combo" || ModalclothType === "full") && (
                             <div>
                                 <label>상의 카테고리:</label>
-                                <select value={modalCategory} onChange={(e) => setModalCategory(e.target.value)}>
+                                <select value={modalCategory} onChange={(e) => setModalCategory(e.target.value)} style={{ fontSize: "15px" }}>
                                     <option value="tshirt">티셔츠</option>
                                     <option value="shirt">셔츠</option>
                                     <option value="hoodie">후드티</option>
@@ -751,7 +757,7 @@ function Closet() {
                         {(ModalclothType === "lower" || ModalclothType === "combo") && (
                             <div>
                                 <label>하의 카테고리:</label>
-                                <select value={modalLowerCategory} onChange={(e) => setModalLowerCategory(e.target.value)}>
+                                <select value={modalLowerCategory} onChange={(e) => setModalLowerCategory(e.target.value)} style={{ fontSize: "15px" }}>
                                     <option value="longpants">긴바지</option>
                                     <option value="shorts">반바지</option>
                                     <option value="jeans">청바지</option>
@@ -767,8 +773,25 @@ function Closet() {
                         {(ModalclothType === "upper" || ModalclothType === "full") && (
                             <div>
                                 <label>상의 이미지:</label>
-                                <input type="file" accept="image/*" onChange={(e) => setClothImage(e.target.files[0])} />
-                                {clothImage && <img src={URL.createObjectURL(clothImage)} alt="상의 미리보기" style={{ width: 150 }} />}
+
+                                {/* 실제 파일 input → 숨김 */}
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    id="upperUpload"
+                                    onChange={(e) => setClothImage(e.target.files[0])}
+                                    style={{ display: "none" }}
+                                />
+
+                                {/* 커스텀 버튼 */}
+                                <button
+                                    className={styles.tab3ButtonStyle}
+                                    onClick={() => document.getElementById("upperUpload").click()}
+                                >
+                                    업로드
+                                </button>
+
+                                {clothImage && <img src={URL.createObjectURL(clothImage)} alt="상의 미리보기" style={{ width: 150, marginTop: "30px" }} />}
                             </div>
                         )}
 
@@ -777,20 +800,37 @@ function Closet() {
                             <>
                                 <div>
                                     <label>하의 이미지:</label>
-                                    <input type="file" accept="image/*" onChange={(e) => setLowerClothImage(e.target.files[0])} />
-                                    {lowerClothImage && <img src={URL.createObjectURL(lowerClothImage)} alt="하의 미리보기" style={{ width: 200 }} />}
+
+
+                                    <input
+                                        type="file"
+                                        accept="image/*"
+                                        id="lowerUpload"
+                                        onChange={(e) => setLowerClothImage(e.target.files[0])}
+                                        style={{ display: "none" }}
+                                    />
+
+                                    {/* 커스텀 버튼 */}
+                                    <button
+                                        className={styles.tab3ButtonStyle}
+                                        onClick={() => document.getElementById("lowerUpload").click()}
+                                    >
+                                        업로드
+                                    </button>
+
+
+                                    {lowerClothImage && <img src={URL.createObjectURL(lowerClothImage)} alt="하의 미리보기" style={{ width: 150, marginTop: "30px" }} />}
                                 </div>
                             </>
                         )}
 
-
                     </Modal.Body>
 
                     <Modal.Footer>
-                        <div disabled={loading}>{loading ? "옷장에 추가 중입니다..." : "진행 상태 "}</div>
-
-                        <button onClick={handleAddCloth}> 추가 </button>
-                        <button onClick={handleCloseAddClothModal}>취소</button>
+                        {/* <div disabled={loading}>{loading ? "옷장에 추가 중입니다..." : "진행 상태 "}</div> */}
+                        <p>새로운 옷을 추가해 보아요!😍</p>
+                        <button onClick={handleAddCloth} className={styles.tabButtonStyle}> 추가 </button>
+                        <button onClick={handleCloseAddClothModal} className={styles.tab2ButtonStyle}>취소</button>
                     </Modal.Footer>
                 </Modal>
 

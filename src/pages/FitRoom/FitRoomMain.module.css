@@ -91,3 +91,49 @@
   overflow-y: auto;
   position: relative;
 }
+
+
+/* 버튼 */
+
+.tabButtonStyle {
+  float: right;
+  padding: 10px 18px;
+  border-radius: 15px;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: 0.25s;
+  background: linear-gradient(135deg, #ff8fa3, #ff6f91);
+  color: white;
+  box-shadow: 0 4px 10px rgba(255, 111, 145, 0.4);
+}
+
+
+.tab2ButtonStyle {
+  float: right;
+  padding: 10px 18px;
+  border-radius: 15px;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: 0.25s;
+  background: linear-gradient(135deg, #87c2ef, #72a8e5);
+  color: white;
+  box-shadow: 0 4px 10px rgba(138, 206, 236, 0.4);
+}
+
+.tab4ButtonStyle {
+    width: 50%;
+  padding: 10px 18px;
+  border-radius: 15px;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: 0.25s;
+  background: linear-gradient(135deg, #ffffff, #d2d6d3);
+  color: black;
+  box-shadow: 0 4px 10px rgba(161, 168, 163, 0.4);
+}

@@ -28,7 +28,7 @@ function Model() {
 
     const memberId = sessionStorage.getItem("id");
 
-  const navigate = useNavigate();
+    const navigate = useNavigate();
 
     useEffect(() => {
         const Modellist = async () => {
@@ -46,8 +46,24 @@ function Model() {
         Modellist();
     }, []);
 
-    //추가
+    useEffect(() => {
+        const fetchModels = async () => {
+            try {
+                const myRes = await caxios.get("/model/list", { params: { memberId } });
+                const publicRes = await caxios.get("/model/publicList");
 
+                // 두 리스트 합치기
+                setModelData([...publicRes.data, ...myRes.data]);
+            } catch (err) {
+                console.error(err);
+            }
+        };
+
+        fetchModels();
+    }, []);
+
+
+    //추가
     const handleaddModel = async () => {
 
 
@@ -109,15 +125,17 @@ function Model() {
 
         try {
             await caxios.put("/model/edit", null, {
-                params: {
-                    seq: selectedModel.seq,
-                    name: editName,
-                    sex: editSex
-                }
-            })
+               params: {
+                     seq: selectedModel.seq,
+                     name: editName,
+                     sex: editSex
+                 }
+             })
+            
+            console.log(selectedModel.seq, editName, editSex);
             alert("수정 완료");
             //리스트 출력 (새로고침)
-            const res = await caxios.get("/model/list");
+           const res = await caxios.get("/model/list", { params: { memberId } });
             setModelData(res.data);
             handleCloseModal();
 
@@ -194,10 +212,13 @@ function Model() {
 
     // 모델 선택시
     const handleModelSelect = (model) => {
+        const confirmed = window.confirm(`"${model.modelName}" 해당 모델을 FitRoom에 이용하시겠습니까?`);
+        if (!confirmed) return; // 사용자가 취소하면 함수 종료
+
         sessionStorage.setItem("selectedModelImage", model.modelUrl);
+        sessionStorage.setItem("selectedModelName", model.modelName); // 이름
         alert(`${model.modelName} 선택 완료`);
         navigate("/fitroom");
-      
     };
 
     return (
@@ -223,7 +244,7 @@ function Model() {
 
                             <div className={styles.itemCard}>
                                 <div className={styles.imgWrapper}>
-                                    <img src={item.modelUrl} alt={item.modelName} onClick={() => handleModelSelect(item)}/>
+                                    <img src={item.modelUrl} alt={item.modelName} onClick={() => handleModelSelect(item)} />
 
                                     <div className={styles.actions}>
                                         <button onClick={() => handleEditClick(item)}>✏️</button>
@@ -261,7 +282,7 @@ function Model() {
                                             src={selectedModel.modelUrl}
                                             alt={selectedModel.modelName}
                                             style={{ width: "200px" }}
-                                          
+
                                         />
                                     </div>
                                 </div>

@@ -3,7 +3,7 @@ import styles from "./FitRoomMain.module.css"
 import { caxios } from "../../config/config";
 import ColorThief from "colorthief";
 import { removeBackground } from "@imgly/background-removal";
-
+import { Modal, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
 function FitRoomMain() {
@@ -12,7 +12,7 @@ function FitRoomMain() {
   const [clothImage, setClothImage] = useState(null);
   const [lowerClothImage, setLowerClothImage] = useState(null);
   const [sex, setSex] = useState("male");
-  const [clothType, setClothType] = useState("upper");
+  const [clothType, setClothType] = useState("combo");
   const [closetCategory, setClosetCategory] = useState("etc");
   const [lowerCategory, setLowerCategory] = useState("etc");
   const [resultImage, setResultImage] = useState(null); // 완성 이미지 URL
@@ -20,6 +20,19 @@ function FitRoomMain() {
 
   const [upperColor, setUpperColor] = useState(null); // 상의 dominant color
   const [lowerColor, setLowerColor] = useState(null); // 하의 dominant color
+
+  // 로딩
+  const [upperColorLoading, setUpperColorLoading] = useState(false);
+  const [lowerColorLoading, setLowerColorLoading] = useState(false);
+
+  //옷 , 모델 가져오기
+  const [modelName, setModelName] = useState(""); // 새로 추가
+  const [upperCloth, setUpperCloth] = useState(null);
+  const [lowerCloth, setLowerCloth] = useState(null);
+
+  // 옷 모달 열기/닫기
+  const [showClosetModal, setShowClosetModal] = useState(false);
+  const [closetData, setClosetData] = useState([]); // 옷장 데이터
 
 
   const isSubmitting = useRef(false); // 중복 요청 방지
@@ -31,75 +44,100 @@ function FitRoomMain() {
   // 로그인 확인
   const [checkedLogin, setCheckedLogin] = useState(false);
 
-  // useEffect(() => {
-  //   if (!checkedLogin) {
-  //     if (!memberId) {
+  useEffect(() => {
+    if (!checkedLogin) {
+      if (!memberId) {
 
-  //       navigate("/login");
-  //     }
-  //     setCheckedLogin(true); // 다시 실행 방지
-  //   }
-  // }, [memberId, navigate, checkedLogin]);
+        navigate("/login");
+      }
+      setCheckedLogin(true); // 다시 실행 방지
+    }
+  }, [memberId, navigate, checkedLogin]);
 
+
+
+  // 옷장탭에서 넘어온 옷
+  useEffect(() => {
+    const upperImage = sessionStorage.getItem("selectedUpperImage");
+    const upperName = sessionStorage.getItem("selectedUpperName");
+    const lowerImage = sessionStorage.getItem("selectedLowerImage");
+    const lowerName = sessionStorage.getItem("selectedLowerName");
+
+    const convertToFile = async (url, name, setState) => {
+      if (!url) return;
+      try {
+        const res = await caxios.get(`/fitroom/fetchImage?url=${encodeURIComponent(url)}`, {
+          responseType: "blob",
+        });
+        const file = new File([res.data], name || "cloth.png", { type: res.data.type });
+        setState(file);
+      } catch (err) {
+        console.error("옷 이미지 변환 실패:", err);
+      }
+    };
+
+    if (upperImage) {
+      convertToFile(upperImage, upperName, setClothImage);
+      sessionStorage.removeItem("selectedUpperImage");
+      sessionStorage.removeItem("selectedUpperName");
+    }
+
+    if (lowerImage) {
+      convertToFile(lowerImage, lowerName, setLowerClothImage);
+      sessionStorage.removeItem("selectedLowerImage");
+      sessionStorage.removeItem("selectedLowerName");
+    }
+  }, []);
+
+
+  // 모델탭에서 넘어온 모델
   useEffect(() => {
     const selectedImage = sessionStorage.getItem("selectedModelImage");
-    if (selectedImage) {
-      setModelImage(selectedImage); // File로 변환하지 않고 URL 그대로
+    const selectedName = sessionStorage.getItem("selectedModelName");
+
+    if (selectedImage && selectedName) {
+      const fetchModel = async () => {
+        try {
+          const res = await caxios.get(
+            `/fitroom/fetchImage?url=${encodeURIComponent(selectedImage)}`,
+            { responseType: "blob" }
+          );
+          const file = new File([res.data], selectedName, { type: res.data.type });
+          setModelImage(file);
+          setModelName(selectedName); // 여기서 바로 세팅
+        } catch (err) {
+          console.error("모델 이미지 변환 실패:", err);
+        } finally {
+          sessionStorage.removeItem("selectedModelImage");
+          sessionStorage.removeItem("selectedModelName");
+        }
+      };
+      fetchModel();
     }
-    sessionStorage.removeItem("selectedModelImage");
   }, []);
+
 
 
 
   const handleSubmit = async (e) => {
 
-
+    console.log(modelName, "모델이름");
     e.preventDefault();
     if (isSubmitting.current) return; // 이미 제출 중이면 무시
     isSubmitting.current = true;
     setLoading(true);
 
     let modelFile = modelImage;
-
-    if (modelImage) {
-      if (modelImage instanceof File) {
-        // 그대로 사용
-      } else if (typeof modelImage === "string") {
-        // URL이면 File로 변환
-        try {
-          const res = await fetch(modelImage);
-          const blob = await res.blob();
-          modelFile = new File([blob], "model.jpg", { type: blob.type });
-        } catch (err) {
-          console.error(err);
-          alert("모델 이미지를 가져오는 데 실패했습니다.");
-          setLoading(false);
-          isSubmitting.current = false;
-          return;
-        }
-      } else {
-        alert("올바르지 않은 모델 이미지입니다.");
-        setLoading(false);
-        isSubmitting.current = false;
-        return;
-      }
-    } else {
-      alert("모델 이미지를 추가하세요!");
+    if (!modelFile) {
+      alert("모델 이미지를 선택하세요!");
       setLoading(false);
       isSubmitting.current = false;
       return;
     }
 
 
-    // if (!modelImage) {
-    //   alert("모델 이미지를 추가하세요!");
-    //   setLoading(false);
-    //   isSubmitting.current = false;
-    //   return;
-    // }
-
-
-
+    const currentModelName = modelName || (modelFile instanceof File ? modelFile.name : "model.png");
+    console.log(currentModelName, "모델 이름 확인"); // 여기서 확인 가능
 
 
     if ((clothType === "upper" || clothType === "combo" || clothType === "full") && !clothImage) {
@@ -210,6 +248,7 @@ function FitRoomMain() {
       saveData.append("ClosetCategory", closetCategory);
       if (lowerCategory) saveData.append("lowerCategory", lowerCategory);
       saveData.append("sex", sex);
+      saveData.append("modelName", modelName);
 
       //색상
       if (clothColor) {
@@ -276,15 +315,19 @@ function FitRoomMain() {
   const handleUpperImageChange = async (e) => {
     const file = e.target.files[0];
     setClothImage(file);
+    setUpperColorLoading(true); // 로딩 시작
     const color = await extractDominantColor(file);
     setUpperColor(color);
+    setUpperColorLoading(false); // 로딩 끝
   };
 
   const handleLowerImageChange = async (e) => {
     const file = e.target.files[0];
     setLowerClothImage(file);
+    setLowerColorLoading(true);
     const color = await extractDominantColor(file);
     setLowerColor(color); // [R, G, B]
+    setLowerColorLoading(false);
   };
 
   // 색상 추출 함수
@@ -322,6 +365,180 @@ function FitRoomMain() {
       return null;
     }
   };
+
+
+  // 모달 열기
+  const openClosetModal = async () => {
+    try {
+      const res = await caxios.get("/closet/list", {
+        params: { memberId }
+      });
+      setClosetData(res.data);
+      setShowClosetModal(true);
+    } catch (err) {
+      console.error("옷장 데이터 불러오기 실패:", err);
+    }
+  };
+
+  // 모달에서 선택
+  const convertUrlToFile = async (url, name) => {
+    const res = await caxios.get(`/fitroom/fetchImage?url=${encodeURIComponent(url)}`, { responseType: 'blob' });
+    return new File([res.data], name || "cloth.png", { type: res.data.type });
+  };
+
+  const handleSelectCloth = async (item) => {
+    // 이름 결정: upperName > lowerName > name > "이름 없음"
+    const clothName = item.upperName || item.lowerName || item.name || "이름 없음";
+
+    const confirmed = window.confirm(`"${clothName}" 옷을 FitRoom에 적용하시겠습니까?`);
+    if (!confirmed) return;
+
+    if (clothType === "upper") {
+      const file = await convertUrlToFile(item.upperImageUrl, item.upperName || item.name);
+      setClothImage(file);
+
+      setUpperColorLoading(true);
+      const color = await extractDominantColor(file);
+      setUpperColor(color);
+      setUpperColorLoading(false);
+
+    } else if (clothType === "combo") {
+      // 상의
+      if (item.upperImageUrl) {
+        const file = await convertUrlToFile(item.upperImageUrl, item.upperName || item.name);
+        setClothImage(file);
+
+        setUpperColorLoading(true);
+        const color = await extractDominantColor(file);
+        setUpperColor(color);
+        setUpperColorLoading(false);
+      }
+      // 하의
+      if (item.lowerImageUrl) {
+        const file = await convertUrlToFile(item.lowerImageUrl, item.lowerName || item.name);
+        setLowerClothImage(file);
+
+        setLowerColorLoading(true);
+        const color = await extractDominantColor(file);
+        setLowerColor(color);
+        setLowerColorLoading(false);
+      }
+
+    }
+    if (clothType === "full") {
+      const imageUrl = item.upperImageUrl;
+      if (imageUrl) {
+        const file = await convertUrlToFile(imageUrl, item.name || item.upperName);
+        setClothImage(file);
+        setLowerClothImage(null);
+
+        setUpperColorLoading(true);
+        const color = await extractDominantColor(file);
+        setUpperColor(color);
+        setUpperColorLoading(false);
+
+        setLowerColorLoading(false);
+        setLowerColor(null);
+      }
+    }
+
+  }
+
+
+
+
+  // function ClosetModal({ show, handleClose, closetData, onSelect }) {
+
+  //   return (
+  //     <Modal show={show} onHide={handleClose} size="lg">
+  //       <Modal.Header closeButton>
+  //         <Modal.Title>옷장 선택</Modal.Title>
+  //       </Modal.Header>
+  //       <Modal.Body>
+  //         <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
+  //           {closetData.map((item, idx) => (
+  //             <div key={idx}>
+  //               <img
+  //                 src={item.upperImageUrl || item.lowerImageUrl || item.fullImageUrl}
+  //                 alt={item.upperName || item.lowerName || item.name}
+  //                 style={{ width: 100, cursor: "pointer" }}
+  //                 onClick={() => handleSelectCloth(item)}
+  //               />
+  //               <span>{item.upperName || item.lowerName || item.name}</span>
+  //             </div>
+  //           ))}
+  //         </div>
+  //       </Modal.Body>
+  //       <Modal.Footer>
+  //         <Button variant="secondary" onClick={handleClose}>닫기</Button>
+  //       </Modal.Footer>
+  //     </Modal>
+  //   );
+  // }
+
+  function ClosetModal({ show, handleClose, closetData, onSelect }) {
+    const [filterType, setFilterType] = useState("all"); // all / upper / lower / full
+
+    // 타입별로 필터링
+    const filteredData = closetData.filter((item) => {
+      if (filterType === "all") return true;
+      return item.clothType === filterType;
+    });
+
+    const handleSelectCloth = (item) => {
+      onSelect(item); // 부모에 선택 전달
+      handleClose();
+    };
+
+    return (
+      <Modal show={show} onHide={handleClose} size="lg">
+        <Modal.Header closeButton>
+          <Modal.Title>옷장 선택</Modal.Title>
+        </Modal.Header>
+
+        <Modal.Body>
+          {/* 필터 선택 */}
+          <div style={{ marginBottom: "10px" }}>
+            <label>유형: </label>
+            <select
+              value={filterType}
+              onChange={(e) => setFilterType(e.target.value)}
+            >
+              <option value="all">전체</option>
+              <option value="upper">상의</option>
+              <option value="lower">하의</option>
+              <option value="full">한벌</option>
+            </select>
+          </div>
+
+          {/* 옷장 아이템 */}
+          <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
+            {filteredData.map((item, idx) => (
+              <div key={idx} style={{ textAlign: "center" }}>
+                <img
+                  src={item.upperImageUrl || item.lowerImageUrl || item.fullImageUrl}
+                  alt={item.upperName || item.lowerName || item.name}
+                  style={{ width: 100, cursor: "pointer" }}
+                  onClick={() => handleSelectCloth(item)}
+                />
+                <div>{item.upperName || item.lowerName || item.name}</div>
+                <span style={{ fontSize: "0.8em", color: "gray" }}>
+                  {item.clothType === "upper" ? "상의" : item.clothType === "lower" ? "하의" : item.clothType === "full" ? "한벌" : null}
+                </span>
+              </div>
+            ))}
+          </div>
+        </Modal.Body>
+
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            닫기
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    );
+  }
+
 
 
   return (
@@ -527,47 +744,70 @@ function FitRoomMain() {
 
               </div>
             )}
+
+           // @@ 주석
+            <div style={{ margin: "10px 0" }}>
+              <button type="button" onClick={openClosetModal}>
+                옷장 열기
+              </button>
+            </div>
+
+            <ClosetModal
+              show={showClosetModal}
+              handleClose={() => setShowClosetModal(false)}
+              closetData={closetData}
+              onSelect={handleSelectCloth}
+            />
+
+
+
             {/* upper / full 색상 표시 */}
-            {(clothType === "upper" || clothType === "full") && upperColor && (
+            {(clothType === "upper" || clothType === "full") && clothImage && (
               <div style={{ marginTop: "10px" }}>
                 <p>상의 색상:</p>
-                <div style={{
-                  width: 50,
-                  height: 50,
-                  backgroundColor: `rgb(${upperColor[0]},${upperColor[1]},${upperColor[2]})`,
-                  border: "1px solid #000"
-                }} />
+                {upperColorLoading ? (
+                  <div>상의 색 추출중...(15 ~ 20초)</div>
+                ) : upperColor ? (
+                  <div style={{
+                    width: 50,
+                    height: 50,
+                    backgroundColor: `rgb(${upperColor[0]},${upperColor[1]},${upperColor[2]})`,
+                    border: "1px solid #000"
+                  }} />
+                ) : null}
               </div>
             )}
 
             {/* combo 색상 표시 */}
-            {clothType === "combo" && (
+            {clothType === "combo" && (clothImage || lowerClothImage) && (
               <div className={styles["upper-lower-container"]}>
-                {upperColor && (
-                  <div style={{ marginTop: "10px" }}>
-                    <p>상의 색상</p>
-                    <div style={{
-                      width: 50,
-                      height: 50,
-                      backgroundColor: `rgb(${upperColor[0]},${upperColor[1]},${upperColor[2]})`,
-                      border: "1px solid #000",
-                      margin:"auto"
-                    }} />
-                  </div>
-                )}
-                {lowerColor && (
-                  <div style={{ marginTop: "10px" }}>
-                    <p>하의 색상</p>
-                    <div style={{
-                      width: 50,
-                      height: 50,
-                      backgroundColor: `rgb(${lowerColor[0]},${lowerColor[1]},${lowerColor[2]})`,
-                      border: "1px solid #000"
-                    }} />
-                  </div>
-                )}
+                <p>상의 색상:</p>
+                {upperColorLoading ? (
+                  <div>상의 색 추출중... (15 ~ 20초)</div>
+                ) : upperColor ? (
+                  <div style={{
+                    width: 50,
+                    height: 50,
+                    backgroundColor: `rgb(${upperColor[0]},${upperColor[1]},${upperColor[2]})`,
+                    border: "1px solid #000"
+                  }} />
+                ) : null}
+
+                <p>하의 색상:</p>
+                {lowerColorLoading ? (
+                  <div>하의 색 추출중...(15 ~ 20초)</div>
+                ) : lowerColor ? (
+                  <div style={{
+                    width: 50,
+                    height: 50,
+                    backgroundColor: `rgb(${lowerColor[0]},${lowerColor[1]},${lowerColor[2]})`,
+                    border: "1px solid #000"
+                  }} />
+                ) : null}
               </div>
             )}
+
+
           </div>
 
           <button type="submit"
@@ -581,7 +821,7 @@ function FitRoomMain() {
               fontSize: "30px",
               marginTop: "20px"
             }}>
-            {loading ? "업로드 중..." : "전송"}
+            {loading ? "이미지 합성 중 입니다...(45~60초)" : "합성"}
           </button>
 
         </div>

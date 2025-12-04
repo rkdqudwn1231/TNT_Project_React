@@ -4,7 +4,7 @@ import { caxios } from "../../config/config";
 import ShareButton from "./ShareButton";
 import ColorModal from "./modal/ColorModal";
 import {jwtDecode} from "jwt-decode";
-
+import styles from "./PersonalColor.module.css";
 
 
 
@@ -704,55 +704,26 @@ function PersonalColor() {
         style={{ display: "none" }}
       />
 
-       <div
-        style={{
-          display: "flex",
-          flexDirection: isMobile ? "column" : "row",
-          justifyContent: "center",
-          alignItems: isMobile ? "center" : "flex-start",
-          gap: isMobile ? 20 : 40,
-          padding: 20,
-          width: "100%",
-          maxWidth: 1200,
-          margin: "0 auto",
-          flexWrap: "wrap" 
-        }}
-      >
+      <div className={styles.container}>
         {/* ========== 왼쪽: 이미지 영역 ========== */}
        <div style={{ flexShrink: 0 }}>
           {!imageSrc && <FileUploadBox />}
 
           {imageSrc && (
-           <div
-          style={{
-          position: "relative",
-          display: "inline-block",
-          width: isMobile ? "90vw" : 400,
-          height: isMobile ? "90vw" : 400,
-          overflow: "hidden",
-          borderRadius: 12,
-        }}
-      >
-              <img
-                ref={imgRef}
-                src={imageSrc}
-                alt="uploaded face"
-                onMouseMove={handleMouseMove}
-                onClick={handleImageClick}
-                onMouseLeave={() => setHoverColor(null)}
-                style={{
-                  position: "absolute",
-                  top: "50%",
-                  left: "50%",
-                  objectFit: "contain",
-                  width: "100%",
-                  height: "100%",
-                  cursor: "none",
-                  transform: `translate(-50%, -50%) scale(${scale})`,
-                  transformOrigin: "center center",
-                  transition: "transform 0.15s ease-out",
-                }}
-              />
+          <div className={styles.imgBox}>
+  <img
+  ref={imgRef}
+  src={imageSrc}
+  alt="uploaded face"
+  onMouseMove={handleMouseMove}
+  onClick={handleImageClick}
+  onMouseLeave={() => setHoverColor(null)}
+  className={styles.image}
+  style={{
+    transform: `translate(-50%, -50%) scale(${scale})`,
+  }}
+/>
+
 
               {hoverColor && (
                 <div
@@ -903,17 +874,7 @@ function PersonalColor() {
 
               </div>
 
-              <div
-              style={{
-              background: "white",
-              padding: 24,
-              borderRadius: 14,
-              boxShadow: "0 4px 20px rgba(0,0,0,0.08)",
-              width: isMobile ? "100%" : "1000px",
-              marginLeft: isMobile ? 0 : "-420px",
-              marginTop: isMobile ? 20 : 0,
-          }}
-              >
+             <div className={styles.resultBox}>
                 {season && <ExplanationBox season={season} />}
 
                 {baseSeasonForUI && (

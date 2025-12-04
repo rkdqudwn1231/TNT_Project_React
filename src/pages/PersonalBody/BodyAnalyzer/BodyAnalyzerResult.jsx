@@ -39,7 +39,7 @@ const BodyAnalyzerResult = () => {
   return (
     <div className={styles.wrapper}>
       <h2 className={styles.title} style={{ textAlignlign: "center" }}> 나의 체형 타입은? </h2>
-
+ 
       {/* 이미지 영역: GCS URL 사용 */}
       <div className={styles.typeContainer}>
         <div className={styles.imageBox}>

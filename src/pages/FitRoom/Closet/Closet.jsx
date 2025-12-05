@@ -714,7 +714,7 @@ function Closet() {
                         }}>
                             {modalType === "edit" ? "저장" : "삭제"}
                         </button>
-
+                        
                         <button onClick={handleCloseModal} className={styles.tab2ButtonStyle}>취소</button>
                     </Modal.Footer>
                 </Modal>

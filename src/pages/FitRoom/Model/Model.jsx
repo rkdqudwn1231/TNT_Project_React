@@ -125,13 +125,23 @@ function Model() {
     //         alert("삭제 실패");
     //     }
     // }
-
+    // 삭제
     const handleDelete = async () => {
         try {
 
-            await caxios.delete("/model/delete", {
+           const res = await caxios.delete("/model/delete", {
                 params: { seq: selectedModel.seq }
             });
+
+            const result = res.data;
+
+            if (result === -1) {
+                // 기본 모델 삭제 시도
+                alert("기본 가상모델은 삭제할 수 없습니다.");
+                handleCloseModal();
+                return;
+            }
+
 
             const myRes = await caxios.get("/model/list", { params: { memberId } });
             const publicRes = await caxios.get("/model/publicList");
@@ -154,13 +164,21 @@ function Model() {
     const handleEdit = async () => {
 
         try {
-            await caxios.put("/model/edit", null, {
+          const res =   await caxios.put("/model/edit", null, {
                 params: {
                     seq: selectedModel.seq,
                     name: editName,
                     sex: editSex
                 }
             })
+
+            const result = res.data;
+
+            if (result === -1) {
+                alert("기본 가상모델은 수정할 수 없습니다.");
+                handleCloseModal();
+                return;
+            }
 
             // console.log(selectedModel.seq, editName, editSex);
             alert("수정 완료");
@@ -398,6 +416,7 @@ function Model() {
                     </Modal.Body>
 
                     <Modal.Footer>
+                        <p>새로운 모델을 추가해 볼까요?😊</p>
                         <button onClick={handleaddModel} className={styles.tabButtonStyle}> 추가 </button>
                         <button onClick={handleAddCloseModal} className={styles.tab2ButtonStyle}>취소</button>
                     </Modal.Footer>

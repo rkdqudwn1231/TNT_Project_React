@@ -902,7 +902,7 @@ function FitRoomMain() {
             type="submit"
             disabled={loading}
             className={styles.tab4ButtonStyle}
-            style={{ width: "30%", fontSize: "30px" }}
+            style={{ width: "40%", fontSize: "30px" }}
           >
             {loading ? "로딩중..." : "시작"}
           </button>

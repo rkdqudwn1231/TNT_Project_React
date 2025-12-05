@@ -3,8 +3,7 @@ import { useState } from "react";
 
 function ShareButton({ imageUrl }) {
 
-  const [copied, setCopied] = useState(false); // 토스트 상태
-
+  // const [copied, setCopied] = useState(false); // 토스트 상태
 
 
   const handleShare = () => {
@@ -18,9 +17,9 @@ function ShareButton({ imageUrl }) {
     const defaultImage = "https://i.imgur.com/n4A51Av.png";
 
     const shareImage = imageUrl || defaultImage;
-
+    // const BASE_URL = `${window.location.protocol}//${window.location.host}`;
     const BASE_URL = `${window.location.protocol}//${window.location.hostname}:3000`;
-
+    //const BASE_URL = window.location.origin;
     const sharePageUrl = `${BASE_URL}/fitroom/share?img=${encodeURIComponent(shareImage)}`;
 
     window.Kakao.Link.sendDefault({
@@ -43,7 +42,7 @@ function ShareButton({ imageUrl }) {
           }
         },
         {
-          title: "✨ 나도 분석하기",
+          title: "✨ 이용하러가기",
           link: {
             mobileWebUrl: `${BASE_URL}/fitroom`,
             webUrl: `${BASE_URL}/fitroom`,
@@ -53,21 +52,21 @@ function ShareButton({ imageUrl }) {
     });
   }
 
-  const handleCopyLink = async () => {
-    const defaultImage = "https://i.imgur.com/n4A51Av.png";
-    const shareImage = imageUrl || defaultImage;
+  // const handleCopyLink = async () => {
+  //   const defaultImage = "https://i.imgur.com/n4A51Av.png";
+  //   const shareImage = imageUrl || defaultImage;
 
-    const BASE_URL = `${window.location.protocol}//${window.location.hostname}:3000`;
-    const sharePageUrl = `${BASE_URL}/fitroom/share?img=${encodeURIComponent(shareImage)}`;
+  //   const BASE_URL = window.location.origin;
+  //   const sharePageUrl = `${BASE_URL}/fitroom/share?img=${encodeURIComponent(shareImage)}`;
 
-    try {
-      await navigator.clipboard.writeText(sharePageUrl);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 1800);
-    } catch (err) {
-      alert("복사 실패! 브라우저 설정을 확인해주세요.");
-    }
-  };
+  //   try {
+  //     await navigator.clipboard.writeText(sharePageUrl);
+  //     setCopied(true);
+  //     setTimeout(() => setCopied(false), 1800);
+  //   } catch (err) {
+  //     alert("복사 실패! 브라우저 설정을 확인해주세요.");
+  //   }
+  // };
 
 
   return (
@@ -92,7 +91,7 @@ function ShareButton({ imageUrl }) {
         카카오톡 공유하기
       </button>
 
-      {/* 링크 복사 버튼 */}
+      {/* //링크 복사 버튼
       <button
         type="button"
         onClick={handleCopyLink}
@@ -108,7 +107,7 @@ function ShareButton({ imageUrl }) {
         🔗 링크 복사하기
       </button>
 
-      {/* 토스트 메시지 */}
+      토스트 메시지
       {copied && (
         <div
           style={{
@@ -127,7 +126,8 @@ function ShareButton({ imageUrl }) {
         >
           링크가 복사되었습니다!
         </div>
-      )}
+      )} */}
+
     </div>
   );
 }

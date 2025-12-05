@@ -81,9 +81,7 @@
   justify-content: center;
 }
 
-
 /* 메인탭 */
-
 .mainTabs {
   display: flex;
   justify-content: flex-end;
@@ -112,6 +110,28 @@
   color: #fff !important;
 }
 
+/* Login 자리에 들어가는 슬롯 (로그인 후 종/사람 아이콘) */
+.loginSlot {
+  width: 80px;          /* 로그인 탭이 차지하던 정도의 폭 */
+  height: 40px;
+  display: flex;
+  align-items: center;  /* 수직 중앙 */
+  justify-content: center; /* 수평 중앙 */
+  gap: 10px;
+  position: relative;
+}
+
+/* 아이콘 기본 색 */
+.loginSlot i {
+  font-size: 22px;
+  color: rgba(255, 170, 205, 0.9);
+}
+
+/* 홈(투명)일 때 아이콘은 흰색으로 */
+.homeText .loginSlot i {
+  color: #ffffff;
+}
+
 .mainTabActive {
   background: rgba(255, 150, 200, 1);
   color: #fff !important;
@@ -124,7 +144,6 @@
 .mainTabs a.mainTabActive {
   color: #fff !important;
 }
-
 
 /* 서브탭 */
 .subTabsWrapper {
@@ -168,11 +187,8 @@
     grid-column: 1 / -1;
   }
 
-  /* 햄버거 버튼 표시 */
-  @media (max-width: 768px) {
-    .menuToggle {
-      display: block;
-    }
+  .menuToggle {
+    display: block;
   }
 
   .menuToggleHome {
@@ -203,21 +219,16 @@
     font-weight: 700 !important;
   }
 
-  @media (max-width: 768px) {
-    .mainTabs {
-      flex-direction: column !important;
-      align-items: flex-end !important;
-      width: 100%;
-    }
+  .mainTabs {
+    flex-direction: column !important;
+    align-items: flex-end !important;
+    width: 100%;
   }
 
-  @media (max-width: 768px) {
-    .mainTabGroup {
-      display: flex;
-      flex-direction: column;
-    }
+  .mainTabGroup {
+    display: flex;
+    flex-direction: column;
   }
-
 
   /* 모바일 서브탭도 세로 정렬 */
   .subTabsWrapper {
@@ -252,4 +263,53 @@
 
 a {
   text-decoration: none !important;
+}
+
+/* 아이콘 버튼 공통 스타일 */
+.iconButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  padding: 0 0;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* 사람 아이콘 + 드롭다운 래퍼 */
+.userMenuWrapper {
+  position: relative;
+  display: inline-block;
+}
+
+/* 드롭다운 박스 - 화이트 테마, 부트스트랩 느낌 */
+.userDropdown {
+  position: absolute;
+  right: 0;
+  top: 115%;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  min-width: 130px;
+  padding: 4px 0;
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+/* 드롭다운 항목 공통 */
+.userDropdownItem {
+  display: block;
+  width: 100%;
+  padding: 8px 12px;
+  font-size: 14px; /* 마이페이지 / 로그아웃 동일 크기 */
+  color: #333;
+  text-align: left;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.userDropdownItem:hover {
+  background: #f2f2f2;
 }

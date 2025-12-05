@@ -1,15 +1,18 @@
 import SubTabs from "./SubTabs";
 import styles from "./Header.module.css";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
+import "bootstrap-icons/font/bootstrap-icons.css";
 
 const Header = ({ isHome }) => {
+  const navigate = useNavigate();
 
   const [showHeader, setShowHeader] = useState(true);
   const [solid, setSolid] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeMainTab, setActiveMainTab] = useState(null);
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768)
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const [userMenuOpen, setUserMenuOpen] = useState(false); // 사람 아이콘 메뉴 열림 상태
 
   const isLoggedIn = !!sessionStorage.getItem("token");
 
@@ -57,6 +60,17 @@ const Header = ({ isHome }) => {
   const closeMenu = () => {
     setMenuOpen(false);
     setActiveMainTab(null);
+    setUserMenuOpen(false); // 사람 아이콘 메뉴도 닫기
+  };
+
+  // 로그아웃
+  const handleLogout = () => {
+    sessionStorage.removeItem("token");
+    sessionStorage.removeItem("id");
+    sessionStorage.removeItem("roles");
+    sessionStorage.removeItem("nickname");
+    setUserMenuOpen(false);
+    navigate("/"); // 필요하면 다른 경로로 바꿔도 됨
   };
 
   return (
@@ -186,14 +200,12 @@ const Header = ({ isHome }) => {
 
                 {/* MOBILE Community */}
                 <div className={styles.mainTabGroup}>
-                  {/* key값을 community → Board로 통일 */}
                   <div className={styles.mainTab} onClick={() => toggleMainTab("Board")}>
                     Community
                   </div>
 
                   {activeMainTab === "Board" && (
                     <div className={styles.subDropdown}>
-                      {/* 잘못된 /Board/Board → /Board 로 수정 */}
                       <NavLink to="/Board" onClick={closeMenu}>Free Board</NavLink>
                       <NavLink to="/Board" onClick={closeMenu}>Q&A</NavLink>
                     </div>
@@ -202,7 +214,8 @@ const Header = ({ isHome }) => {
               </>
             )}
 
-            {!isLoggedIn && (
+            {/* Login vs 종/사람 아이콘 (같은 자리) */}
+            {!isLoggedIn ? (
               <NavLink
                 to="/login"
                 className={styles.mainTab}
@@ -210,6 +223,53 @@ const Header = ({ isHome }) => {
               >
                 Login
               </NavLink>
+            ) : (
+              <div className={styles.loginSlot}>
+                {/* 종 아이콘: 알림 */}
+                <button
+                  type="button"
+                  className={styles.iconButton}
+                  onClick={() => {
+                    // 나중에 알림 기능 연결
+                    console.log("알림 클릭");
+                  }}
+                >
+                  <i className="bi bi-bell"></i>
+                </button>
+
+                {/* 사람 아이콘: 마이페이지/로그아웃 메뉴 */}
+                <div className={styles.userMenuWrapper}>
+                  <button
+                    type="button"
+                    className={styles.iconButton}
+                    onClick={() => setUserMenuOpen((prev) => !prev)}
+                  >
+                    <i className="bi bi-person-circle"></i>
+                  </button>
+
+                  {userMenuOpen && (
+                    <div className={styles.userDropdown}>
+                      <button
+                        type="button"
+                        className={styles.userDropdownItem}
+                        onClick={() => {
+                          setUserMenuOpen(false);
+                          navigate("/mypage"); // 실제 마이페이지 경로로 수정
+                        }}
+                      >
+                        마이페이지
+                      </button>
+                      <button
+                        type="button"
+                        className={styles.userDropdownItem}
+                        onClick={handleLogout}
+                      >
+                        로그아웃
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </div>
             )}
           </nav>
 

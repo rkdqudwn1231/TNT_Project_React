@@ -73,6 +73,7 @@ function Model() {
         }
 
         const formData = new FormData();
+        // formData.append("memberId", memberId);
         formData.append("memberId", memberId);
         formData.append("sex", modelsexModal);
         formData.append("modelUrl", modelImage);
@@ -90,7 +91,7 @@ function Model() {
 
             // 서버에서 전체 리스트 다시 가져오기
             try {
-    
+
                 const myRes = await caxios.get("/model/list", { params: { memberId } });
                 const publicRes = await caxios.get("/model/publicList");
 
@@ -109,21 +110,46 @@ function Model() {
 
 
     // 삭제
-    const handleDelete = () => {
+    // const handleDelete = () => {
 
+    //     try {
+    //         caxios.delete("/model/delete", { params: { seq: selectedModel.seq } });
+
+    //         setModelData(prev => prev.filter(e => e.seq !== selectedModel.seq));
+
+
+    //         handleCloseModal();
+    //         alert("삭제 완료");
+    //     } catch (err) {
+    //         console.error(err);
+    //         alert("삭제 실패");
+    //     }
+    // }
+
+    const handleDelete = async () => {
         try {
-            caxios.delete("/model/delete", { params: { seq: selectedModel.seq } });
 
-            setModelData(prev => prev.filter(e => e.seq !== selectedModel.seq));
+            await caxios.delete("/model/delete", {
+                params: { seq: selectedModel.seq }
+            });
+
+            const myRes = await caxios.get("/model/list", { params: { memberId } });
+            const publicRes = await caxios.get("/model/publicList");
+
+
+            setModelData([...publicRes.data, ...myRes.data]);
 
 
             handleCloseModal();
             alert("삭제 완료");
+
         } catch (err) {
             console.error(err);
             alert("삭제 실패");
         }
-    }
+    };
+
+
 
     const handleEdit = async () => {
 
@@ -136,11 +162,13 @@ function Model() {
                 }
             })
 
-            console.log(selectedModel.seq, editName, editSex);
+            // console.log(selectedModel.seq, editName, editSex);
             alert("수정 완료");
             //리스트 출력 (새로고침)
-            const res = await caxios.get("/model/list", { params: { memberId } });
-            setModelData(res.data);
+            const myRes = await caxios.get("/model/list", { params: { memberId } });
+            const publicRes = await caxios.get("/model/publicList");
+
+            setModelData([...publicRes.data, ...myRes.data]);
             handleCloseModal();
 
         } catch (err) {

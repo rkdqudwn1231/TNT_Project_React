@@ -137,3 +137,21 @@
   color: black;
   box-shadow: 0 4px 10px rgba(161, 168, 163, 0.4);
 }
+
+
+/* fitroom 사용시 회색화면 */
+.loadingOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3); /* 반투명 회색 */
+  backdrop-filter: blur(2px);      /* 옵션: 배경 흐림 */
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
+  color: white;
+}

@@ -6,6 +6,7 @@ import { caxios } from "../../config/config";
 // import { removeBackground } from "@imgly/background-removal";
 import { Modal, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import ShareButton from "./ShareButton";
 
 function FitRoomMain() {
 
@@ -612,7 +613,7 @@ function FitRoomMain() {
                 style={{ width: "200px", display: "block", marginBottom: "5px" }}
               />
               <span>단일 옷</span>
-              <span style={{ fontSize: "20px" }}>⭕</span>
+              <span style={{ fontSize: "20px", color: "green" }}>⭕</span>
             </div>
 
             <div style={{ textAlign: "center" }}>
@@ -897,22 +898,18 @@ function FitRoomMain() {
             )}
 
           </div>
-
-          <button type="submit"
+          <button
+            type="submit"
             disabled={loading}
             className={styles.tab4ButtonStyle}
             style={{ width: "30%", fontSize: "30px" }}
           >
-
-            {loading ?
-              <Spinner animation="border" role="status" className="mb-2">
-                <span className="visually-hidden">Loading...</span>
-              </Spinner> : "START"}
+            {loading ? "로딩중..." : "시작"}
           </button>
 
         </div>
 
-
+        {/* 결과 이미지 */}
         <div className={styles["resultbox"]}>
           {(resultImage) && (
             <div style={{ textAlign: "center", marginTop: "50px" }}>
@@ -922,12 +919,32 @@ function FitRoomMain() {
                 alt="완성 이미지"
                 className={styles["upload-preview"]}
               />
+
+              {/* 공유 버튼 */}
+              <div style={{ marginTop: "20px" }}>
+                <ShareButton
+                  imageUrl={resultImage} // ShareButton에서 사용할 이미지 URL
+                />
+              </div>
             </div>
           )}
         </div>
 
 
       </form >
+
+      {/*  회색화면 */}
+      {loading && (
+        <div className={styles.loadingOverlay}>
+          <div style={{ textAlign: "center" }}>
+            <Spinner animation="border" role="status" />
+            <div style={{ marginTop: "10px", fontSize: "20px" }}>
+             FitRoom 작업 중입니다...
+            </div>
+          </div>
+        </div>
+      )}
+
     </div >
 
   );

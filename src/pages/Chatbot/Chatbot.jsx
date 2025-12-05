@@ -29,6 +29,7 @@ const MessageList = React.memo(({ messages, chatLoading }) => (
 
 const Chatbot = () => {
     const [isLogin, setIsLogin] = useState(false);
+    const [isHome, setIsHome] = useState(false);
     const [messages, setMessages] = useState([]);
 
     const [inputValue, setInputValue] = useState("");
@@ -79,6 +80,8 @@ const Chatbot = () => {
         };
 
         tokenVerify();
+
+        setIsHome(location.pathname === "/");
     }, [location.pathname]); // ✅ URL 바뀔 때마다 재실행
 
     const handleSendMessage = async (message) => {
@@ -167,7 +170,7 @@ const Chatbot = () => {
     }, [isOpen]);
 
     return (
-        isLogin &&
+        isLogin && !isHome &&
         <div className={isMobile ? styles.mobileWrapper : styles.pcWrapper}>
 
             {/* 챗봇 버튼 */}

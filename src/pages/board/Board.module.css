@@ -1,10 +1,17 @@
 .boardContainer {
-  max-width: 1100px;
+  max-width: 1200px;
   margin: 0 auto;
   background: #fff;
   border-radius: 16px;
   box-shadow: 0 10px 30px rgba(0,0,0,0.06);
   padding: 32px 28px 40px;
+}
+
+.boardTitle {
+  font-size: 26px;
+  font-weight: 800;
+  margin-bottom: 24px;
+  text-align: center;
 }
 
 .uploadBox {
@@ -27,7 +34,9 @@
   margin-bottom: 14px;
 }
 
-input, select, textarea {
+input,
+select,
+textarea {
   border: 1px solid #d4d7e1;
   border-radius: 8px;
   padding: 8px 10px;
@@ -66,12 +75,93 @@ textarea {
   border: none;
 }
 
+/* 버튼 공통 호버 */
+.btnPrimary:hover,
+.btnSecondary:hover,
+.searchBtn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+  opacity: 0.9;
+}
+
+/* 필터 / 검색 바 */
+.filterBar {
+  margin-top: 24px;
+  margin-bottom: 12px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: #f9fafc;
+  border: 1px solid #e5e7eb;
+}
+
+.filterRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+/* 왼쪽 필터 묶음 (컬러, 체형 그대로 왼쪽에) */
+.filterLeft {
+  display: flex;
+  gap: 12px;
+}
+
+.filterGroup {
+  display: flex;
+  flex-direction: column;
+  font-size: 13px;
+}
+
+.filterLabel {
+  color: #4b5563;
+  margin-bottom: 4px;
+}
+
+.filterGroup select,
+.filterGroup input {
+  min-width: 150px;
+}
+
+/* 검색 영역: 오른쪽 정렬 */
+.searchGroupRow {
+  margin-left: auto;
+}
+
+.searchRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.searchSelect {
+  min-width: 90px;
+}
+
+/* 검색 입력칸 크기 */
+.searchInput {
+  width: 220px;
+  height: 34px;
+}
+
+/* 검색 버튼 */
+.searchBtn {
+  padding: 7px 14px;
+  border-radius: 999px;
+  border: none;
+  background: #111827;
+  color: #fff;
+  font-size: 13px;
+  cursor: pointer;
+}
+
 /* 카드 영역 */
 .cardGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 16px;
-  margin-top: 24px;
+  margin-top: 16px;
 }
 
 .card {
@@ -80,12 +170,12 @@ textarea {
   border: 1px solid #eee;
   overflow: hidden;
   cursor: pointer;
-  transition: .12s;
+  transition: 0.12s;
 }
 
 .card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 10px 25px rgba(0,0,0,.06);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.06);
 }
 
 .cardThumb {
@@ -126,9 +216,26 @@ textarea {
 .cardTitle {
   font-size: 15px;
   font-weight: 600;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
   color: #222;
 }
+
+/* 카드 태그 표시 (지금은 사용 안 함, 혹시 나중용으로 남김)
+.cardTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 6px;
+}
+
+.cardTagChip {
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: #eef2ff;
+  color: #4f46e5;
+}
+*/
 
 .cardDesc {
   font-size: 13px;
@@ -136,13 +243,37 @@ textarea {
   line-height: 1.45;
 }
 
+/* 카드 하단 작성자 닉네임 */
+.cardFooter {
+  margin-top: 8px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.cardWriter {
+  font-size: 12px;
+  color: #6b7280;
+}
+
 /*  반응형 */
-@media (max-width: 768px) {
+@media (max-width: 1200px) {
+  .cardGrid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 900px) {
   .uploadRow {
     grid-template-columns: 1fr;
   }
 
   .cardGrid {
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .cardGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }

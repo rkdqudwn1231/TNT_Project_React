@@ -18,7 +18,7 @@ const Login = () => {
         id: id,
         pw: pw
       });
-
+      console.log("로그인 응답 전체:", resp.data);
       // 받아온 토큰 저장
       const token = resp.data.token;
       sessionStorage.setItem("token", token);
@@ -26,7 +26,7 @@ const Login = () => {
       // 사용자 정보 저장할 수도 있음 (선택)
       sessionStorage.setItem("id", resp.data.id);
       sessionStorage.setItem("roles", resp.data.roles);
-      
+      sessionStorage.setItem("nickname", resp.data.nickname);
       // 로그인 성공 시 이동
       navigate("/");
   

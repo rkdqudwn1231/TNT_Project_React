@@ -1,8 +1,8 @@
 .detailPage {
   font-family: -apple-system, BlinkMacSystemFont, "Noto Sans KR", system-ui,
     sans-serif;
-  background: #0f172a;
-  color: #e5e7eb;
+  background: #f3f4f6;
+  color: #111827;
   padding: 32px 16px;
   display: flex;
   justify-content: center;
@@ -18,18 +18,18 @@
 
 .breadcrumb {
   font-size: 13px;
-  color: #9ca3af;
+  color: #6b7280;
   margin-bottom: 16px;
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
 }
 
 .breadcrumbLink {
   background: none;
   border: none;
   padding: 0;
-  color: #9ca3af;
+  color: #6b7280;
   cursor: pointer;
   font-size: inherit;
 }
@@ -44,29 +44,37 @@
   display: grid;
   grid-template-columns: 1.1fr 0.9fr;
   gap: 24px;
+  align-items: flex-start;
 }
 
+/* 카드 공통 */
+
 .card {
-  background: #020617;
+  background: #ffffff;
   border-radius: 20px;
   padding: 18px;
-  box-shadow: 0 18px 45px rgba(15, 23, 42, 0.7);
-  border: 1px solid rgba(148, 163, 184, 0.25);
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
 }
 
 /* 썸네일 */
 
 .thumb {
+  position: relative;
+  width: 100%;
   border-radius: 16px;
   overflow: hidden;
-  position: relative;
-  background: #020617;
+  background: #e5e7eb;
+  margin: 0;
 }
 
 .thumb img {
   width: 100%;
-  display: block;
+  height: auto;
   object-fit: cover;
+  display: block;
 }
 
 .badges {
@@ -82,18 +90,16 @@
   font-size: 11px;
   padding: 4px 10px;
   border-radius: 999px;
-  background: rgba(15, 23, 42, 0.85);
-  color: #e5e7eb;
-  border: 1px solid rgba(148, 163, 184, 0.5);
-  backdrop-filter: blur(6px);
+  background: rgba(0, 0, 0, 0.7);
+  color: #ffffff;
 }
 
 .badgeColor {
-  border-color: #f97316;
+  border: 1px solid #f97316;
 }
 
 .badgeShape {
-  border-color: #38bdf8;
+  border: 1px solid #38bdf8;
 }
 
 /* 오른쪽 정보 영역 */
@@ -108,19 +114,19 @@
 .title {
   font-size: 22px;
   font-weight: 700;
-  color: #f9fafb;
+  color: #111827;
   margin-bottom: 4px;
 }
 
 .metaSub {
   font-size: 13px;
-  color: #9ca3af;
+  color: #6b7280;
 }
 
 .metaSub span + span::before {
   content: "·";
   margin: 0 6px;
-  color: #4b5563;
+  color: #9ca3af;
 }
 
 .tagList {
@@ -134,9 +140,9 @@
   font-size: 12px;
   padding: 4px 10px;
   border-radius: 999px;
-  border: 1px solid rgba(148, 163, 184, 0.5);
-  background: #020617;
-  color: #e5e7eb;
+  border: 1px solid #d1d5db;
+  background: #f9fafb;
+  color: #374151;
 }
 
 /* 설명 박스 */
@@ -144,15 +150,11 @@
 .descBox {
   font-size: 14px;
   line-height: 1.7;
-  color: #e5e7eb;
+  color: #374151;
   padding: 14px 16px;
   border-radius: 14px;
-  background: radial-gradient(
-    circle at top left,
-    rgba(148, 163, 184, 0.18),
-    rgba(15, 23, 42, 0.9)
-  );
-  border: 1px solid rgba(148, 163, 184, 0.4);
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
   min-height: 120px;
   white-space: pre-line;
 }
@@ -162,8 +164,8 @@
 .infoList {
   margin-top: 20px;
   font-size: 13px;
-  color: #cbd5f5;
-  border-top: 1px solid rgba(55, 65, 81, 0.9);
+  color: #374151;
+  border-top: 1px solid #e5e7eb;
   padding-top: 12px;
 }
 
@@ -174,7 +176,7 @@
 }
 
 .infoLabel {
-  color: #9ca3af;
+  color: #6b7280;
 }
 
 /* 버튼들 */
@@ -190,36 +192,92 @@
   flex: 1;
   padding: 10px 14px;
   border-radius: 999px;
-  border: 1px solid rgba(148, 163, 184, 0.4);
-  background: #020617;
-  color: #e5e7eb;
+  border: 1px solid #d1d5db;
+  background: #ffffff;
+  color: #111827;
   font-size: 13px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 6px;
+
+  /* 애니메이션 */
+  transition:
+    background 0.18s ease,
+    color 0.18s ease,
+    border-color 0.18s ease,
+    box-shadow 0.18s ease,
+    transform 0.12s ease;
 }
 
+/* 기본 흰색 버튼 hover */
+.btn:not(.btnPrimary):not(.btnLike):not(.btnDislike):not(.commentSubmit):hover:not(:disabled) {
+  background: #f9fafb;
+}
+
+/* 공통 hover */
+.btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.18);
+}
+
+/* 클릭 시 살짝 눌리는 느낌 */
+.btn:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 0 4px 10px rgba(15, 23, 42, 0.15);
+}
+
+/* 주요 버튼들 */
+
 .btnPrimary {
-  background: linear-gradient(135deg, #4f46e5, #06b6d4);
+  background: linear-gradient(135deg, #2563eb, #06b6d4);
   border: none;
-  color: #f9fafb;
+  color: #ffffff;
   font-weight: 600;
 }
 
 .btnLike {
   background: linear-gradient(135deg, #1d4ed8, #3b82f6);
   border: none;
-  color: #f9fafb;
+  color: #ffffff;
   font-weight: 600;
 }
 
 .btnDislike {
   background: linear-gradient(135deg, #b91c1c, #ef4444);
   border: none;
-  color: #f9fafb;
+  color: #ffffff;
   font-weight: 600;
+}
+
+/* 그라디언트 버튼 hover 시 살짝 더 진하게 */
+.btnPrimary:hover:not(:disabled),
+.commentSubmit:hover:not(:disabled) {
+  filter: brightness(1.03);
+}
+
+.btnLike:hover:not(:disabled) {
+  filter: brightness(1.05);
+}
+
+.btnDislike:hover:not(:disabled) {
+  filter: brightness(1.05);
+}
+
+/* 선택된 상태 (좋아요 / 싫어요) */
+
+.btnLikeActive {
+  /* 기존 색 유지하면서 강조 */
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5),
+    0 10px 25px rgba(37, 99, 235, 0.5);
+  transform: translateY(-1px);
+}
+
+.btnDislikeActive {
+  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.5),
+    0 10px 25px rgba(220, 38, 38, 0.5);
+  transform: translateY(-1px);
 }
 
 .icon {
@@ -229,6 +287,8 @@
 .btn:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
 }
 
 /* 댓글 영역 */
@@ -241,19 +301,19 @@
   font-size: 15px;
   font-weight: 600;
   margin-bottom: 12px;
-  color: #e5e7eb;
+  color: #111827;
 }
 
 .commentBox {
   border-radius: 16px;
-  background: #020617;
-  border: 1px solid rgba(55, 65, 81, 0.9);
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
   padding: 12px;
 }
 
 .commentEmpty {
   font-size: 13px;
-  color: #6b7280;
+  color: #9ca3af;
 }
 
 /* 댓글 리스트 */
@@ -270,15 +330,15 @@
 .commentItem {
   padding: 8px 10px;
   border-radius: 10px;
-  background: #020617;
-  border: 1px solid rgba(55, 65, 81, 0.7);
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
 }
 
 .commentMeta {
   display: flex;
   justify-content: space-between;
   font-size: 11px;
-  color: #9ca3af;
+  color: #6b7280;
   margin-bottom: 4px;
 }
 
@@ -292,7 +352,7 @@
 
 .commentText {
   font-size: 13px;
-  color: #e5e7eb;
+  color: #374151;
 }
 
 /* 댓글 입력 폼 */
@@ -309,24 +369,25 @@
   min-height: 60px;
   padding: 8px 10px;
   border-radius: 12px;
-  border: 1px solid rgba(55, 65, 81, 0.9);
-  background: #020617;
-  color: #e5e7eb;
+  border: 1px solid #d1d5db;
+  background: #ffffff;
+  color: #111827;
   font-size: 13px;
-  resize: vertical;
+  resize: none;
 }
 
 .commentInput:focus {
   outline: none;
-  border-color: #6366f1;
+  border-color: #2563eb;
 }
 
 .commentSubmit {
   flex: 0 0 auto;
   padding-inline: 16px;
   font-weight: 600;
-  background: linear-gradient(135deg, #4f46e5, #06b6d4);
+  background: linear-gradient(135deg, #2563eb, #06b6d4);
   border: none;
+  color: #ffffff;
 }
 
 /* 반응형 */
@@ -335,4 +396,173 @@
   .detailWrapper {
     grid-template-columns: 1fr;
   }
+}
+
+
+/* 댓글 하단 (오른쪽 아래 버튼 영역) */
+.commentFooter {
+  margin-top: 6px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* ㄴ> 버튼 */
+.replyButton {
+  border: 1px solid #e5e7eb;
+  border-radius: 999px;
+  background: #ffffff;
+  padding: 4px 8px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
+    box-shadow 0.15s ease,
+    transform 0.12s ease;
+}
+
+.replyButton:hover {
+  background: #f3f4f6;
+  border-color: #d1d5db;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+  transform: translateY(-1px);
+}
+
+.replyIcon {
+  font-size: 14px;
+}
+
+/* 대댓글 리스트 전체 들여쓰기 */
+.replyList {
+  list-style: none;
+  margin: 6px 0 0;
+  padding: 0 0 0 0;
+}
+
+/* 대댓글 한 줄 스타일 (살짝 오른쪽 + 약한 배경) */
+.replyItem {
+  margin-top: 6px;
+  margin-left: 18px;          /* 들여쓰기 */
+  padding: 8px 10px 8px 12px;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+  background: #f9fafb;
+  position: relative;
+}
+
+/* 대댓글 왼쪽에 가이드 라인(선) 살짝 */
+.replyItem::before {
+  content: "";
+  position: absolute;
+  left: -10px;
+  top: 10px;
+  bottom: 10px;
+  width: 2px;
+  border-radius: 999px;
+  background: #e5e7eb;
+}
+
+/* 대댓글 입력창 */
+.replyForm {
+  margin-top: 8px;
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+
+.replyInput {
+  flex: 1;
+  min-height: 50px;
+  padding: 6px 10px;
+  border-radius: 10px;
+  border: 1px solid #d1d5db;
+  background: #ffffff;
+  font-size: 13px;
+  resize: none;
+}
+
+.replyInput:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 1px rgba(37,99,235,0.15);
+}
+
+
+/* 게시글 수정 제목 입력창 */
+.editTitleInput {
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: 1px solid #d1d5db;
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 4px;
+  box-sizing: border-box;
+}
+
+/* 게시글 내용 수정 textarea - 여백만 두고 안쪽을 꽉 채우게 */
+.editTextarea {
+  width: 100%;
+  min-height: 160px;
+  border-radius: 12px;
+  border: 1px solid #d1d5db;
+  padding: 10px 12px;
+  font-size: 14px;
+  color: #374151;
+  resize: vertical;
+  box-sizing: border-box;
+  background: #ffffff;
+}
+
+/* 댓글 수정용 textarea */
+.commentEditInput {
+  width: 100%;
+  min-height: 70px;
+  margin-top: 4px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: 1px solid #d1d5db;
+  font-size: 13px;
+  resize: none;
+  box-sizing: border-box;
+  background: #ffffff;
+}
+
+/* 댓글 하단 왼쪽 수정/삭제 텍스트 영역 */
+.commentFooter {
+  margin-top: 6px;
+  display: flex;
+  justify-content: space-between; /* 왼쪽: 수정/삭제, 오른쪽: ㄴ> 버튼 */
+  align-items: center;
+}
+
+/* 수정 · 삭제 텍스트 영역 (브레드크럼 느낌) */
+.commentActions {
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  color: #6b7280;
+}
+
+/* 수정 / 삭제 텍스트 버튼 */
+.commentActionButton {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 12px;
+  color: #6b7280;
+  cursor: pointer;
+}
+
+.commentActionButton:hover {
+  text-decoration: underline;
+  color: #374151;
+}
+
+/* 수정 · 삭제 사이 구분 점 */
+.commentActionDivider {
+  margin: 0 4px;
+  color: #9ca3af;
 }

@@ -1,81 +1,74 @@
+/* ======================== 기본 레이아웃 ======================== */
 .container {
   display: flex;
-  gap: 20px; 
-  justify-content: space-between;
+  gap: 20px;
+  justify-content: center;
+  /* 전체 중앙 정렬 */
+  align-items: flex-start;
+  /* 높이 맞추기 */
   padding: 20px;
+  flex-wrap: wrap;
 }
 
 /* 3박스 균등 분할 */
 .modelbox,
 .clothesbox,
 .resultbox {
-  flex: 1;
+  flex: 0 0 360px;
+  /* flex-grow:0, flex-shrink:0, flex-basis:360px */
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-
-/* [파일 업로드] */
-
-/* 상하의 업로드 */
+/* ======================== 파일 업로드 ======================== */
 .upper-lower-container {
-    display: flex;
-    gap: 20px;
-    /* 상하의 사이 간격 */
-    justify-content: center;
-    /* 가로 중앙 정렬 */
-    align-items: flex-start;
-    /* 높이 맞추기 */
-    margin-bottom: 20px;
-    text-align: center;
-    /* 레이블 중앙 정렬 */
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  align-items: flex-start;
+  margin-bottom: 20px;
+  text-align: center;
+  /* flex-wrap 제거 */
 }
 
-
-/* 업로드 박스 공통 */
 .upload-box {
-    width: 300px;
-    height: 300px;
-    border-radius: 10px;
-    border: 2px dashed #ccc;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    transition: 0.2s;
-     background-color: #1000;
+  width: 300px;
+  height: 300px;
+  border-radius: 10px;
+  border: 2px dashed #ccc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: 0.2s;
+  background-color: #1000;
 }
 
 .upload-box:hover {
-    border-color: #777;
+  border-color: #777;
 }
 
-/* 미리보기  */
 .upload-preview {
-    width: 300px;
-    height: 300px;
-    object-fit: contain;
-    /* 이미지 비율 유지하면서 박스 안에 맞춤 */
-    border-radius: 10px;
-    background-color: #1000;
-    /* 이미지 없는 경우 배경색 */
+  width: 300px;
+  height: 300px;
+  object-fit: contain;
+  border-radius: 10px;
+  background-color: #1000;
 }
 
-
-
-/* 숨김 input */
 .hidden-input {
-    display: none;
+  display: none;
 }
 
+/* ======================== 모달 ======================== */
 .modalOverlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0,0,0,0.5);
+  background: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -87,14 +80,13 @@
   padding: 20px;
   border-radius: 10px;
   width: 80%;
+  max-width: 800px;
   max-height: 80%;
   overflow-y: auto;
   position: relative;
 }
 
-
-/* 버튼 */
-
+/* ======================== 버튼 ======================== */
 .tabButtonStyle {
   float: right;
   padding: 10px 18px;
@@ -108,7 +100,6 @@
   color: white;
   box-shadow: 0 4px 10px rgba(255, 111, 145, 0.4);
 }
-
 
 .tab2ButtonStyle {
   float: right;
@@ -125,7 +116,7 @@
 }
 
 .tab4ButtonStyle {
-    width: 50%;
+  width: 50%;
   padding: 10px 18px;
   border-radius: 15px;
   border: none;
@@ -138,20 +129,196 @@
   box-shadow: 0 4px 10px rgba(161, 168, 163, 0.4);
 }
 
-
-/* fitroom 사용시 회색화면 */
+/* ======================== 로딩 오버레이 ======================== */
 .loadingOverlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.3); /* 반투명 회색 */
-  backdrop-filter: blur(2px);      /* 옵션: 배경 흐림 */
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(2px);
   z-index: 9999;
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 24px;
   color: white;
+}
+
+/* ======================== 반응형 ======================== */
+@media (max-width: 1024px) {
+
+  .upload-box,
+  .upload-preview {
+    width: 200px;
+    height: 200px;
+  }
+
+
+}
+
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    align-items: stretch;
+    /* 가로 전체로 늘리고 높이도 균일 */
+  }
+
+  .upper-lower-container {
+    flex-direction: column;
+    /* 세로 배치 */
+    align-items: center;
+    gap: 15px;
+  }
+
+  .upload-box,
+  .upload-preview {
+    width: 200px;
+    height: 200px;
+  }
+
+
+}
+
+@media (max-width: 480px) {
+
+  .upload-box,
+  .upload-preview {
+    width: 150px;
+    height: 150px;
+  }
+
+
+  .modalContent {
+    width: 95%;
+    padding: 15px;
+  }
+}
+
+
+/* ----------------- 옷장 카드 ----------------- */
+
+/* 카드 전체 */
+.cardContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: center;
+}
+
+.itemCard {
+  width: 150px;
+  /* 카드 너비 */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: 0.2s;
+}
+
+.itemCard:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.imgWrapper {
+  width: 100%;
+  height: 200px;
+  /* 이미지 영역 고정 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.imgWrapper img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.textWrapper {
+  width: 100%;
+  height: 50px;
+  /* 이름+타입 영역 고정 */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* 세로 중앙 정렬 */
+  align-items: center;
+  /* 가로 중앙 정렬 */
+  text-align: center;
+  padding: 5px;
+  box-sizing: border-box;
+}
+
+.textWrapper p {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.textWrapper span {
+  font-size: 12px;
+  color: gray;
+}
+
+
+/* 액션 버튼 (필요 시) */
+.actions {
+  position: absolute;
+  top: 5px;
+  right: -15px;
+  display: flex;
+  gap: 5px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.itemCard:hover .actions {
+  opacity: 1;
+}
+
+.actions button {
+  width: 10%;
+  aspect-ratio: 1 / 1;
+  min-width: 30px;
+  min-height: 30px;
+  background: rgba(0, 0, 0, 0.4);
+  border: none;
+  border-radius: 50%;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  font-size: 1em;
+}
+
+.actions button:hover {
+  background: rgba(0, 0, 0, 0.6);
+}
+
+/* 반응형 */
+@media (max-width: 768px) {
+  .itemCard {
+    max-width: 45%;
+  }
+
+  .actions button {
+    width: 12%;
+  }
+}
+
+@media (max-width: 480px) {
+  .itemCard {
+    max-width: 90%;
+  }
+
+  .actions button {
+    width: 15%;
+  }
 }

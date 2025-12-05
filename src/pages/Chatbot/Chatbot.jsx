@@ -8,6 +8,7 @@ import { FaXmark } from "react-icons/fa6";
 import { GiClothes } from "react-icons/gi";
 import { MdOutlineCleaningServices } from "react-icons/md";
 import { RiSendPlaneFill } from "react-icons/ri";
+import { useLocation } from "react-router-dom";
 
 const MessageList = React.memo(({ messages, chatLoading }) => (
     <>
@@ -39,7 +40,7 @@ const Chatbot = () => {
 
     //제거 모달용 상태변수
     const [delModalShow, setDelModalShow] = useState(false);
-
+    const location = useLocation();
     const handleClose = () => setDelModalShow(false);
     const handleShow = () => setDelModalShow(true);
 
@@ -67,6 +68,18 @@ const Chatbot = () => {
         return () => window.removeEventListener("resize", handler); // 이벤트 정리 ( 중복 방지 )
     }, []);
 
+    useEffect(() => {
+        const tokenVerify = async () => {
+            try {
+                await caxios.get("/chatbot");
+                setIsLogin(true);
+            } catch {
+                setIsLogin(false);
+            }
+        };
+
+        tokenVerify();
+    }, [location.pathname]); // ✅ URL 바뀔 때마다 재실행
 
     const handleSendMessage = async (message) => {
         if (message == "") {
@@ -90,10 +103,7 @@ const Chatbot = () => {
 
 
         try {
-            const userId = sessionStorage.getItem('userId');
-
             const res = await caxios.post("/chatbot/ask", {
-                userId: userId,
                 prompt: message,
                 history: newHistory
             });
@@ -157,6 +167,7 @@ const Chatbot = () => {
     }, [isOpen]);
 
     return (
+        isLogin &&
         <div className={isMobile ? styles.mobileWrapper : styles.pcWrapper}>
 
             {/* 챗봇 버튼 */}

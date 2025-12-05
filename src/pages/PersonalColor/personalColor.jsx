@@ -3,6 +3,10 @@ import { colorPalettes } from "./palettes";
 import { caxios } from "../../config/config";
 import ShareButton from "./ShareButton";
 import ColorModal from "./modal/ColorModal";
+import {jwtDecode} from "jwt-decode";
+import styles from "./PersonalColor.module.css";
+
+
 
 //모바일 감지 
 const useIsMobile = () => window.innerWidth < 768;
@@ -488,6 +492,24 @@ function FileUploadBox({ onChange }) {
 
 // =================== 메인 컴포넌트 ===================
 function PersonalColor() {
+   // 로그인된 사용자 ID 가져오기
+  const getUserId = () => {
+    const token = sessionStorage.getItem("token");
+    if (token) {
+      try {
+        const decoded = jwtDecode(token);
+        return decoded.sub;   // JWT의 subject = userId
+      } catch (err) {
+        console.error("JWT decode error:", err);
+      }
+    }
+    // 혹시 이상하면 fallback
+    return sessionStorage.getItem("id");
+  };
+
+  const userId = getUserId();
+  console.log("Final UserId:", userId);
+
   const isMobile = useIsMobile();
 
   const [imageSrc, setImageSrc] = useState(null);
@@ -564,6 +586,7 @@ function PersonalColor() {
       : "winter";
 
     caxios.post("/color", {
+      member_id: userId,
       season: result,
       tone_type: toneType,
       best_color: colorPalettes[baseSeason].best.join(","),
@@ -642,6 +665,19 @@ function PersonalColor() {
     if (mode === "Eye") setEye(color);
   };
 
+  const handleSaveColor = () => {
+  caxios.put("color/update", {
+    member_id: userId,
+    season: season 
+  })
+  .then(() => {
+    alert("내 정보에 저장되었습니다!");
+  })
+  .catch(() => {
+    alert("저장 중 오류가 발생했습니다.");
+  });
+};
+
 
 
   
@@ -668,55 +704,26 @@ function PersonalColor() {
         style={{ display: "none" }}
       />
 
-       <div
-        style={{
-          display: "flex",
-          flexDirection: isMobile ? "column" : "row",
-          justifyContent: "center",
-          alignItems: isMobile ? "center" : "flex-start",
-          gap: isMobile ? 20 : 40,
-          padding: 20,
-          width: "100%",
-          maxWidth: 1200,
-          margin: "0 auto",
-          flexWrap: "wrap" 
-        }}
-      >
+      <div className={styles.container}>
         {/* ========== 왼쪽: 이미지 영역 ========== */}
        <div style={{ flexShrink: 0 }}>
           {!imageSrc && <FileUploadBox />}
 
           {imageSrc && (
-           <div
-          style={{
-          position: "relative",
-          display: "inline-block",
-          width: isMobile ? "90vw" : 400,
-          height: isMobile ? "90vw" : 400,
-          overflow: "hidden",
-          borderRadius: 12,
-        }}
-      >
-              <img
-                ref={imgRef}
-                src={imageSrc}
-                alt="uploaded face"
-                onMouseMove={handleMouseMove}
-                onClick={handleImageClick}
-                onMouseLeave={() => setHoverColor(null)}
-                style={{
-                  position: "absolute",
-                  top: "50%",
-                  left: "50%",
-                  objectFit: "contain",
-                  width: "100%",
-                  height: "100%",
-                  cursor: "none",
-                  transform: `translate(-50%, -50%) scale(${scale})`,
-                  transformOrigin: "center center",
-                  transition: "transform 0.15s ease-out",
-                }}
-              />
+          <div className={styles.imgBox}>
+  <img
+  ref={imgRef}
+  src={imageSrc}
+  alt="uploaded face"
+  onMouseMove={handleMouseMove}
+  onClick={handleImageClick}
+  onMouseLeave={() => setHoverColor(null)}
+  className={styles.image}
+  style={{
+    transform: `translate(-50%, -50%) scale(${scale})`,
+  }}
+/>
+
 
               {hoverColor && (
                 <div
@@ -829,25 +836,45 @@ function PersonalColor() {
                     {season}
                   </div>
                 )}
+                
+
 
                 {season && (
                  <div style={{ marginTop: 20 }}>
                 <ShareButton season={season} />
                 </div>
+                  )}
+
+                  {season && userId && (
+  <button
+    onClick={handleSaveColor}
+    style={{
+      padding: "10px 18px",
+      borderRadius: 10,
+      border: "none",
+      cursor: "pointer",
+      background: "linear-gradient(135deg, #6c5ce7, #a29bfe)",
+      color: "white",
+      fontWeight: "bold",
+      fontSize: 15,
+      marginTop: 10
+    }}
+  >
+    내 정보에 퍼스널 컬러 저장하기
+  </button>
 )}
+
+
+{season && !userId && (
+  <p style={{ marginTop: 10, color: "#888" }}>
+    로그인하면 내 정보에 저장할 수 있어요 😊
+  </p>
+)}
+
+
               </div>
 
-              <div
-              style={{
-              background: "white",
-              padding: 24,
-              borderRadius: 14,
-              boxShadow: "0 4px 20px rgba(0,0,0,0.08)",
-              width: isMobile ? "100%" : "1000px",
-              marginLeft: isMobile ? 0 : "-420px",
-              marginTop: isMobile ? 20 : 0,
-          }}
-              >
+             <div className={styles.resultBox}>
                 {season && <ExplanationBox season={season} />}
 
                 {baseSeasonForUI && (

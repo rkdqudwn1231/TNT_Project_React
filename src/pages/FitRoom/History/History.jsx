@@ -170,8 +170,8 @@ function History() {
                 {/* Modal */}
                 <Modal show={showModal} onHide={handleCloseModal}>
 
-                    <Modal.Header closeButton>
-                        <Modal.Title>{modalType === "download" ? "다운로드" : "기록 삭제"}</Modal.Title>
+                    <Modal.Header closeButton style={{justifyContent:"center"}}>
+                        <Modal.Title style={{ textAlign: "center", flex: 1 }}>{modalType === "download" ? "다운로드" : "기록 삭제"}</Modal.Title>
                     </Modal.Header>
 
                     <Modal.Body>
@@ -189,7 +189,7 @@ function History() {
                     <Modal.Footer>
 
 
-                        <button onClick={() => {
+                        <button className={styles.tabButtonStyle} onClick={() => {
                             if (modalType === "download") {
                                 handleDownload();
                             }
@@ -201,7 +201,7 @@ function History() {
                             {modalType === "download" ? "다운받기" : "삭제"}
                         </button>
 
-                        <button onClick={handleCloseModal}>취소</button>
+                        <button onClick={handleCloseModal} className={styles.tab2ButtonStyle}>취소</button>
                     </Modal.Footer>
                 </Modal>
 

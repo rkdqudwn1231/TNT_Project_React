@@ -38,29 +38,35 @@ const BodyAnalyzerResult = () => {
 
   return (
     <div className={styles.wrapper}>
-      <h2 className={styles.title}>📌 체형 진단 결과</h2>
-
+      <h2 className={styles.title} style={{ textAlignlign: "center" }}> 나의 체형 타입은? </h2>
+ 
       {/* 이미지 영역: GCS URL 사용 */}
-      <div className={styles.imageContainer} style={{ textAlign: "center", margin: "20px 0" }}>
-        {imageUrl ? (
-          <img
-            src={imageUrl}
-            alt={`${bodyType} 체형`}
-            className={styles.bodyImage}
-            style={{ maxWidth: "250px", borderRadius: "10px", boxShadow: "0 4px 8px rgba(0,0,0,0.1)" }}
-          />
-        ) : (
-          <div style={{ color: "#999", padding: "20px" }}>이미지 준비 중</div>
-        )}
-      </div>
+      <div className={styles.typeContainer}>
+        <div className={styles.imageBox}>
+          {imageUrl ? (
+            <img
+              src={imageUrl}
+              alt={`${bodyType} 체형`}
+              className={styles.bodyImage}
+            />
+          ) : (
+            <div style={{ color: "#999", padding: "20px" }}>이미지 준비 중</div>
+          )}
+        </div>
+        {/* 체형 타입  */}
+        <div className={styles.typeBox}>
+          <span className={styles.typeValue}>{bodyType} 타입</span>
+          <p className={styles.typeDesc}>  {summary.split('.').map((line, idx) =>
+            line.trim() ? (
+              <span key={idx}>
+                {line.trim()}.
+                <br />
+              </span>
+            ) : null
+          )}</p>
+        </div>
 
-      {/* 체형 타입 */}
-      <div className={styles.typeBox}>
-        <span className={styles.typeLabel}>나의 체형 타입</span>
-        <span className={styles.typeValue}>{bodyType} 타입</span>
-        <p className={styles.typeDesc}>{summary}</p>
       </div>
-
       {/* 팁 카드 리스트 */}
       <div className={styles.recommendContainer}>
         <TipCard title="👚 상의 스타일 추천" tips={topTips} />

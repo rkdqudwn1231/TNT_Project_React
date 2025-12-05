@@ -24,11 +24,11 @@ function Model() {
     // 모델 추가용
     const [showAddModelModal, setAddModelModal] = useState(false);
     const [modelsexModal, setmodelsexModal] = useState("male");
-    const [modeImage, setModelImage] = useState(null);
+    const [modelImage, setModelImage] = useState(null);
 
     const memberId = sessionStorage.getItem("id");
 
-  const navigate = useNavigate();
+    const navigate = useNavigate();
 
     useEffect(() => {
         const Modellist = async () => {
@@ -46,20 +46,37 @@ function Model() {
         Modellist();
     }, []);
 
-    //추가
+    useEffect(() => {
+        const fetchModels = async () => {
+            try {
+                const myRes = await caxios.get("/model/list", { params: { memberId } });
+                const publicRes = await caxios.get("/model/publicList");
 
+                // 두 리스트 합치기
+                setModelData([...publicRes.data, ...myRes.data]);
+            } catch (err) {
+                console.error(err);
+            }
+        };
+
+        fetchModels();
+    }, []);
+
+
+    //추가
     const handleaddModel = async () => {
 
 
-        if (!modeImage) {
+        if (!modelImage) {
             alert("모델을 추가해주세요")
             return;
         }
 
         const formData = new FormData();
+        // formData.append("memberId", memberId);
         formData.append("memberId", memberId);
         formData.append("sex", modelsexModal);
-        formData.append("modelUrl", modeImage);
+        formData.append("modelUrl", modelImage);
 
         try {
             await caxios.post("/model/insert", formData, {
@@ -74,8 +91,12 @@ function Model() {
 
             // 서버에서 전체 리스트 다시 가져오기
             try {
-                const res = await caxios.get("/model/list");
-                setModelData(res.data);
+
+                const myRes = await caxios.get("/model/list", { params: { memberId } });
+                const publicRes = await caxios.get("/model/publicList");
+
+                // 두 리스트 합치기
+                setModelData([...publicRes.data, ...myRes.data]);
             } catch (err) {
                 console.error(err);
 
@@ -89,36 +110,83 @@ function Model() {
 
 
     // 삭제
-    const handleDelete = () => {
+    // const handleDelete = () => {
 
+    //     try {
+    //         caxios.delete("/model/delete", { params: { seq: selectedModel.seq } });
+
+    //         setModelData(prev => prev.filter(e => e.seq !== selectedModel.seq));
+
+
+    //         handleCloseModal();
+    //         alert("삭제 완료");
+    //     } catch (err) {
+    //         console.error(err);
+    //         alert("삭제 실패");
+    //     }
+    // }
+    // 삭제
+    const handleDelete = async () => {
         try {
-            caxios.delete("/model/delete", { params: { seq: selectedModel.seq } });
 
-            setModelData(prev => prev.filter(e => e.seq !== selectedModel.seq));
+           const res = await caxios.delete("/model/delete", {
+                params: { seq: selectedModel.seq }
+            });
+
+            const result = res.data;
+
+            if (result === -1) {
+                // 기본 모델 삭제 시도
+                alert("기본 가상모델은 삭제할 수 없습니다.");
+                handleCloseModal();
+                return;
+            }
+
+
+            const myRes = await caxios.get("/model/list", { params: { memberId } });
+            const publicRes = await caxios.get("/model/publicList");
+
+
+            setModelData([...publicRes.data, ...myRes.data]);
 
 
             handleCloseModal();
             alert("삭제 완료");
+
         } catch (err) {
             console.error(err);
             alert("삭제 실패");
         }
-    }
+    };
+
+
 
     const handleEdit = async () => {
 
         try {
-            await caxios.put("/model/edit", null, {
+          const res =   await caxios.put("/model/edit", null, {
                 params: {
                     seq: selectedModel.seq,
                     name: editName,
                     sex: editSex
                 }
             })
+
+            const result = res.data;
+
+            if (result === -1) {
+                alert("기본 가상모델은 수정할 수 없습니다.");
+                handleCloseModal();
+                return;
+            }
+
+            // console.log(selectedModel.seq, editName, editSex);
             alert("수정 완료");
             //리스트 출력 (새로고침)
-            const res = await caxios.get("/model/list");
-            setModelData(res.data);
+            const myRes = await caxios.get("/model/list", { params: { memberId } });
+            const publicRes = await caxios.get("/model/publicList");
+
+            setModelData([...publicRes.data, ...myRes.data]);
             handleCloseModal();
 
         } catch (err) {
@@ -194,10 +262,13 @@ function Model() {
 
     // 모델 선택시
     const handleModelSelect = (model) => {
+        const confirmed = window.confirm(`"${model.modelName}" 해당 모델을 FitRoom에 이용하시겠습니까?`);
+        if (!confirmed) return; // 사용자가 취소하면 함수 종료
+
         sessionStorage.setItem("selectedModelImage", model.modelUrl);
+        sessionStorage.setItem("selectedModelName", model.modelName); // 이름
         alert(`${model.modelName} 선택 완료`);
         navigate("/fitroom");
-      
     };
 
     return (
@@ -208,13 +279,13 @@ function Model() {
             {/* 메인기능 */}
             <div>
                 <label> 성별: </label>
-                <select value={sex} onChange={(e) => setSex(e.target.value)}>
+                <select value={sex} onChange={(e) => setSex(e.target.value)} style={{ fontSize: "15px" }}>
                     <option value="all">전체</option>
                     <option value="male">남성</option>
                     <option value="female">여성</option>
                 </select>
 
-                <button onClick={handlAddClick} style={{ float: "right" }}>모델 추가</button>
+                <button onClick={handlAddClick} className={styles.tabButtonStyle}>모델 추가</button>
                 <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
 
                     {displayedModels.map(item => (
@@ -223,7 +294,7 @@ function Model() {
 
                             <div className={styles.itemCard}>
                                 <div className={styles.imgWrapper}>
-                                    <img src={item.modelUrl} alt={item.modelName} onClick={() => handleModelSelect(item)}/>
+                                    <img src={item.modelUrl} alt={item.modelName} onClick={() => handleModelSelect(item)} />
 
                                     <div className={styles.actions}>
                                         <button onClick={() => handleEditClick(item)}>✏️</button>
@@ -246,8 +317,8 @@ function Model() {
                 {/* Modal */}
                 <Modal show={showModal} onHide={handleCloseModal}>
 
-                    <Modal.Header closeButton>
-                        <Modal.Title>{modalType === "edit" ? "모델 수정" : "모델 삭제"}</Modal.Title>
+                    <Modal.Header closeButton style={{ justifyContent: "center" }}>
+                        <Modal.Title style={{ textAlign: "center", flex: 1 }}>{modalType === "edit" ? "모델 수정" : "모델 삭제"}</Modal.Title>
                     </Modal.Header>
 
                     <Modal.Body>
@@ -261,7 +332,7 @@ function Model() {
                                             src={selectedModel.modelUrl}
                                             alt={selectedModel.modelName}
                                             style={{ width: "200px" }}
-                                          
+
                                         />
                                     </div>
                                 </div>
@@ -273,7 +344,7 @@ function Model() {
                                     <input type="text" value={editName} onChange={(e) => setEditName(e.target.value)} />
                                     <br></br>
                                     <label>성별:</label>
-                                    <select value={editSex} onChange={(e) => setEditSex(e.target.value)}>
+                                    <select value={editSex} onChange={(e) => setEditSex(e.target.value)} style={{ fontSize: "15px" }}>
                                         <option value="male">남성</option>
                                         <option value="female">여성</option>
                                     </select>
@@ -287,7 +358,7 @@ function Model() {
                     </Modal.Body>
 
                     <Modal.Footer>
-                        <button onClick={() => {
+                        <button className={styles.tabButtonStyle} onClick={() => {
                             if (modalType === "edit") {
                                 handleEdit();
                             } else if (modalType === "delete") {
@@ -298,7 +369,7 @@ function Model() {
                             {modalType === "edit" ? "저장" : "삭제"}
                         </button>
 
-                        <button onClick={handleCloseModal}>취소</button>
+                        <button onClick={handleCloseModal} className={styles.tab2ButtonStyle}>취소</button>
                     </Modal.Footer>
 
 
@@ -308,29 +379,46 @@ function Model() {
                 </Modal>
 
                 <Modal show={showAddModelModal} onHide={handleAddCloseModal}>
-                    <Modal.Header>
-                        <Modal.Title> 추가 </Modal.Title>
+                    <Modal.Header style={{ justifyContent: "center" }}>
+                        <Modal.Title style={{ textAlign: "center", flex: 1 }}> 추가 </Modal.Title>
                     </Modal.Header>
 
                     <Modal.Body key={showAddModelModal ? "open" : "closed"}>
 
-                        <select value={modelsexModal} onChange={(e) => setmodelsexModal(e.target.value)}>
+                        <select value={modelsexModal} onChange={(e) => setmodelsexModal(e.target.value)} style={{ fontSize: "15px" }}>
                             <option value="male">남성</option>
                             <option value="female">여성</option>
                         </select>
 
                         <div>
                             <label>모델 이미지:</label>
-                            <input type="file" accept="image/*" onChange={(e) => setModelImage(e.target.files[0])} />
-                            {modeImage && <img src={URL.createObjectURL(modeImage)} alt="상의 미리보기" style={{ width: 200 }} />}
+
+                            <input
+                                type="file"
+                                accept="image/*"
+                                id="modelUpload"
+                                onChange={(e) => setModelImage(e.target.files[0])}
+                                style={{ display: "none" }}
+                            />
+
+                            {/* 커스텀 버튼 */}
+                            <button
+                                className={styles.tab3ButtonStyle}
+                                onClick={() => document.getElementById("modelUpload").click()}
+                            >
+                                업로드
+                            </button>
+
+                            {modelImage && <img src={URL.createObjectURL(modelImage)} alt="상의 미리보기" style={{ width: 200, marginTop: "30px" }} />}
                         </div>
 
 
                     </Modal.Body>
 
                     <Modal.Footer>
-                        <button onClick={handleaddModel}> 추가 </button>
-                        <button onClick={handleAddCloseModal}>취소</button>
+                        <p>새로운 모델을 추가해 볼까요?😊</p>
+                        <button onClick={handleaddModel} className={styles.tabButtonStyle}> 추가 </button>
+                        <button onClick={handleAddCloseModal} className={styles.tab2ButtonStyle}>취소</button>
                     </Modal.Footer>
 
                 </Modal>
@@ -340,5 +428,7 @@ function Model() {
     );
 
 }
+
+
 
 export default Model;

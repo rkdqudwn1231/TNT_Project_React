@@ -69,3 +69,89 @@
     display: none;
 }
 
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.modalContent {
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  width: 80%;
+  max-height: 80%;
+  overflow-y: auto;
+  position: relative;
+}
+
+
+/* 버튼 */
+
+.tabButtonStyle {
+  float: right;
+  padding: 10px 18px;
+  border-radius: 15px;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: 0.25s;
+  background: linear-gradient(135deg, #ff8fa3, #ff6f91);
+  color: white;
+  box-shadow: 0 4px 10px rgba(255, 111, 145, 0.4);
+}
+
+
+.tab2ButtonStyle {
+  float: right;
+  padding: 10px 18px;
+  border-radius: 15px;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: 0.25s;
+  background: linear-gradient(135deg, #87c2ef, #72a8e5);
+  color: white;
+  box-shadow: 0 4px 10px rgba(138, 206, 236, 0.4);
+}
+
+.tab4ButtonStyle {
+    width: 50%;
+  padding: 10px 18px;
+  border-radius: 15px;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: 0.25s;
+  background: linear-gradient(135deg, #ffffff, #d2d6d3);
+  color: black;
+  box-shadow: 0 4px 10px rgba(161, 168, 163, 0.4);
+}
+
+
+/* fitroom 사용시 회색화면 */
+.loadingOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3); /* 반투명 회색 */
+  backdrop-filter: blur(2px);      /* 옵션: 배경 흐림 */
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
+  color: white;
+}

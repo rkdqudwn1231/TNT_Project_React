@@ -1,24 +1,37 @@
 .wrapper {
   width: 100%;
-  max-width: 790px;
-  margin: 0 auto;
-  padding: 40px 22px 80px;
-  animation: fadeIn 0.4s ease;
+  padding: 40px 0 80px; /* 양옆 padding 제거 */
 }
 
-.title {
-  font-size: 28px;
-  font-weight: 700;
-  margin-bottom: 35px;
-  text-align: center;
+.typeContainer {
+  display: flex;
+  align-items: center;
+  gap: 48px;
+
+  /* 화면을 꽉 채우지 말고 좌우에 시각적 여백을 주기 위한 값 */
+  padding: 0 80px;
+}
+
+.imageBox {
+  flex: 0 0 auto; /* 자동 줄어들지 X */
+  margin-left: 0; /* 왼쪽에 밀착 */
+  display: flex;
+  justify-content: flex-start;
+  margin-left: -80px;
+  background-color: #db005c;
+}
+
+.bodyImage {
+  width: 420px;
+  height: auto;
 }
 
 .typeBox {
+  flex: 1;
   background: #ffe4f2;
-  border-radius: 16px;
-  padding: 30px 22px;
+  border-radius: 18px;
+  padding: 35px 32px;
   text-align: center;
-  margin-bottom: 40px;
 }
 
 .typeLabel {
@@ -41,6 +54,7 @@
   line-height: 1.45;
 }
 
+
 .recommendContainer {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -51,8 +65,8 @@
   background: white;
   border-radius: 16px;
   padding: 22px 20px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.06);
-  border: 1px solid #f4d4e4;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+  border: 2px solid #f4d4e4;
 }
 
 .card h3 {
@@ -91,8 +105,15 @@
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(12px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @media (max-width: 600px) {

@@ -1,0 +1,102 @@
+.wrapper {
+  max-width: 460px;
+  margin: 40px auto;
+  background: white;
+  padding: 32px;
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+  animation: fadeIn 0.3s ease-out;
+}
+
+.title {
+  text-align: center;
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 24px;
+}
+
+.guideImg {
+  width: 100%;
+  border-radius: 14px;
+  margin-bottom: 22px;
+}
+
+.genderBox {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.genderBtn {
+  padding: 10px 22px;
+  border-radius: 26px;
+  border: 1px solid #ccc;
+  background: #f5f5f5;
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+.genderBtn.active {
+  background: #ff89a3;
+  color: #fff;
+  border-color: #ff89a3;
+}
+
+.unitToggle {
+  text-align: right;
+  margin-bottom: 16px;
+}
+.unitToggle button {
+  border: none;
+  background: none;
+  font-size: 0.9rem;
+  color: #ff678c;
+  cursor: pointer;
+}
+
+.form {
+  display: grid;
+  gap: 14px;
+}
+
+.inputGroup label {
+  font-size: 0.92rem;
+  font-weight: 600;
+  margin-bottom: 6px;
+  display: block;
+}
+
+.inputGroup input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid #ddd;
+  font-size: 1rem;
+}
+.inputGroup input:focus {
+  outline: none;
+  border-color: #ff89a3;
+}
+
+.submitBtn {
+  margin-top: 26px;
+  width: 100%;
+  padding: 14px;
+  background: #ff5f85;
+  border-radius: 14px;
+  color: white;
+  font-size: 1.15rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: 0.28s;
+}
+.submitBtn:hover {
+  background: #ff416c;
+}
+
+@keyframes fadeIn {
+  from {opacity: 0; transform: translateY(8px);}
+  to {opacity: 1; transform: translateY(0);}
+}

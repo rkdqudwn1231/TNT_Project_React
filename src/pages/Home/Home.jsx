@@ -202,7 +202,7 @@ export default function Home() {
                 현실감 있는 시뮬레이션을 제공합니다.
               </p>
               <button
-                onClick={() => navigate("/fitroom")}
+                onClick={() => navigate("/fitroom/fitroom")}
                 style={{
                   float: "right",
                   padding: "10px 18px",
@@ -234,7 +234,7 @@ export default function Home() {
                 가상피팅룸을 이용하여 온라인에서 자유롭게 옷을 입어보세요!
               </p>
               <button
-                onClick={() => navigate("/fitroom")}
+                onClick={() => navigate("/fitroom/fitroom")}
                 style={{
                   float: "right",
                   padding: "10px 18px",

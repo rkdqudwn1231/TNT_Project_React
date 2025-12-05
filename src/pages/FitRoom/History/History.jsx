@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { caxios } from "../../../config/config";
 import styles from "./History.module.css"; // 현재 폴더 기준
 import Modal from 'react-bootstrap/Modal';
+import { useNavigate } from "react-router-dom";
 
 function History() {
 
@@ -12,7 +13,23 @@ function History() {
     const [modalType, setModalType] = useState(""); // "edit" 또는 "delete"
     const [selectedHistory, setSelectedHistory] = useState(null);
 
+    const navigate = useNavigate();
+
+    const checkedRef = useRef(false);
+
+    // 사용자 id
     const memberId = sessionStorage.getItem("id");
+
+    useEffect(() => {
+        if (checkedRef.current) return; // 이미 체크했으면 종료
+        checkedRef.current = true;      // 체크 완료 표시
+
+        if (!memberId) {
+            alert("로그인 후 이용해주세요");
+            navigate("/login");
+        }
+
+    }, [memberId, navigate]);
 
     useEffect(() => {
         const Historylist = async () => {
@@ -170,7 +187,7 @@ function History() {
                 {/* Modal */}
                 <Modal show={showModal} onHide={handleCloseModal}>
 
-                    <Modal.Header closeButton style={{justifyContent:"center"}}>
+                    <Modal.Header closeButton style={{ justifyContent: "center" }}>
                         <Modal.Title style={{ textAlign: "center", flex: 1 }}>{modalType === "download" ? "다운로드" : "기록 삭제"}</Modal.Title>
                     </Modal.Header>
 

@@ -40,7 +40,21 @@ function Closet() {
 
     const navigate = useNavigate();
 
+    const checkedRef = useRef(false);
+
+    // 사용자 id
     const memberId = sessionStorage.getItem("id");
+
+    useEffect(() => {
+        if (checkedRef.current) return; // 이미 체크했으면 종료
+        checkedRef.current = true;      // 체크 완료 표시
+
+        if (!memberId) {
+            alert("로그인 후 이용해주세요");
+            navigate("/login");
+        }
+
+    }, [memberId, navigate]);
 
     useEffect(() => {
         const Closetlist = async () => {
@@ -447,7 +461,7 @@ function Closet() {
         }
 
         alert(`${item.name} 선택 완료!`);
-        navigate("/fitroom");
+        navigate("/fitroom/fitroom");
     };
 
 
@@ -714,7 +728,7 @@ function Closet() {
                         }}>
                             {modalType === "edit" ? "저장" : "삭제"}
                         </button>
-                        
+
                         <button onClick={handleCloseModal} className={styles.tab2ButtonStyle}>취소</button>
                     </Modal.Footer>
                 </Modal>

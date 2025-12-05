@@ -26,9 +26,23 @@ function Model() {
     const [modelsexModal, setmodelsexModal] = useState("male");
     const [modelImage, setModelImage] = useState(null);
 
+    const navigate = useNavigate();
+
+    const checkedRef = useRef(false);
+
+    // 사용자 id
     const memberId = sessionStorage.getItem("id");
 
-    const navigate = useNavigate();
+    useEffect(() => {
+        if (checkedRef.current) return; // 이미 체크했으면 종료
+        checkedRef.current = true;      // 체크 완료 표시
+
+        if (!memberId) {
+            alert("로그인 후 이용해주세요");
+            navigate("/login");
+        }
+
+    }, [memberId, navigate]);
 
     useEffect(() => {
         const Modellist = async () => {
@@ -129,7 +143,7 @@ function Model() {
     const handleDelete = async () => {
         try {
 
-           const res = await caxios.delete("/model/delete", {
+            const res = await caxios.delete("/model/delete", {
                 params: { seq: selectedModel.seq }
             });
 
@@ -164,7 +178,7 @@ function Model() {
     const handleEdit = async () => {
 
         try {
-          const res =   await caxios.put("/model/edit", null, {
+            const res = await caxios.put("/model/edit", null, {
                 params: {
                     seq: selectedModel.seq,
                     name: editName,
@@ -268,7 +282,7 @@ function Model() {
         sessionStorage.setItem("selectedModelImage", model.modelUrl);
         sessionStorage.setItem("selectedModelName", model.modelName); // 이름
         alert(`${model.modelName} 선택 완료`);
-        navigate("/fitroom");
+        navigate("/fitroom/fitroom");
     };
 
     return (

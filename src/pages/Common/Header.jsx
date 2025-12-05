@@ -180,6 +180,7 @@ const Header = ({ isHome }) => {
                       <NavLink to="/fitroom/closet" onClick={closeMenu}>Closet</NavLink>
                       <NavLink to="/fitroom/model" onClick={closeMenu}>Model</NavLink>
                       <NavLink to="/fitroom/history" onClick={closeMenu}>History</NavLink>
+                      <NavLink to="/fitroom/about" onClick={closeMenu}>About</NavLink>
                     </div>
                   )}
                 </div>

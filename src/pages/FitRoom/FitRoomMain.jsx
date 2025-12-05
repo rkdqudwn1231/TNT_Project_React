@@ -42,12 +42,7 @@ function FitRoomMain() {
 
   const isSubmitting = useRef(false); // 중복 요청 방지
 
-  const navigate = useNavigate();
 
-  const checkedRef = useRef(false);
-
-  // 사용자 id
-  const memberId = sessionStorage.getItem("id");
   // 로그인 확인
 
   // const [checkedLogin, setCheckedLogin] = useState(false);
@@ -62,6 +57,12 @@ function FitRoomMain() {
   //   }
   // }, [memberId, navigate, checkedLogin]);
 
+  const navigate = useNavigate();
+
+  const checkedRef = useRef(false);
+
+  // 사용자 id
+  const memberId = sessionStorage.getItem("id");
 
   useEffect(() => {
     if (checkedRef.current) return; // 이미 체크했으면 종료
@@ -424,7 +425,7 @@ function FitRoomMain() {
     const confirmed = window.confirm(`"${clothName}" 옷을 FitRoom에 적용하시겠습니까?`);
     if (!confirmed) return;
 
-    if (clothType === "upper") {
+    if (clothType === "upper") {  
       const file = await convertUrlToFile(item.upperImageUrl, item.upperName || item.name);
       setClothImage(file);
 
@@ -522,7 +523,7 @@ function FitRoomMain() {
 
     return (
 
-      <Modal show={show} onHide={handleClose} size="lg">
+      <Modal show={show} onHide={handleClose} size="xl">
         <Modal.Header closeButton style={{ justifyContent: "center" }}>
           <Modal.Title style={{ textAlign: "center", flex: 1 }}>옷장 선택</Modal.Title>
         </Modal.Header>
@@ -544,27 +545,33 @@ function FitRoomMain() {
           </div>
 
           {/* 옷장 아이템 */}
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
+          <div className={styles.cardContainer}>
             {filteredData.map((item, idx) => (
-
-              <div key={idx} style={{ textAlign: "center" }}>
-                <img
-                  src={item.upperImageUrl || item.lowerImageUrl || item.fullImageUrl}
-                  alt={item.upperName || item.lowerName || item.name}
-                  style={{ width: 130, cursor: "pointer" }}
-                  onClick={() => handleSelectCloth(item)}
-                />
-                <div>{item.upperName || item.lowerName || item.name}</div>
-                <span style={{ fontSize: "0.8em", color: "gray" }}>
-                  {item.clothType === "upper" ? "상의" : item.clothType === "lower" ? "하의" : item.clothType === "full" ? "한벌" : null}
-                </span>
+              <div key={idx} className={styles.itemCard} onClick={() => handleSelectCloth(item)}>
+                <div className={styles.imgWrapper}>
+                  <img
+                    src={item.upperImageUrl || item.lowerImageUrl || item.fullImageUrl}
+                    alt={item.upperName || item.lowerName || item.name}
+                  />
+                </div>
+                <div className={styles.textWrapper}>
+                  <p>{item.upperName || item.lowerName || item.name}</p>
+                  <span style={{ fontSize: "0.8em", color: "gray" }}>
+                    {item.clothType === "upper"
+                      ? "상의"
+                      : item.clothType === "lower"
+                        ? "하의"
+                        : item.clothType === "full"
+                          ? "한벌"
+                          : null}
+                  </span>
+                </div>
               </div>
             ))}
           </div>
         </Modal.Body>
 
         <Modal.Footer>
-
           <p>원하는 옷을 선택하여 피팅룸에 추가해 보세요!😋</p>
           <Button className={styles.tab2ButtonStyle} onClick={handleClose}>
             닫기
@@ -587,7 +594,7 @@ function FitRoomMain() {
         <Modal.Body>
           {/* 필터 선택 */}
           <div style={{ marginBottom: "10px" }}>
-            <h3>필수❗ 이미지 해상도: 512x512 ~ 2048x2048 픽셀 이내</h3>
+            <h3>추천 이미지 해상도: 512x512 ~ 2048x2048 픽셀 사이</h3>
           </div>
 
           <div style={{ textAlign: "center", marginTop: "10px" }}>
@@ -601,7 +608,7 @@ function FitRoomMain() {
                 alt="올바른예시0"
                 style={{ width: "200px", display: "block", marginBottom: "5px" }}
               />
-              <span>모델 정면 </span>
+              <span>정면 모델</span>
 
               <span style={{ fontSize: "20px" }}>⭕</span>
             </div>
@@ -612,8 +619,8 @@ function FitRoomMain() {
                 alt="올바른예시1"
                 style={{ width: "200px", display: "block", marginBottom: "5px" }}
               />
-              <span>단일 옷</span>
-              <span style={{ fontSize: "20px", color: "green" }}>⭕</span>
+              <span>단일 옷 </span>
+              <span style={{ fontSize: "20px" }}>⭕</span>
             </div>
 
             <div style={{ textAlign: "center" }}>
@@ -622,7 +629,7 @@ function FitRoomMain() {
                 alt="올바른예시2"
                 style={{ width: "200px", display: "block", marginBottom: "5px" }}
               />
-              <span>걸려있는 옷</span>
+              <span>걸려있는 옷 </span>
               <span style={{ fontSize: "20px" }}>⭕</span>
             </div>
           </div>
@@ -638,7 +645,7 @@ function FitRoomMain() {
                 alt="잘못된예시1"
                 style={{ width: "200px", height: "180px", display: "block", marginBottom: "5px" }}
               />
-              <span>여러 사람</span>
+              <span>여러 사람 </span>
 
               <span style={{ fontSize: "20px" }}>❌</span>
             </div>
@@ -649,7 +656,7 @@ function FitRoomMain() {
                 alt="잘못된예시2"
                 style={{ width: "200px", height: "180px", display: "block", marginBottom: "5px" }}
               />
-              <span>접힌 옷</span>
+              <span>접힌 옷 </span>
 
               <span style={{ fontSize: "20px" }}>❌</span>
             </div>
@@ -660,7 +667,7 @@ function FitRoomMain() {
                 alt="잘못된예시3"
                 style={{ width: "200px", height: "180px", display: "block", marginBottom: "5px" }}
               />
-              <span>옷 뒤쪽</span>
+              <span>옷 뒤쪽 </span>
 
               <span style={{ fontSize: "20px" }}>❌</span>
             </div>
@@ -718,7 +725,6 @@ function FitRoomMain() {
               <option value="female">여성</option>
             </select>
           </div>
-
           <h2>모델 이미지</h2>
           <label htmlFor="modelInput">
             {!modelImage ? (
@@ -757,7 +763,7 @@ function FitRoomMain() {
 
             {(clothType === "full") && (
               <div style={{ marginLeft: "10px" }}>
-                <label>카테고리:</label>
+                <label>한벌:</label>
                 <select value={closetCategory} onChange={(e) => setClosetCategory(e.target.value)} style={{ fontSize: "15px" }}>
                   <option value="coat">코트</option>
                   <option value="dress">드레스</option>
@@ -768,7 +774,7 @@ function FitRoomMain() {
 
             {(clothType === "upper" || clothType === "combo") && (
               <div style={{ marginLeft: "10px" }}>
-                <label>카테고리:</label>
+                <label>상의:</label>
                 <select value={closetCategory} onChange={(e) => setClosetCategory(e.target.value)} style={{ fontSize: "15px" }}>
                   <option value="tshirt">티셔츠</option>
                   <option value="shirt">셔츠</option>
@@ -784,7 +790,7 @@ function FitRoomMain() {
 
             {(clothType === "combo") && (
               <div style={{ marginLeft: "10px" }}>
-                <label>하의 카테고리:</label>
+                <label>하의:</label>
                 <select value={lowerCategory} onChange={(e) => setLowerCategory(e.target.value)} style={{ fontSize: "15px" }}>
                   <option value="longpants">긴바지</option>
                   <option value="shorts">반바지</option>
@@ -902,7 +908,7 @@ function FitRoomMain() {
             type="submit"
             disabled={loading}
             className={styles.tab4ButtonStyle}
-            style={{ width: "40%", fontSize: "30px" }}
+            style={{ width: "40%", fontSize: "30px", marginTop: "20px" }}
           >
             {loading ? "로딩중..." : "시작"}
           </button>
@@ -939,7 +945,7 @@ function FitRoomMain() {
           <div style={{ textAlign: "center" }}>
             <Spinner animation="border" role="status" />
             <div style={{ marginTop: "10px", fontSize: "20px" }}>
-             FitRoom 작업 중입니다...
+              FitRoom 작업 중입니다...
             </div>
           </div>
         </div>

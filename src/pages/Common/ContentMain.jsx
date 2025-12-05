@@ -12,8 +12,6 @@ import SignUp from "../SignUp/SignUp"
 import BoardRoutes from "../Board/BoardRoutes";
 import LoginRoutes from "../Login/LoginRoutes";
 import PersonalBodyRoute from "../PersonalBody/PersonalBodyRoute.jsx";
-import { Col } from "react-bootstrap";
-
 
 
 const ContentMain = () => {

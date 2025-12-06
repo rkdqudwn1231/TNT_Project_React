@@ -269,6 +269,29 @@ export default function Home() {
             </Col>
           </Row>
 
+          <Row className="align-items-center">
+            <Col lg={6}>
+              <img
+                src="/images/about/14.png"
+                className="img-fluid rounded"
+                alt="about"
+                style={{
+                  marginTop: "10px",
+                  marginLeft: "-10px"
+                }}
+              />
+            </Col>
+            <Col lg={6} >
+              <h2 className="mb-4 fw-bold">Chatbot</h2>
+              <p>
+                패션 챗봇은 플랫폼에서 사용자의 취향과 스타일을 기반으로
+                맞춤형 코디와 스타일 정보를 제공하는 인공지능 패션 어시스턴트입니다. <br></br>
+                <br></br>
+                사용자의 성별, 체형, 퍼스널 컬러, 선호 스타일 등의 데이터 입력을 통하여
+                의류 추천부터 스타일링 제안까지 한 번에 안내해주는 인공지능 패션 어시스턴트를 만나보세요.<br></br><br></br>
+              </p>
+            </Col>
+          </Row>
         </Container>
       </section>
 

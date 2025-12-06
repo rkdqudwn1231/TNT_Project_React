@@ -76,6 +76,7 @@ const Chatbot = () => {
                 setIsLogin(true);
             } catch {
                 setIsLogin(false);
+                sessionStorage.removeItem("token");
             }
         };
 
@@ -138,6 +139,10 @@ const Chatbot = () => {
     }, [messages]);
 
     const handleCleanMsg = async () => {
+
+        if (chatLoading)
+            return;
+
         try {
             // const token = sessionStorage.getItem('token');
             // const res = await caxios.delete("/chatbot", {

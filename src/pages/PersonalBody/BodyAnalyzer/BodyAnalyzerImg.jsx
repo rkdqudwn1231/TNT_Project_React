@@ -1,52 +1,120 @@
+import React, { useState, useEffect } from "react";
 import styles from "./BodyAnalyzerImg.module.css";
-import React, { useState } from "react";
-import { getPoseLandmarker } from "../MediaPipe/poseLandmarker"; // MediaPipe Pose 모델을 가져오는 유틸
-import { bodyMetrics } from "../MediaPipe/bodyMetrics"; // 랜드마크에서 비율 계산하는 유틸
+import { caxios } from "../../../config/config";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
-const BodyAnalyzerMain = () => {
-
-    // 사용자가 업로드한 파일 상태
+const BodyAnalyzerImg = () => {
     const [file, setFile] = useState(null);
-
-    // 성별(분석 시 참고용)
-    // const [gender, setGender] = useState("female");
-
-    // 분석 진행 여부(버튼 비활성화 / "분석 중..." 표시용)
-    const [loading, setLoading] = useState(false);
-
-    // 서버에서 받은 결과 전체 저장
+    const [preview, setPreview] = useState(null);
     const [result, setResult] = useState(null);
-
-    // 에러 메시지 상태
+    const [loading, setLoading] = useState(false);
     const [errorMsg, setErrorMsg] = useState("");
 
-    const handleFileChange = () => {
+    // 파일 선택 시 미리보기 설정
+    useEffect(() => {
+        if (!file) {
+            setPreview(null);
+            return;
+        }
 
-    }
+        const objectUrl = URL.createObjectURL(file);
+        setPreview(objectUrl);
 
-      const handleAnalyze = () => {
+        return () => URL.revokeObjectURL(objectUrl); // 메모리 해제
+    }, [file]);
 
-    }
+    const handleAnalyze = async () => {
+        if (!file) {
+            setErrorMsg("이미지를 먼저 선택해주세요.");
+            return;
+        }
+
+        setLoading(true);
+        setErrorMsg("");
+        setResult(null);
+
+        try {
+            const formData = new FormData();
+            formData.append("image", file);
+
+            // 스프링부트 API 주소로 POST 요청
+            const response = await caxios.post("/bodyAnalyze", formData,
+                {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                }
+            );
+
+            console.log(response);
+            setResult(response.data.answer);
+        } catch (error) {
+            console.error(error);
+            setErrorMsg("분석 중 오류가 발생했습니다.");
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
-
         <div className={styles.imgContainer}>
             <div className={styles.uploadBox}>
-                <div className={styles.imgLabel}>이미지 업로드</div>
-                <input type="file" accept="image/**" onChange={handleFileChange}  />
-                {/* <div className={styles.genderBox}>
-                    <span>성별</span>
-                    <label className={styles.imgLabel}>
-                        <input type="radio" value={female} checked={gender === "female"} />
-                    </label>
-                </div> */}
-                <button className={styles.analyzeBtn} onClick={handleAnalyze} disabled={loading} >
-                   {loading ? "AI 분석 중..." : "체형 분석하기"}
+                <div className={styles.imgLabel}>AI 이미지 진단</div>
+
+                <label htmlFor="file" className={styles.uploadBtn}>
+                    파일 선택
+                </label>
+                <input
+                    type="file"
+                    accept="image/*"
+                    id="file"
+                    onChange={(e) => setFile(e.target.files?.[0] || null)}
+
+                    style={{ display: "none" }}
+                />
+
+                <button
+                    className={styles.analyzeBtn}
+                    onClick={handleAnalyze}
+                    disabled={loading || !file}
+                >
+                    {loading ? "AI 분석 중..." : "체형 분석하기"}
                 </button>
             </div>
 
-        </div>
-    )
-}
+            {/* 미리보기 */}
+            {preview && (
+                <img
+                    src={preview}
+                    alt="미리보기"
+                    className={styles.previewImg}
+                />
+            )}
 
-export default BodyAnalyzerMain;
+
+
+
+
+            {/* 에러 메시지 */}
+            {errorMsg && <div className={styles.error}>{errorMsg}</div>}
+
+            {result && (
+                <div className={styles.result}>
+                    <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                        {`
+                     ${result.bodyAnalysis}
+
+                     ${result.topRecommendation}
+
+                    ${result.bottomRecommendation}
+                    `}
+                    </ReactMarkdown>
+                </div>
+            )}
+        </div >
+
+    );
+};
+
+export default BodyAnalyzerImg;

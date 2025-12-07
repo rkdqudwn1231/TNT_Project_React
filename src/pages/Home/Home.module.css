@@ -1,3 +1,7 @@
+@import url("https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap");
+
+
 .hero {
   position: relative;
   height: 100vh;
@@ -11,9 +15,9 @@
   left: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;           
+  object-fit: cover;
   filter: blur(18px) brightness(75%);
-  transform: scale(1.2);       
+  transform: scale(1.2);
   z-index: -2;
 }
 
@@ -24,10 +28,10 @@
   height: 180%;
   width: auto;
   /* 사이즈 조절 아래 수정하기 scale(2.0);*/
-  transform: translate(-50%, -50%) ; 
+  transform: translate(-50%, -50%);
   z-index: -1;
-  object-fit: contain;  
-  max-width: none;      
+  object-fit: contain;
+  max-width: none;
 }
 
 /* 텍스트 오버레이 */
@@ -39,15 +43,72 @@
   z-index: 10;
 }
 
-.overlay h1 {
-  font-size: 4rem;
-  font-weight: 700;
+.home h2 {
+  font-family: "Nanum Pen Script" !important;
+  font-weight: 400;
+  font-size: 3.5rem;
+  /* 이미지처럼 적당히 크게 */
+  letter-spacing: -0.8px;
+  /* 글자 간격 좁혀서 연결감 있게 */
+  line-height: 1.3;
+  color: #555555cc;
 }
 
+/* Hero 메인 제목은 기존 스타일 유지 */
+.overlay h1 {
+  font-family: "Cafe24Dongdong" !important;
+  font-weight: 400;
+  letter-spacing: -0.3px;
+}
+
+.home p,
 .overlay p {
-  margin-top: 10px;
-  font-size: 1.2rem;
-  opacity: 0.9;
+  font-family: "Gowun Dodum" !important;
+  font-size: 1.34rem;
+  line-height: 1.92;
+  color: #555;
+}
+
+.naviBtn {
+  display: inline-block;
+  margin-top: 20px;
+  text-align: center;
+  user-select: none;
+  padding: 10px 16px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  font-family: "Pretendard", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  transition: 0.25s;
+  background: linear-gradient(135deg, #ff8fa3, #fc8da7ff);
+  color: white;
+  box-shadow: 0 4px 10px rgba(255, 111, 145, 0.4);
+
+}
+
+.slideLeft {
+  opacity: 0;
+  transform: translateX(-60px);
+  transition: opacity 2s ease, transform 2s ease;
+}
+
+.slideLeft.show {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.slideRight {
+  opacity: 0;
+  transform: translateX(60px);
+  transition: opacity 2s ease, transform 2s ease;
+}
+
+.slideRight.show {
+  opacity: 1;
+  transform: translateX(0);
 }
 
 /* 반응형 */
@@ -61,6 +122,7 @@
   .overlay h1 {
     font-size: 2rem;
   }
+
   .overlay {
     bottom: 12%;
     left: 6%;

@@ -1,4 +1,3 @@
-/* SurveyForm.module.css */
 
 /* 전체 래퍼 */
 .wrapper {
@@ -11,12 +10,12 @@
   box-sizing: border-box;
 }
 
-/* 타이틀 */
-.title {
-  font-size: 24px;
-  font-weight: 700;
-  margin-bottom: 24px;
-  text-align: center;
+.pbHeader {
+    font-size: 40px;
+    font-weight: 800;
+    text-align: center;
+    color: rgba(255, 170, 205, 0.85);
+    margin-bottom: 50px;
 }
 
 /* 질문 블럭 */
@@ -109,10 +108,10 @@
 
 /* 버튼 */
 .submitBtn {
-  width: 100%;
+  width: 20%;
   margin-top: 16px;
   padding: 12px 18px;
-  border-radius: 999px;
+  border-radius: 10px;
   border: none;
   background: linear-gradient(135deg, #ff7fae, #ffb8d6);
   color: #fff;
@@ -134,25 +133,73 @@
   box-shadow: none;
   transform: none;
 }
+.btnBox {
+  display: flex;
+  justify-content: flex-end;  
+  gap: 12px;                  
+  margin-top: 32px;
+}
 
-/* 반응형 */
+.backBtn {
+  width: 20%;
+  margin-top: 16px;
+  padding: 12px 18px;
+  border-radius: 10px;
+  border: none;
+  background: linear-gradient(135deg, #ff7fae, #ffb8d6);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: box-shadow 0.18s ease-out, transform 0.12s ease-out,
+    opacity 0.18s ease-out;
+}
+
+/* 모바일 반응형 */
 @media (max-width: 768px) {
-  .wrapper {
-    padding: 20px 16px 28px;
-    border-radius: 18px;
+
+  .pbHeader {
+    font-size: 26px;
+    margin-bottom: 26px;
   }
 
-  .title {
-    font-size: 20px;
-    margin-bottom: 18px;
+  .wrapper {
+    width: 92%;
+    padding: 20px 18px 28px;
+    border-radius: 16px;
+    box-shadow: 0 6px 28px rgba(0, 0, 0, 0.05);
+  }
+
+  .block {
+    margin-bottom: 22px;
   }
 
   .question {
-    font-size: 15px;
+    font-size: 14.5px;
+    line-height: 1.45;
+  }
+
+  .optionsColumn {
+    gap: 8px;
   }
 
   .optionCard {
-    padding: 9px 10px;
-    font-size: 13px;
+    padding: 10px 12px;
+    font-size: 13.5px;
+    border-radius: 12px;
+  }
+
+  /* 버튼 */
+  .btnBox {
+    justify-content: center; 
+    gap: 10px;
+    margin-top: 24px;
+  }
+
+  .submitBtn,
+  .backBtn {
+    width: 48%;
+    padding: 13px 0;
+    font-size: 14.5px;
   }
 }

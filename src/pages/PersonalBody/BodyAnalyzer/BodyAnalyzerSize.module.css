@@ -1,72 +1,143 @@
-.wrapper {
-  max-width: 460px;
-  margin: 40px auto;
-  background: white;
-  padding: 32px;
-  border-radius: 20px;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.08);
-  animation: fadeIn 0.3s ease-out;
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+  height: 100vh;
+  padding: 0px 0;
 }
 
+.pbHeader {
+    font-size: 40px;
+    font-weight: 800;
+    text-align: center;
+    color: rgba(255, 170, 205, 0.85);
+    margin-bottom: 30px;
+}
+
+.layoutRow {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 50px;
+  width: 100%;
+}
+
+/* 이미지 */
+.left {
+  width: 400px;
+}
+.guideImg {
+  width: 100%;
+  transition: 0.25s;
+  filter: grayscale(0.1);
+}
+
+/* 이미지 하이라이트 */
+.highlight_shoulder { filter: drop-shadow(0 0 8px #ff3c76); }
+.highlight_bust { filter: drop-shadow(0 0 8px #ff7ea8); }
+.highlight_waist { filter: drop-shadow(0 0 8px #ffa7c6); }
+.highlight_hip { filter: drop-shadow(0 0 8px #ffc4d8); }
+
+/* 중앙 도움말 카드 */
+.middle {
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 35px;
+}
+.measureCard {
+  background: #fff;
+  border-radius: 14px;
+  padding: 18px 20px;
+  border: 2px solid #ffd9e7;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+  cursor: pointer;
+  transition: 0.25s;
+}
+.measureCard:hover {
+  transform: translateY(-3px);
+  border-color: #ff3c76;
+}
+.cardHeader {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+.icon {
+  font-size: 20px;
+}
+.badge {
+  font-size: 12px;
+  background: #ffbcd2;
+  color: #fff;
+  padding: 3px 8px;
+  border-radius: 6px;
+}
+.measureCard h4 {
+  font-size: 15.5px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.measureCard p {
+  font-size: 14.5px;
+  color: #444;
+  margin: 0;
+}
+
+/* 오른쪽 입력 카드 */
+.right {
+  max-width: 500px;
+  width: 500px;
+  background: white;
+  padding: 34px;
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+}
 .title {
   text-align: center;
-  font-size: 1.8rem;
+  font-size: 1.85rem;
   font-weight: 700;
   margin-bottom: 24px;
 }
-
-.guideImg {
-  width: 100%;
-  border-radius: 14px;
-  margin-bottom: 22px;
-}
-
 .genderBox {
   display: flex;
   justify-content: center;
   gap: 12px;
   margin-bottom: 20px;
 }
-
 .genderBtn {
   padding: 10px 22px;
-  border-radius: 26px;
+  border-radius: 10px;
   border: 1px solid #ccc;
-  background: #f5f5f5;
   cursor: pointer;
-  transition: 0.25s;
 }
-
 .genderBtn.active {
   background: #ff89a3;
-  color: #fff;
   border-color: #ff89a3;
+  color: #fff;
 }
 
-.unitToggle {
-  text-align: right;
-  margin-bottom: 16px;
+/* 입력 포커스 하이라이트 */
+.inputGroup {
+  margin-bottom: 10px;
+  transition: 0.25s;
 }
-.unitToggle button {
-  border: none;
-  background: none;
-  font-size: 0.9rem;
-  color: #ff678c;
-  cursor: pointer;
+.inputActive {
+  animation: blink 0.6s infinite alternate;
 }
-
-.form {
-  display: grid;
-  gap: 14px;
+@keyframes blink {
+  from { background: #ffe6f1; }
+  to { background: #fff; }
 }
 
 .inputGroup label {
+  display: block;
   font-size: 0.92rem;
   font-weight: 600;
   margin-bottom: 6px;
-  display: block;
 }
-
 .inputGroup input {
   width: 100%;
   padding: 12px;
@@ -74,29 +145,98 @@
   border: 1px solid #ddd;
   font-size: 1rem;
 }
-.inputGroup input:focus {
-  outline: none;
-  border-color: #ff89a3;
+
+/* 버튼 */
+.btnBox {
+  display: flex;
+  justify-content: flex-end;   /* 오른쪽 정렬 */
+  gap: 12px;                   /* 버튼 간격 */
+  margin-top: 30px;
+}
+
+/* 두 버튼 크기 동일하게 */
+.submitBtn,
+.backBtn {
+  width: auto;                 /* 기존 100% 제거 */
+  padding: 12px 26px;
+  border-radius: 14px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  transition: 0.2s;
 }
 
 .submitBtn {
-  margin-top: 26px;
-  width: 100%;
-  padding: 14px;
-  background: #ff5f85;
-  border-radius: 14px;
-  color: white;
-  font-size: 1.15rem;
-  font-weight: 600;
-  border: none;
-  cursor: pointer;
-  transition: 0.28s;
+  background: #ff3c76;
+  color: #fff;
 }
 .submitBtn:hover {
-  background: #ff416c;
+  background: #db005c;
 }
 
-@keyframes fadeIn {
-  from {opacity: 0; transform: translateY(8px);}
-  to {opacity: 1; transform: translateY(0);}
+.backBtn {
+  background: #ffd0df;
+  color: #d10052;
 }
+.backBtn:hover {
+  background: #ffb9d1;
+}
+
+/* 모바일 대응 */
+/* 모바일 반응형 (세로 전환) */
+@media (max-width: 900px) {
+  .container {
+    height: auto;
+    padding: 18px 0 60px;
+  }
+
+  .pbHeader {
+    font-size: 28px;
+    margin-bottom: 16px;
+  }
+
+  .layoutRow {
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .left,
+  .middle,
+  .right {
+    width: 92%;
+    max-width: 480px;
+  }
+
+  .guideImg {
+    max-width: 360px;
+    margin: 0 auto;
+    display: block;
+  }
+
+  /* 도움말 카드 간격 축소 */
+  .middle {
+    gap: 20px;
+  }
+
+  /* 입력 카드 패딩 감소 */
+  .right {
+    padding: 22px;
+    border-radius: 16px;
+  }
+
+  /* 버튼 두 개 한 줄 유지 */
+  .btnBox {
+    justify-content: center; /* or flex-end 에서 취향 선택 */
+    gap: 10px;
+    margin-top: 16px;
+  }
+
+  .submitBtn,
+  .backBtn {
+    padding: 10px 18px;
+    font-size: 0.95rem;
+  }
+}
+

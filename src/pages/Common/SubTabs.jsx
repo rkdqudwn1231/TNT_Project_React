@@ -16,16 +16,19 @@ const SubTabs = ({ cx, onClickItem }) => {
   if (pathname.startsWith("/body")) {
     tabs = [
       { label: "Body Insight", path: "/body", end: true },
-      { label: "Shape Diagnosis", path: "/body/main"},
+      { label: "Shape Diagnosis", path: "/body/main" },
     ];
   }
 
   if (pathname.startsWith("/fitroom")) {
     tabs = [
-      { label: "FitRoom", path: "/fitroom", end: true },
+      { label: "About", path: "/fitroom/about" },
+      { label: "FitRoom", path: "/fitroom/fitroom", end: true },
       { label: "Closet", path: "/fitroom/closet" },
       { label: "Model", path: "/fitroom/model" },
       { label: "History", path: "/fitroom/history" },
+
+
     ];
   }
 

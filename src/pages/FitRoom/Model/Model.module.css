@@ -97,7 +97,7 @@
 /* ----------------- 반응형 ----------------- */
 @media (max-width: 768px) {
     .itemCard {
-        max-width: 45%;
+        max-width: 100%;
     }
 
     .actions button {
@@ -107,7 +107,7 @@
 
 @media (max-width: 480px) {
     .itemCard {
-        max-width: 90%;
+        max-width: 100%;
     }
 
     .actions button {

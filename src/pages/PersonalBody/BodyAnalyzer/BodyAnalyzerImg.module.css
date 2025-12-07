@@ -1,0 +1,85 @@
+.imgContainer {
+    align-items: center;
+    padding: 30px;
+
+    background: white;
+
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+    max-width: 500px;
+    margin: 50px auto;
+
+    animation: fadeIn 0.3s ease-out;
+}
+
+
+.uploadBox {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    width: 100%;
+}
+
+.imgLabel {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+}
+
+.uploadBtn {
+    background-color: #4f46e5;
+    color: #fff;
+    padding: 10px 25px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.uploadBtn:hover {
+    background-color: #4338ca;
+}
+
+.analyzeBtn {
+    background-color: #10b981;
+    color: #fff;
+    padding: 10px 25px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s;
+    border: none;
+}
+
+.analyzeBtn:disabled {
+    background-color: #a7f3d0;
+    cursor: not-allowed;
+}
+
+.analyzeBtn:hover:not(:disabled) {
+    background-color: #059669;
+}
+
+.previewImg {
+    width: 220px;
+    margin-top: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.result {
+    width: 100%;
+    margin-top: 25px;
+    padding: 15px;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    font-family: monospace;
+    overflow-x: auto;
+}
+
+.error {
+    color: #dc2626;
+    margin-top: 15px;
+    font-weight: 500;
+}

@@ -1,31 +1,58 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import styles from "./BodyAnalyzerResult.module.css";
+import ShareButton from "../ShareButton";
 
 const BodyAnalyzerResult = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // 1. navigate로 넘겨받은 데이터(state) 꺼내기
-  const result = location.state?.result;
+  // [수정 1] 데이터를 useState로 관리합니다.
+  // 1순위: 설문을 막 마치고 넘어온 데이터 (location.state.result)
+  // 2순위: 없음 (null)
+  const [result, setResult] = useState(location.state?.result || null);
 
-  // 2. 데이터 없이 URL로 직접 접근했을 때 방어 로직
   useEffect(() => {
-    if (!result) {
+    // 이미 데이터가 있다면 아무것도 안 함 (설문 직후)
+    if (result) return;
+
+    // 데이터가 없다면 URL의 파라미터를 확인 (?type=V)
+    const queryParams = new URLSearchParams(location.search);
+    const typeFromUrl = queryParams.get("type");
+
+    if (typeFromUrl) {
+      // [수정 2] 공유 링크로 들어온 경우 처리
+      // ★ 실제로는 여기서 백엔드 API를 호출해서 해당 타입의 정보를 가져와야 합니다.
+      // 지금은 에러가 안 나도록 '임시 데이터'를 넣어둡니다.
+
+      console.log("공유 링크 접속 확인. 타입:", typeFromUrl);
+
+      const mockData = {
+        BODY_TYPE: typeFromUrl,
+        SUMMARY: "공유된 링크를 통해 들어오셨군요! (친구의 결과입니다)",
+        IMAGE_URL: "https://via.placeholder.com/300?text=Result+Image", // 임시 이미지
+        TOP_TIPS: "추천 팁을 불러오는 중...",
+        BOTTOM_TIPS: "추천 팁을 불러오는 중...",
+        PATTERN_TIPS: "패턴 팁을 불러오는 중..."
+      };
+
+      setResult(mockData);
+
+    } else {
+      // [수정 3] 데이터도 없고, URL 파라미터도 없으면 진짜 잘못된 접근
       alert("잘못된 접근입니다. 진단을 먼저 진행해 주세요.");
-      navigate("/body/survery"); // 설문 페이지로 리다이렉트
+      navigate("/body/survery");
     }
-  }, [result, navigate]);
+  }, [location.search, navigate, result]);
 
-  if (!result) return null;
+  // 데이터 로딩 중일 때 표시
+  if (!result) return <div>결과를 불러오는 중입니다...</div>;
 
-  // 3. 데이터 파싱 (대소문자 처리 + 콤마 분리)
-  // DB 컬럼명이 IMAGE_URL (대문자)일 확률이 높으므로 둘 다 체크
+  // --- 기존 렌더링 로직 (변수명 그대로 사용) ---
   const bodyType = result.BODY_TYPE || result.body_type;
   const summary = result.SUMMARY || result.summary;
-  const imageUrl = result.IMAGE_URL || result.image_url; // GCS URL
+  const imageUrl = result.IMAGE_URL || result.image_url;
 
-  // 텍스트("팁1, 팁2")를 배열로 변환하는 함수
   const parseTips = (text) => {
     if (!text) return [];
     return Array.isArray(text) ? text : text.split(",");
@@ -33,46 +60,57 @@ const BodyAnalyzerResult = () => {
 
   const topTips = parseTips(result.TOP_TIPS || result.top_tips);
   const bottomTips = parseTips(result.BOTTOM_TIPS || result.bottom_tips);
-  const outerTips = parseTips(result.OUTER_TIPS || result.outer_tips);
   const patternTips = parseTips(result.PATTERN_TIPS || result.pattern_tips);
 
   return (
     <div className={styles.wrapper}>
-      <h2 className={styles.title} style={{ textAlignlign: "center" }}> 나의 체형 타입은? </h2>
- 
-      {/* 이미지 영역: GCS URL 사용 */}
+      <div className={styles.pbHeader}>My Body Type</div>
+
       <div className={styles.typeContainer}>
         <div className={styles.imageBox}>
-          {imageUrl ? (
-            <img
-              src={imageUrl}
-              alt={`${bodyType} 체형`}
-              className={styles.bodyImage}
-            />
-          ) : (
-            <div style={{ color: "#999", padding: "20px" }}>이미지 준비 중</div>
-          )}
-        </div>
-        {/* 체형 타입  */}
-        <div className={styles.typeBox}>
-          <span className={styles.typeValue}>{bodyType} 타입</span>
-          <p className={styles.typeDesc}>  {summary.split('.').map((line, idx) =>
-            line.trim() ? (
-              <span key={idx}>
-                {line.trim()}.
-                <br />
-              </span>
-            ) : null
-          )}</p>
+          <img src={imageUrl} alt={`${bodyType} 체형`} className={styles.bodyImage} />
         </div>
 
+        <div className={styles.typeInfoGroup}>
+          <div className={styles.typeBox}>
+            <span className={styles.typeValue}>{bodyType} 타입</span>
+            <p className={styles.typeDesc}>
+              {summary.split('.').map((line, idx) =>
+                line.trim() ? (
+                  <span key={idx}>
+                    {line.trim()}.
+                    <br />
+                  </span>
+                ) : null
+              )}
+            </p>
+          </div>
+
+          {patternTips.length > 0 && (
+            <div className={styles.patternBox}>
+              <h3>패턴 & 컬러 팁</h3>
+              <ul>
+                {patternTips.map((tip, idx) => (
+                  <li key={idx}>{tip.trim()}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+          {/* <div className={styles.shareWrap}>
+            <ShareButton
+              title={`나의 체형 타입: ${bodyType}`}
+              description={`${summary}`}
+              imageUrl={imageUrl}
+              linkPath={`/body/result?type=${bodyType}`}
+            />
+          </div> */}
+        </div>
       </div>
-      {/* 팁 카드 리스트 */}
+
+
       <div className={styles.recommendContainer}>
         <TipCard title="👚 상의 스타일 추천" tips={topTips} />
         <TipCard title="👖 하의 스타일 추천" tips={bottomTips} />
-        <TipCard title="🧥 아우터 추천" tips={outerTips} />
-        <TipCard title="🎨 패턴 & 컬러 팁" tips={patternTips} />
       </div>
 
       <button className={styles.retryBtn} onClick={() => navigate("/body/main")}>
@@ -82,7 +120,6 @@ const BodyAnalyzerResult = () => {
   );
 };
 
-// 반복되는 카드 UI를 위한 내부 컴포넌트
 const TipCard = ({ title, tips }) => (
   <div className={styles.card}>
     <h3>{title}</h3>

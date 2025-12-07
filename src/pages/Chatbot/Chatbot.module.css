@@ -45,7 +45,7 @@
 
 .mobileWrapper .chatbotBtn {
     position: fixed;
-    bottom: 20px;
+    bottom: 5px;
     right: 20px;
     width: 35px;
     height: 35px;
@@ -59,8 +59,8 @@
 .mobileWrapper .chatbotContainer {
     position: fixed;
     width: 100%;
-    height: 100%;
-    bottom: 5%;
+    height: 80%;
+    bottom: 7%;
     left: 0;
     background: white;
     border-radius: 18px 18px 0 0;
@@ -77,8 +77,9 @@
     /* 헤더 높이 고정 추천 */
     padding: 0 12px;
 
-    background-color: #fcfcfc;
+    background-color: rgb(255, 223, 236);
     border-bottom: 1px solid #f7f7f7;
+    color: rgb(59, 55, 55);
 }
 
 .contentTitle {
@@ -86,6 +87,7 @@
     left: 50%;
     transform: translateX(-50%);
     font-weight: bold;
+
 }
 
 .contentTitleBtn {
@@ -101,9 +103,6 @@
     overflow-y: auto;
     padding: 0px;
 }
-
-
-
 
 .chatContainer {
     display: flex;
@@ -121,8 +120,6 @@
     overflow-y: auto;
 
     height: 100%;
-
-
     font-family: Arial, sans-serif;
 }
 
@@ -176,7 +173,7 @@
     margin: 10px;
     border: 1px solid #e4e4e4;
     border-radius: 25px;
-    background-color: #e4e4e4;
+    background-color: #f7f7f7;
 }
 
 .inputArea textarea {

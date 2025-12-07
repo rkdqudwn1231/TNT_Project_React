@@ -10,11 +10,8 @@ import SubTabs from "./SubTabs.jsx";
 import MyPage from "../MyPage/MyPage"
 import SignUp from "../SignUp/SignUp"
 import BoardRoutes from "../Board/BoardRoutes";
-import ManageRoutes from "../Manage/ManageRoutes";
 import LoginRoutes from "../Login/LoginRoutes";
 import PersonalBodyRoute from "../PersonalBody/PersonalBodyRoute.jsx";
-import { Col } from "react-bootstrap";
-
 
 
 const ContentMain = () => {
@@ -41,12 +38,11 @@ const ContentMain = () => {
                             <Route path="/" element={<Home />} />
                             <Route path="/color/*" element={<Color />} />
                             <Route path="/body/*" element={<PersonalBodyRoute   />} />
-                            <Route path="/fitroom/*" element={<FitRoom />} />ㅋ
+                            <Route path="/fitroom/*" element={<FitRoom />} />
                             <Route path="/Login/*" element={<LoginRoutes />} />
                             <Route path="/signup" element={<SignUp />} />
                             <Route path="/MyPage" element={<MyPage />}/>
                             <Route path="/Board/*" element={<BoardRoutes />} />
-                            <Route path="/Manage/*" element={<ManageRoutes />}/>
                             <Route path="*" element={<h2>404 Not Found</h2>} />
                         </Routes>
                     </section>

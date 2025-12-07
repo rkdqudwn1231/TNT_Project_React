@@ -1,20 +1,36 @@
 .wrapper {
   width: 100%;
-  padding: 40px 0 80px; /* 양옆 padding 제거 */
+  padding: 0px 0 80px;
+  /* 양옆 padding 제거 */
+}
+
+.pbHeader {
+  font-size: 40px;
+  font-weight: 800;
+  text-align: center;
+  color: rgba(255, 170, 205, 0.85);
+  margin-bottom: 30px;
 }
 
 .typeContainer {
   display: flex;
   align-items: center;
   gap: 48px;
-
-  /* 화면을 꽉 채우지 말고 좌우에 시각적 여백을 주기 위한 값 */
   padding: 0 80px;
 }
 
+.typeInfoGroup {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+}
+
 .imageBox {
-  flex: 0 0 auto; /* 자동 줄어들지 X */
-  margin-left: 0; /* 왼쪽에 밀착 */
+  flex: 0 0 auto;
+  /* 자동 줄어들지 X */
+  margin-left: 30px;
+  /* 왼쪽에 밀착 */
   display: flex;
   justify-content: flex-start;
   margin-left: -80px;
@@ -54,6 +70,50 @@
   line-height: 1.45;
 }
 
+.patternBox {
+  background: #ffe4f2;
+  border-radius: 18px;
+  padding: 32px;
+  animation: fadeIn 0.3s ease;
+}
+
+.patternBox h3 {
+  font-size: 22px;
+  font-weight: 800;
+  color: #ff3c76;
+  margin-bottom: 14px;
+  text-align: center;
+}
+
+.patternBox ul {
+  margin: 0;
+  padding-left: 26px;
+}
+
+.patternBox li {
+  font-size: 16px;
+  line-height: 1.5;
+  margin-bottom: 6px;
+}
+
+.shareWrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: nowrap; /* 줄바꿈 방지 */
+}
+
+.shareWrap button {
+  min-width: 200px;
+  height: 50px;
+  font-size: 17px;
+  font-weight: 700;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
 .recommendContainer {
   display: grid;

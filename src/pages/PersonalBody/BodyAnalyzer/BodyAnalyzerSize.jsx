@@ -3,133 +3,155 @@ import styles from "./BodyAnalyzerSize.module.css";
 import { caxios } from "../../../config/config";
 import { useNavigate } from "react-router-dom";
 
-const BodyMeasurePage = () => {
+const BodyAnalyzerSize = () => {
   const navigate = useNavigate();
-  const [isInch, setIsInch] = useState(false);
+  const [highlight, setHighlight] = useState(null);
 
   const [measure, setMeasure] = useState({
     gender: "F",
     shoulder: "",
     bust: "",
     waist: "",
-    hip: "",
-    height: ""
+    hip: ""
   });
 
-  // cm ↔ inch 변환
-  const convertValue = (value, toInch) => {
-    return toInch ? (value / 2.54).toFixed(1) : (value * 2.54).toFixed(1);
-  };
+// 치수 입력 상태변수
+const handleChange = (e) => {
+  const { name, value } = e.target;
 
-  const toggleUnit = () => {
-    const updated = { ...measure };
-    Object.keys(updated).forEach((k) => {
-      if (k !== "gender" && updated[k] !== "") {
-        updated[k] = convertValue(updated[k], !isInch);
-      }
-    });
-    setIsInch((prev) => !prev);
-    setMeasure(updated);
-  };
+  // 숫자만 허용
+  let onlyNum = value.replace(/[^0-9]/g, "");
 
-  const handleChange = (e) => {
-    setMeasure({ ...measure, [e.target.name]: e.target.value });
-  };
+  // 3자리 이상 입력 불가
+  if (onlyNum.length > 3) return;
 
-  // 입력값 이상치 감지
-  const validateMeasure = () => {
-    const { shoulder, bust, waist, hip, height } = measure;
-
-    if (shoulder && hip && Math.abs(shoulder - hip) > 18) {
-      return "어깨 또는 골반 치수가 비정상적으로 큰 차이가 있어요. 다시 확인해주세요!";
-    }
-
-    if (+waist > +bust && +waist > +hip) {
-      return "허리 치수가 가슴·엉덩이보다 큰 경우는 매우 드뭅니다. 다시 입력해주세요!";
-    }
-
-    if (height && +height < 130) {
-      return "키를 잘못 입력한 것 같아요. 130cm 이상인지 확인해주세요.";
-    }
-
-    return null;
-  };
+  setMeasure({ ...measure, [name]: onlyNum });
+};
 
   const diagnose = () => {
-    const warn = validateMeasure();
-    if (warn) {
-      alert(warn);
-      return;
+
+    // 입력값 검증
+    for (const key of ["shoulder", "bust", "waist", "hip"]) {
+      if (!measure[key]) {
+        setHighlight(key);
+        alert("모든 치수를 입력해 주세요.");
+        return;
+      }
     }
 
-    // 단위 전환 후 서버는 cm 기준이므로 inch → cm 변환 후 전송
-    const payload = { ...measure };
-    if (isInch) {
-      Object.keys(payload).forEach((k) => {
-        if (k !== "gender" && payload[k] !== "") {
-          payload[k] = convertValue(payload[k], false);
-        }
-      });
-    }
-
-    caxios.post("/body/size", payload)
-      .then(res => {
-        navigate("/body/result", {
-          state: { result: res.data }
-        });
+    caxios
+      .post("/body/size", measure)
+      .then((res) => {
+        navigate("/body/result", { state: { result: res.data } });
       })
-      .catch(err => console.error(err));
+      .catch(console.error);
   };
 
   return (
-    <div className={styles.wrapper}>
-      <h2 className={styles.title}>치수로 체형 분석하기</h2>
 
-      {/* 성별 선택 */}
-      <div className={styles.genderBox}>
-        <button
-          className={`${styles.genderBtn} ${measure.gender === "F" && styles.active}`}
-          onClick={() => setMeasure({ ...measure, gender: "F" })}
-        >여성</button>
-        <button
-          className={`${styles.genderBtn} ${measure.gender === "M" && styles.active}`}
-          onClick={() => setMeasure({ ...measure, gender: "M" })}
-        >남성</button>
-      </div>
+    <div className={styles.container}>
+      <div className={styles.pbHeader}>Body Analysis by Size</div>
+      {/* 왼쪽 - 실루엣 이미지 */}
+      <div className={styles.layoutRow}>
+        <div className={styles.left}>
+          <img
+            className={styles.guideImg}
+            src="/images/body/치수측정도움UI.png"
+            alt="측정 가이드"
+          />
+        </div>
 
-      {/* 단위 전환 */}
-      <div className={styles.unitToggle}>
-        <span>단위:</span>
-        <button onClick={toggleUnit}>
-          {isInch ? "inch → cm 변환" : "cm → inch 변환"}
-        </button>
-      </div>
+        {/* 중앙 - 도움말 카드 */}
+        <div className={styles.middle}>
+          <MeasureCard
+            title="어깨 (Shoulder)"
+            summary="넓이 측정"
+            text="왼쪽 어깨 끝에서 오른쪽 어깨 끝까지 일직선으로 측정"
+            onClick={() => setHighlight("shoulder")}
+          />
+          <MeasureCard
+            title="가슴 (Bust)"
+            summary="둘레 측정"
+            text="가슴이 가장 넓은 부분을 줄자로 한 바퀴 둘러 측정"
+            onClick={() => setHighlight("bust")}
+          />
+          <MeasureCard
+            title="허리 (Waist)"
+            summary="둘레 측정"
+            text="배꼽 위 2~3cm, 가장 잘록한 부분을 줄자로 측정"
+            onClick={() => setHighlight("waist")}
+          />
+          <MeasureCard
+            title="엉덩이 (Hip)"
+            summary="둘레 측정"
+            text="엉덩이가 가장 넓은 부분을 줄자로 한 바퀴 둘러 측정"
+            onClick={() => setHighlight("hip")}
+          />
+        </div>
 
-      {/* 입력 영역 */}
-      <div className={styles.form}>
-        {[
-          { key: "shoulder", label: "어깨" },
-          { key: "bust", label: "가슴/가슴둘레" },
-          { key: "waist", label: "허리" },
-          { key: "hip", label: "엉덩이" },
-          { key: "height", label: "키" }
-        ].map((field) => (
-          <div key={field.key} className={styles.inputGroup}>
-            <label>{field.label}</label>
-            <input
-              type="number"
-              name={field.key}
-              value={measure[field.key]}
-              onChange={handleChange}
-              placeholder={isInch ? "inch" : "cm"}
-            />
+        {/* 오른쪽 - 입력 카드 */}
+        <div className={styles.right}>
+
+          {/* 성별 선택 */}
+          <div className={styles.genderBox}>
+            <button
+              className={`${styles.genderBtn} ${measure.gender === "F" && styles.active}`}
+              onClick={() => setMeasure({ ...measure, gender: "F" })}
+            >여성</button>
+            <button
+              className={`${styles.genderBtn} ${measure.gender === "M" && styles.active}`}
+              onClick={() => setMeasure({ ...measure, gender: "M" })}
+            >남성</button>
           </div>
-        ))}
-      </div>
 
-      <button className={styles.submitBtn} onClick={diagnose}>체형 진단하기</button>
+          {/* 입력 */}
+          {["shoulder", "bust", "waist", "hip"].map((key) => (
+            <div
+              key={key}
+              className={`${styles.inputGroup} ${highlight === key && styles.inputActive}`}
+            >
+              <label>
+                {key === "shoulder" && "어깨"}
+                {key === "bust" && "가슴 둘레"}
+                {key === "waist" && "허리 둘레"}
+                {key === "hip" && "엉덩이 둘레"}
+              </label>
+              <input
+                type="text"
+                inputMode="numeric"
+                pattern="[0-9]*"
+                name={key}
+                placeholder="cm"
+                value={measure[key]}
+                onChange={handleChange}
+              />
+            </div>
+
+          ))}
+          <div className={styles.btnBox}>
+            <button className={styles.submitBtn} onClick={diagnose}>
+              진단하기
+            </button>
+            <button className={styles.backBtn} type="button" onClick={() => navigate("/body/main")}>
+              뒤로가기
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
 
-export default BodyMeasurePage;
+// 카드 분리 컴포넌트
+const MeasureCard = ({ icon, title, summary, text, onClick }) => (
+  <div className={styles.measureCard} onClick={onClick}>
+    <div className={styles.cardHeader}>
+      <span className={styles.icon}>{icon}</span>
+      <span className={styles.badge}>{summary}</span>
+    </div>
+    <h4>{title}</h4>
+    <p>{text}</p>
+  </div>
+);
+
+export default BodyAnalyzerSize;

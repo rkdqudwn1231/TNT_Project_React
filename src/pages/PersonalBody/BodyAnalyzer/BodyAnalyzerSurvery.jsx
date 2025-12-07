@@ -58,9 +58,10 @@ const BodyAnalyzerSurvery = () => {
   };
 
   return (
+     <>
+    <div className={styles.pbHeader}>Body Analysis by Survey</div>
     <form className={styles.wrapper} onSubmit={handleSubmit}>
-      <div className={styles.title}>체형 설문 진단</div>
-
+    
       {/* 성별 로그인한 회원일 시 성별을 데이터 넣기*/}
       <section className={styles.block}>
         <h3 className={styles.question}>1. 성별을 선택해 주세요.</h3>
@@ -287,11 +288,14 @@ const BodyAnalyzerSurvery = () => {
           </label>
         </div>
       </section>
-
+<div className={styles.btnBox}>
       <button className={styles.submitBtn} type="submit" disabled={loading}>
-        {loading ? "진단 중..." : "체형 진단하기"}
+        {loading ? "진단 중..." : "진단하기"}
       </button>
+      <button className={styles.backBtn} type="button" onClick={() => navigate("/body/main")}>뒤로가기</button>
+      </div>
     </form>
+    </>
   );
 };
 

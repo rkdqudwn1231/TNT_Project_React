@@ -1,10 +1,10 @@
 import { Routes, Route } from "react-router-dom";
 import PersonalBody from "./PersonalBody";
-import BodyAnalyzerImg from "./BodyAnalyzer/BodyAnalyzerImg";
 import BodyAnalyzerMain from "./BodyAnalyzer/BodyAnalyzerMain";
 import BodyAnalyzerSurvery from "./BodyAnalyzer/BodyAnalyzerSurvery";
 import BodyAnalyzerResult from "./BodyAnalyzer/BodyAnalyzerResult";
 import BodyAnalyzerSize from "./BodyAnalyzer/BodyAnalyzerSize";
+import BodyAnalyzerImg from "./BodyAnalyzer/BodyAnalyzerImg";
 
 function PersonalBodyRoute() {
 

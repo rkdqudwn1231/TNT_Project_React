@@ -154,3 +154,58 @@
 .saveButton:hover {
   opacity: 0.9;
 }
+
+
+/* 프로필 이미지 변경 영역 */
+.formGroup {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.fileControls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* 실제 input은 숨기고 label을 버튼처럼 사용 */
+.fileInput {
+  display: none;
+}
+
+/* 프로필 선택 버튼 - 정보 수정 버튼처럼 검은색 */
+.fileButton {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 8px;
+  border: none;
+  font-size: 13px;
+  font-weight: 600;
+  background-color: #111111;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.fileButton:hover {
+  opacity: 0.88;
+}
+
+/* 이미지 제거 X 버튼 */
+.removeImageButton {
+  padding: 4px 8px;
+  border-radius: 999px;
+  border: 1px solid #dddddd;
+  background-color: #ffffff;
+  font-size: 12px;
+  font-weight: 600;
+  color: #999999;
+  cursor: pointer;
+}
+
+.removeImageButton:hover {
+  background-color: #f5f5f5;
+  color: #666666;
+}

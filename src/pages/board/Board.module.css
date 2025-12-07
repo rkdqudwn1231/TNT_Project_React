@@ -1,10 +1,12 @@
 .boardContainer {
   max-width: 1200px;
+  width: 100%;
   margin: 0 auto;
   background: #fff;
   border-radius: 16px;
   box-shadow: 0 10px 30px rgba(0,0,0,0.06);
   padding: 32px 28px 40px;
+  box-sizing: border-box;
 }
 
 .boardTitle {
@@ -14,6 +16,9 @@
   text-align: center;
 }
 
+/* -------------------------
+   업로드 박스
+-------------------------- */
 .uploadBox {
   border: 1px dashed #c9ced8;
   background: #f9fafc;
@@ -47,6 +52,28 @@ textarea {
 textarea {
   min-height: 80px;
   resize: vertical;
+}
+
+/* 파일 커스텀 버튼 */
+.fileInput {
+  padding: 6px 10px;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.fileInput::file-selector-button {
+  padding: 6px 14px;
+  margin-right: 8px;
+  border-radius: 999px;
+  border: none;
+  background: #111827;
+  color: #fff;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.fileInput::file-selector-button:hover {
+  opacity: 0.9;
 }
 
 .uploadActions {
@@ -84,7 +111,9 @@ textarea {
   opacity: 0.9;
 }
 
-/* 필터 / 검색 바 */
+/* -------------------------
+   필터 / 검색 바
+-------------------------- */
 .filterBar {
   margin-top: 24px;
   margin-bottom: 12px;
@@ -102,16 +131,19 @@ textarea {
   justify-content: space-between;
 }
 
-/* 왼쪽 필터 묶음 (컬러, 체형 그대로 왼쪽에) */
+/* 컬러/체형 영역 */
 .filterLeft {
   display: flex;
   gap: 12px;
+  flex-wrap: wrap;   /* 폭 줄어들면 아래줄로 */
 }
 
+/* 공통 그룹 */
 .filterGroup {
   display: flex;
   flex-direction: column;
   font-size: 13px;
+  min-width: 0;        /* flex 안에서 줄어들도록 */
 }
 
 .filterLabel {
@@ -119,12 +151,15 @@ textarea {
   margin-bottom: 4px;
 }
 
+/* select/input 폭 제한 */
 .filterGroup select,
 .filterGroup input {
-  min-width: 150px;
+  min-width: 120px;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
-/* 검색 영역: 오른쪽 정렬 */
+/* 검색 영역 */
 .searchGroupRow {
   margin-left: auto;
 }
@@ -133,19 +168,21 @@ textarea {
   display: flex;
   align-items: center;
   gap: 8px;
+  flex-wrap: wrap;         /* 폭 줄면 버튼이 다음 줄로 */
 }
 
 .searchSelect {
   min-width: 90px;
 }
 
-/* 검색 입력칸 크기 */
+/* 검색 입력칸: 고정폭 대신 flex */
 .searchInput {
-  width: 220px;
   height: 34px;
+  flex: 1 1 140px;         /* 기본 140px, 남는 공간 채움 */
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
-/* 검색 버튼 */
 .searchBtn {
   padding: 7px 14px;
   border-radius: 999px;
@@ -156,7 +193,38 @@ textarea {
   cursor: pointer;
 }
 
-/* 카드 영역 */
+/* -------------------------
+   베스트 OOTD
+-------------------------- */
+.bestSection {
+  background: #f3f4f6;
+  border-radius: 14px;
+  padding: 18px 22px;
+  margin-top: 24px;
+  margin-bottom: 20px;
+  border: 1px solid #e5e7eb;
+}
+
+.bestTitle {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 14px;
+  color: #111827;
+}
+
+.bestGrid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.bestCard {
+  border: 1px solid rgba(255, 215, 0, 0.4);
+}
+
+/* -------------------------
+   카드 공통
+-------------------------- */
 .cardGrid {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
@@ -220,34 +288,39 @@ textarea {
   color: #222;
 }
 
-/* 카드 태그 표시 (지금은 사용 안 함, 혹시 나중용으로 남김)
-.cardTags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px;
-  margin-bottom: 6px;
-}
-
-.cardTagChip {
-  font-size: 11px;
-  padding: 3px 8px;
-  border-radius: 999px;
-  background: #eef2ff;
-  color: #4f46e5;
-}
-*/
-
 .cardDesc {
   font-size: 13px;
   color: #555;
   line-height: 1.45;
+  height: 36px;
+  overflow: hidden;
 }
 
-/* 카드 하단 작성자 닉네임 */
+/* 카드 하단 (좋아요 / 싫어요 / 작성자) */
 .cardFooter {
   margin-top: 8px;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cardReactions {
+  display: flex;
+  gap: 8px;
+  font-size: 12px;
+  color: #4b5563;
+}
+
+.cardLike,
+.cardDislike {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.cardLike i,
+.cardDislike i {
+  font-size: 14px;
 }
 
 .cardWriter {
@@ -255,9 +328,12 @@ textarea {
   color: #6b7280;
 }
 
-/*  반응형 */
+/* -------------------------
+   반응형
+-------------------------- */
 @media (max-width: 1200px) {
-  .cardGrid {
+  .cardGrid,
+  .bestGrid {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
@@ -267,13 +343,43 @@ textarea {
     grid-template-columns: 1fr;
   }
 
-  .cardGrid {
+  .cardGrid,
+  .bestGrid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
+@media (max-width: 768px) {
+  .boardContainer {
+    margin: 0;
+    border-radius: 0;
+    box-shadow: none;
+    padding: 24px 14px 28px;
+  }
+
+  .filterRow {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .searchGroupRow {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .searchRow {
+    width: 100%;
+  }
+
+  .searchInput {
+    flex: 1 1 auto;
+    width: 100%;
+  }
+}
+
 @media (max-width: 640px) {
-  .cardGrid {
+  .cardGrid,
+  .bestGrid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import styles from "./Board.module.css";
 import { caxios } from "../../config/config";
 import { useNavigate } from "react-router-dom";
+import "bootstrap-icons/font/bootstrap-icons.css";
 
 // 카드 위(이미지 위)에 같이 띄울 대표 태그 하나 뽑는 헬퍼 (지금은 사용 안 하지만 놔둠)
 const getPrimaryTag = (post) => {
@@ -20,7 +21,12 @@ const getPrimaryTag = (post) => {
 export default function Board() {
   const navigate = useNavigate();
 
+  // 전체 게시글
   const [posts, setPosts] = useState([]);
+
+  // 좋아요 TOP 10 (베스트 OOTD)
+  const [bestPosts, setBestPosts] = useState([]);
+
   const [form, setForm] = useState({
     photo: null,
     title: "",
@@ -40,11 +46,13 @@ export default function Board() {
   const [appliedSearchField, setAppliedSearchField] = useState("title");
   const [appliedSearchText, setAppliedSearchText] = useState("");
 
+  // 업로드 폼 입력 핸들러
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     setForm({ ...form, [name]: files ? files[0] : value });
   };
 
+  // 전체 게시글 목록
   const fetchPosts = async () => {
     try {
       const res = await caxios.get("/board/list");
@@ -55,10 +63,23 @@ export default function Board() {
     }
   };
 
+  // 좋아요 TOP 10
+  const fetchBestPosts = async () => {
+    try {
+      const res = await caxios.get("/board/top10");
+      setBestPosts(res.data);
+      console.log("Fetched best posts:", res.data);
+    } catch (err) {
+      console.error("베스트 게시글 로드 실패", err);
+    }
+  };
+
   useEffect(() => {
     fetchPosts();
+    fetchBestPosts();
   }, []);
 
+  // 게시글 등록
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -79,14 +100,14 @@ export default function Board() {
 
       formData.append("photo", form.photo);
 
-      // 🔥 이제는 진짜 회원 ID만 서버에 전달 (닉네임은 서버에서 JOIN으로 사용)
+      // 회원 ID만 서버에 전달
       const boardJson = JSON.stringify({
-        id: memberId,           // BoardDTO.id → board.id (FK: member.id)
+        id: memberId, // BoardDTO.id → board.id (FK: member.id)
         title: form.title,
         text: form.desc,
         color: form.color,
         body_shape: form.body,
-        tag: form.tag,          // 태그 문자열
+        tag: form.tag, // 태그 문자열
       });
 
       formData.append(
@@ -99,6 +120,7 @@ export default function Board() {
       });
 
       await fetchPosts();
+      await fetchBestPosts(); // 새 글 등록 시 베스트도 갱신
 
       alert("게시글이 등록되었습니다!");
 
@@ -177,28 +199,63 @@ export default function Board() {
     return true;
   });
 
-  // 카드에서 보여줄 태그 렌더링용 헬퍼 (카드 본문 쪽)
-  const renderTags = (post) => {
-    if (Array.isArray(post.tags) && post.tags.length > 0) {
-      return post.tags.map((t) => (
-        <span key={t} className={styles.cardTagChip}>
-          #{t}
-        </span>
-      ));
-    }
+  // 카드 공통 렌더링 함수
+  const renderCard = (post, extraClass = "") => {
+    const writer = post.writer_nickname || post.id || "익명";
 
-    if (post.tag) {
-      return String(post.tag)
-        .split(/[,#\s]+/)
-        .filter(Boolean)
-        .map((t) => (
-          <span key={t} className={styles.cardTagChip}>
-            #{t}
-          </span>
-        ));
-    }
+    // 리스트에서 좋아요/싫어요 숫자
+    const likes = post.likeCount ?? 0;
+    const dislikes = post.dislikeCount ?? 0;
 
-    return null;
+    return (
+      <article
+        key={post.seq}
+        className={`${styles.card} ${extraClass}`}
+        onClick={() => handleCardClick(post)}
+      >
+        <div className={styles.cardThumb}>
+          <img src={post.image_url} alt="" />
+          <div className={styles.badgeGroup}>
+            {post.color && (
+              <span className={styles.badge}>{post.color}</span>
+            )}
+            {post.body_shape && (
+              <span className={styles.badge}>{post.body_shape}</span>
+            )}
+
+            {/* 이미지 위 태그 */}
+            {post.tag &&
+              post.tag
+                .split(/\s+/)
+                .filter(Boolean)
+                .map((t) => (
+                  <span key={t} className={styles.badge}>
+                    #{t}
+                  </span>
+                ))}
+          </div>
+        </div>
+
+        <div className={styles.cardBody}>
+          <h2 className={styles.cardTitle}>{post.title}</h2>
+
+          <p className={styles.cardDesc}>{post.text}</p>
+
+          {/* 카드 하단: 왼쪽 좋아요/싫어요, 오른쪽 작성자 */}
+          <div className={styles.cardFooter}>
+            <div className={styles.cardReactions}>
+              <span className={styles.cardLike}>
+                <i className="bi bi-hand-thumbs-up-fill" /> {likes}
+              </span>
+              <span className={styles.cardDislike}>
+                <i className="bi bi-hand-thumbs-down-fill" /> {dislikes}
+              </span>
+            </div>
+            <span className={styles.cardWriter}>{writer}</span>
+          </div>
+        </div>
+      </article>
+    );
   };
 
   return (
@@ -219,6 +276,7 @@ export default function Board() {
                   name="photo"
                   accept="image/*"
                   onChange={handleChange}
+                  className={styles.fileInput}
                 />
               </div>
 
@@ -363,54 +421,19 @@ export default function Board() {
         </div>
       </section>
 
-      {/* 카드 영역 */}
+      {/* 베스트 OOTD 섹션 (좋아요 TOP 10) */}
+      {bestPosts.length > 0 && (
+        <section className={styles.bestSection}>
+          <h2 className={styles.bestTitle}>베스트 OOTD</h2>
+          <div className={styles.bestGrid}>
+            {bestPosts.map((post) => renderCard(post, styles.bestCard))}
+          </div>
+        </section>
+      )}
+
+      {/* 전체 카드 영역 */}
       <section className={styles.cardGrid}>
-        {filteredPosts.map((post) => {
-          // 작성자: JOIN으로 내려오는 writer_nickname 우선 사용, 없으면 id
-          const writer = post.writer_nickname || post.id || "익명";
-
-          return (
-            <article
-              key={post.seq}
-              className={styles.card}
-              onClick={() => handleCardClick(post)}
-            >
-              <div className={styles.cardThumb}>
-                <img src={post.image_url} alt="" />
-                <div className={styles.badgeGroup}>
-                  {post.color && (
-                    <span className={styles.badge}>{post.color}</span>
-                  )}
-                  {post.body_shape && (
-                    <span className={styles.badge}>{post.body_shape}</span>
-                  )}
-
-                  {/* 이미지 위 태그 */}
-                  {post.tag &&
-                    post.tag
-                      .split(/\s+/)
-                      .filter(Boolean)
-                      .map((t) => (
-                        <span key={t} className={styles.badge}>
-                          #{t}
-                        </span>
-                      ))}
-                </div>
-              </div>
-
-              <div className={styles.cardBody}>
-                <h2 className={styles.cardTitle}>{post.title}</h2>
-
-                <p className={styles.cardDesc}>{post.text}</p>
-
-                {/* 카드 오른쪽 하단 작성자 닉네임 */}
-                <div className={styles.cardFooter}>
-                  <span className={styles.cardWriter}>{writer}</span>
-                </div>
-              </div>
-            </article>
-          );
-        })}
+        {filteredPosts.map((post) => renderCard(post))}
       </section>
     </div>
   );

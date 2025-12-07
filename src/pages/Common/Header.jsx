@@ -3,6 +3,7 @@ import styles from "./Header.module.css";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import "bootstrap-icons/font/bootstrap-icons.css";
+import ToastNotification from "../../pages/Notification/Toast";
 
 const Header = ({ isHome }) => {
   const navigate = useNavigate();
@@ -15,6 +16,9 @@ const Header = ({ isHome }) => {
   const [userMenuOpen, setUserMenuOpen] = useState(false); // 사람 아이콘 메뉴 열림 상태
 
   const isLoggedIn = !!sessionStorage.getItem("token");
+
+  // 토스트 메시지 상태
+  const [toastMsg, setToastMsg] = useState(null);
 
   // Home 전용 스크롤 이벤트
   useEffect(() => {
@@ -70,7 +74,7 @@ const Header = ({ isHome }) => {
     sessionStorage.removeItem("roles");
     sessionStorage.removeItem("nickname");
     setUserMenuOpen(false);
-    navigate("/"); // 필요하면 다른 경로로 바꿔도 됨
+    navigate("/");
   };
 
   return (
@@ -230,8 +234,8 @@ const Header = ({ isHome }) => {
                   type="button"
                   className={styles.iconButton}
                   onClick={() => {
-                    // 나중에 알림 기능 연결
-                    console.log("알림 클릭");
+                    // 나중에 실제 알림 목록 가져오도록 변경
+                    setToastMsg("새로운 알림이 없습니다.");
                   }}
                 >
                   <i className="bi bi-bell"></i>
@@ -254,7 +258,7 @@ const Header = ({ isHome }) => {
                         className={styles.userDropdownItem}
                         onClick={() => {
                           setUserMenuOpen(false);
-                          navigate("/mypage"); // 실제 마이페이지 경로로 수정
+                          navigate("/mypage");
                         }}
                       >
                         마이페이지
@@ -281,6 +285,14 @@ const Header = ({ isHome }) => {
           )}
         </div>
       </header>
+
+      {/* 🔹 토스트 출력 (message가 있을 때만 표시) */}
+      {toastMsg && (
+        <ToastNotification
+          message={toastMsg}
+          onClose={() => setToastMsg(null)}
+        />
+      )}
     </>
   );
 };

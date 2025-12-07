@@ -27,6 +27,7 @@
     "react-router-dom": "^7.9.6",
     "react-scripts": "5.0.1",
     "remark-gfm": "^4.0.1",
+    "stompjs": "^2.3.3",
     "web-vitals": "^2.1.4",
     "zustand": "^5.0.8"
   },

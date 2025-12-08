@@ -101,7 +101,8 @@
   justify-content: center;
   align-items: center;
   gap: 14px;
-  flex-wrap: nowrap; /* 줄바꿈 방지 */
+  flex-wrap: nowrap;
+  /* 줄바꿈 방지 */
 }
 
 .shareWrap button {
@@ -145,7 +146,7 @@
   background: white;
   border-radius: 18px;
   padding: 16px 14px 20px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   text-align: center;
   border: 2px solid #ffd1e5;
   transition: transform 0.22s ease;
@@ -267,6 +268,18 @@
   background: #db005c;
 }
 
+.buttonRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 42px;
+}
+
+/* 버튼 스타일 공통 */
+.buttonRow button {
+  flex: 1;
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -284,23 +297,31 @@
     grid-template-columns: 1fr;
   }
 
-  
-@media (max-width: 600px) {
-  .recommendImg {
-    height: 180px;
-  }
-  .recommendName {
-    font-size: 14px;
-    height: auto;
-  }
-}
 
-@media (max-width: 900px) {
-  .rowFlex {
-    flex-direction: column;
+  @media (max-width: 600px) {
+    .recommendImg {
+      height: 180px;
+    }
+
+    .recommendName {
+      font-size: 14px;
+      height: auto;
+    }
   }
-  .tipsBox {
-    width: 100%;
+
+  @media (max-width: 900px) {
+    .rowFlex {
+      flex-direction: column;
+    }
+
+    .tipsBox {
+      width: 100%;
+    }
   }
-}
+
+  @media (max-width: 600px) {
+    .buttonRow {
+      flex-direction: column;
+    }
+  }
 }

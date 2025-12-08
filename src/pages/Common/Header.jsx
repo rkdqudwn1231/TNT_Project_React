@@ -107,7 +107,7 @@ const Header = ({ isHome }) => {
             {/* 홈일 때 */}
             {!isMobile && isHome && (
               <>
-                <NavLink to="/color" className={styles.mainTab}>Personal Color</NavLink>
+                <NavLink to="/color/test" className={styles.mainTab}>Personal Color</NavLink>
                 <NavLink to="/body" className={styles.mainTab}>Personal Body</NavLink>
                 <NavLink to="/fitroom" className={styles.mainTab}>Fitting Room</NavLink>
 

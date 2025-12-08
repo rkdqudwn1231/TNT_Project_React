@@ -156,25 +156,45 @@ function History() {
                         <div className="cardContainer">
                             <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
                                 {groupedByDate[date].map(item => {
-                                    return (
-
-                                        <div key={item.seq} className={styles.itemCard}>
-                                            {/* 큰 이미지 */}
-                                            <img src={item.resultUrl} className={styles.mainImg} />
-
-                                            {/* 작은 이미지 오버레이 */}
-                                            <div className={styles.overlayImages}>
-
-                                                <img src={item.upperImageUrl} className={styles.smallImg} />
-                                                {item.lowerImageUrl &&
-                                                    <img src={item.lowerImageUrl} className={styles.smallImg} />
-                                                }
-                                            </div>
-                                            <div className={styles.actions}>
-                                                <button onClick={() => handleDeleteClick(item)}>🗑️</button>
-                                                <button onClick={() => handleDownloadClick(item)}>⬇</button>
-                                            </div>
+                                    return (<div className={styles.itemCard}>
+                                        <div className={styles.imgWrapper}>
+                                            <img
+                                                src={item.resultUrl}
+                                                className={styles.mainImg}
+                                                alt=""
+                                            />
                                         </div>
+
+                                        <div className={styles.overlayImages}>
+                                            <img src={item.upperImageUrl} className={styles.smallImg} />
+                                            {item.lowerImageUrl &&
+                                                <img src={item.lowerImageUrl} className={styles.smallImg} />
+                                            }
+                                        </div>
+
+                                        <div className={styles.actions}>
+                                            <button onClick={() => handleDeleteClick(item)}>🗑️</button>
+                                            <button onClick={() => handleDownloadClick(item)}>⬇</button>
+                                        </div>
+                                    </div>
+
+                                        // <div key={item.seq} className={styles.itemCard}>
+                                        //     {/* 큰 이미지 */}
+                                        //     <img src={item.resultUrl} className={styles.mainImg} />
+
+                                        //     {/* 작은 이미지 오버레이 */}
+                                        //     <div className={styles.overlayImages}>
+
+                                        //         <img src={item.upperImageUrl} className={styles.smallImg} />
+                                        //         {item.lowerImageUrl &&
+                                        //             <img src={item.lowerImageUrl} className={styles.smallImg} />
+                                        //         }
+                                        //     </div>
+                                        //     <div className={styles.actions}>
+                                        //         <button onClick={() => handleDeleteClick(item)}>🗑️</button>
+                                        //         <button onClick={() => handleDownloadClick(item)}>⬇</button>
+                                        //     </div>
+                                        // </div>
                                     );
                                 })}
                                 {/* map */}

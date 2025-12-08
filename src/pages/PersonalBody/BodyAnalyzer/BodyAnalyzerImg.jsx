@@ -100,16 +100,24 @@ const BodyAnalyzerImg = () => {
             {errorMsg && <div className={styles.error}>{errorMsg}</div>}
 
             {result && (
-                <div className={styles.result}>
-                    <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                        {`
-                     ${result.bodyAnalysis}
+                <div
+                    className={styles.result}
+                    style={{ fontFamily: "Pretendard, sans-serif" }}
+                >
+                    {/* <ReactMarkdown remarkPlugins={[remarkGfm]} > */}
+                    <div>
+                    {`${result.bodyAnalysis}`}
+                    </div>
+                    
+                    <div>
+                    {`${result.topRecommendation}`}
+                    </div>
+                    <div>
+                    {`${result.bottomRecommendation}`}
+                    </div>
 
-                     ${result.topRecommendation}
-
-                    ${result.bottomRecommendation}
-                    `}
-                    </ReactMarkdown>
+                 
+                    {/* </ReactMarkdown> */}
                 </div>
             )}
         </div >

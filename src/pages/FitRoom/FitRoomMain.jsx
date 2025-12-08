@@ -36,6 +36,10 @@ function FitRoomMain() {
   const [showClosetModal, setShowClosetModal] = useState(false);
   const [closetData, setClosetData] = useState([]); // 옷장 데이터
 
+  // 모델 모달 열기/닫기
+  const [showModelModal, setShowModelModal] = useState(false);
+  const [modelList, setModelList] = useState([]); // 모델 데이터
+
   // 안내 모달 열기/닫기
   const [teachModalShow, setTeachModalShow] = useState(false);
 
@@ -292,7 +296,6 @@ function FitRoomMain() {
       //     : null;
 
       // db 저장
-
       const saveData = new FormData();
 
       saveData.append("taskId", taskId);
@@ -337,8 +340,6 @@ function FitRoomMain() {
 
 
   };
-
-
 
 
 
@@ -399,25 +400,15 @@ function FitRoomMain() {
   // };
 
 
-  // 모달 열기
-  const openClosetModal = async () => {
-    try {
-      const res = await caxios.get("/closet/list", {
-        params: { memberId }
-      });
-      setClosetData(res.data);
-      setShowClosetModal(true);
-    } catch (err) {
-      console.error("옷장 데이터 불러오기 실패:", err);
-    }
-  };
 
-  // 모달에서 선택
+
+  // 옷장 모달에서 선택시
   const convertUrlToFile = async (url, name) => {
     const res = await caxios.get(`/fitroom/fetchImage?url=${encodeURIComponent(url)}`, { responseType: 'blob' });
     return new File([res.data], name || "cloth.png", { type: res.data.type });
   };
 
+  // 옷 선택 핸들러 
   const handleSelectCloth = async (item) => {
     // 이름 결정: upperName > lowerName > name > "이름 없음"
     const clothName = item.upperName || item.lowerName || item.name || "이름 없음";
@@ -425,7 +416,7 @@ function FitRoomMain() {
     const confirmed = window.confirm(`"${clothName}" 옷을 FitRoom에 적용하시겠습니까?`);
     if (!confirmed) return;
 
-    if (clothType === "upper") {  
+    if (clothType === "upper") {
       const file = await convertUrlToFile(item.upperImageUrl, item.upperName || item.name);
       setClothImage(file);
 
@@ -506,6 +497,38 @@ function FitRoomMain() {
   //   );
   // }
 
+
+  //옷장 모달 열기
+  const openClosetModal = async () => {
+    try {
+      const res = await caxios.get("/closet/list", {
+        params: { memberId }
+      });
+      setClosetData(res.data);
+      setShowClosetModal(true);
+    } catch (err) {
+      console.error("옷장 데이터 불러오기 실패:", err);
+    }
+  };
+
+  // 모델 선택 핸들러 
+  const handleSelectModelModal = async (item) => {
+    const confirmed = window.confirm(`"${item.modelName}" 모델을 적용하시겠습니까?`);
+    if (!confirmed) return;
+
+    try {
+      const res = await caxios.get(
+        `/fitroom/fetchImage?url=${encodeURIComponent(item.modelUrl)}`,
+        { responseType: "blob" }
+      );
+      const file = new File([res.data], item.modelName, { type: res.data.type });
+      setModelImage(file);
+      setModelName(item.modelName);
+    } catch (err) {
+      console.error("모델 선택 실패:", err);
+    }
+  };
+
   //옷장 열기 MODAL
   function ClosetModal({ show, handleClose, closetData, onSelect }) {
     const [filterType, setFilterType] = useState("all"); // all / upper / lower / full
@@ -520,6 +543,7 @@ function FitRoomMain() {
       onSelect(item); // 부모에 선택 전달
       handleClose();
     };
+
 
     return (
 
@@ -580,6 +604,95 @@ function FitRoomMain() {
       </Modal>
     );
   }
+
+  //  모델 모달 열기
+  const openModelModal = async () => {
+    try {
+      const myRes = await caxios.get("/model/list", {
+        params: { memberId }
+      });
+      const publicRes = await caxios.get("/model/publicList");
+
+      setModelList([...publicRes.data, ...myRes.data]);
+      setShowModelModal(true);
+    } catch (err) {
+      console.error("모델 데이터 불러오기 실패:", err);
+    }
+  };
+
+
+  // 모델 불러오기 MODAL
+  function ModelModal({ show, handleClose, modelData, onSelect }) {
+    const [filterSex, setFilterSex] = useState("all"); // all / male / female
+
+    // 성별 필터링
+    const filteredData = modelData.filter((item) => {
+      if (filterSex === "all") return true;
+      return item.sex === filterSex;
+    });
+
+    const handleSelectModel = (item) => {
+      onSelect(item); // 부모에 선택 전달
+      handleClose();
+    };
+
+    return (
+      <Modal show={show} onHide={handleClose} size="xl">
+        <Modal.Header closeButton style={{ justifyContent: "center" }}>
+          <Modal.Title style={{ textAlign: "center", flex: 1 }}>
+            모델 선택
+          </Modal.Title>
+        </Modal.Header>
+
+        <Modal.Body>
+          {/* 필터 선택 */}
+          <div style={{ marginBottom: "10px" }}>
+            <label>성별: </label>
+            <select
+              value={filterSex}
+              onChange={(e) => setFilterSex(e.target.value)}
+              style={{ fontSize: "15px" }}
+            >
+              <option value="all">전체</option>
+              <option value="male">남성</option>
+              <option value="female">여성</option>
+            </select>
+          </div>
+
+          {/* 모델 카드 */}
+          <div className={styles.cardContainer}>
+            {filteredData.map((item) => (
+              <div
+                key={item.seq}
+                className={styles.itemCard}
+                onClick={() => handleSelectModel(item)}
+              >
+                <div className={styles.imgWrapper}>
+                  <img src={item.modelUrl} alt={item.modelName} />
+                </div>
+
+                <div className={styles.textWrapper}>
+                  <p>{item.modelName}</p>
+                  <span style={{ fontSize: "0.8em", color: "gray" }}>
+                    {item.sex === "male" ? "남성" : "여성"}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </Modal.Body>
+
+        <Modal.Footer>
+          <p>원하는 모델을 선택하여 피팅룸에 적용해 보세요!🙂</p>
+          <Button className={styles.tab2ButtonStyle} onClick={handleClose}>
+            닫기
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    );
+  }
+
+
 
 
   //안내 열기 MODAL
@@ -700,12 +813,13 @@ function FitRoomMain() {
         <TeachModal show={teachModalShow} onHide={() => setTeachModalShow(false)} />
       </div>
 
-      {/* 옷장 MODAL */}
-      <div >
-        <button type="button" onClick={openClosetModal} className={styles.tabButtonStyle}>
-          옷장 열기
-        </button>
-      </div>
+
+      <ModelModal
+        show={showModelModal}
+        handleClose={() => setShowModelModal(false)}
+        modelData={modelList}
+        onSelect={handleSelectModelModal}
+      />
 
       <ClosetModal
         show={showClosetModal}
@@ -718,7 +832,7 @@ function FitRoomMain() {
         {/* 모델 업로드 */}
         <div className={styles["modelbox"]}>
 
-          <div style={{ display: "flex", alignItems: "center", marginBottom: "10px" }}>
+          <div style={{ display: "flex", alignItems: "center", marginBottom: "7px" }}>
             <label>성별:</label>
             <select value={sex} onChange={(e) => setSex(e.target.value)} style={{ fontSize: "15px" }}>
               <option value="male">남성</option>
@@ -744,7 +858,10 @@ function FitRoomMain() {
             className={styles["hidden-input"]}
             onChange={(e) => setModelImage(e.target.files[0])}
           />
-
+          {/* 모델 MODAL */}
+          <button type="button" onClick={openModelModal} className={styles.tab2ButtonStyle} style={{ marginTop: "15px" }}>
+            모델 열기
+          </button>
         </div>
 
 
@@ -900,10 +1017,16 @@ function FitRoomMain() {
                     onChange={(e) => setLowerClothImage(e.target.files[0])}
                   /> */}
                 </div>
+                
               </div>
             )}
 
           </div>
+          {/* 옷장 MODAL */}
+          <button type="button" onClick={openClosetModal} className={styles.tabButtonStyle}>
+            옷장 열기
+          </button>
+
           <button
             type="submit"
             disabled={loading}
@@ -951,7 +1074,10 @@ function FitRoomMain() {
         </div>
       )}
 
+
+
     </div >
+
 
   );
 

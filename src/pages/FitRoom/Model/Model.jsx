@@ -87,7 +87,7 @@ function Model() {
         }
 
         const formData = new FormData();
-        // formData.append("memberId", memberId);
+        // formData.append("memberId", "memberId");
         formData.append("memberId", memberId);
         formData.append("sex", modelsexModal);
         formData.append("modelUrl", modelImage);

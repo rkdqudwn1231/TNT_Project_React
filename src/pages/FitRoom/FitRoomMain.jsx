@@ -832,7 +832,7 @@ function FitRoomMain() {
         {/* 모델 업로드 */}
         <div className={styles["modelbox"]}>
 
-          <div style={{ display: "flex", alignItems: "center", marginBottom: "10px" }}>
+          <div style={{ display: "flex", alignItems: "center", marginBottom: "7px" }}>
             <label>성별:</label>
             <select value={sex} onChange={(e) => setSex(e.target.value)} style={{ fontSize: "15px" }}>
               <option value="male">남성</option>
@@ -859,7 +859,7 @@ function FitRoomMain() {
             onChange={(e) => setModelImage(e.target.files[0])}
           />
           {/* 모델 MODAL */}
-          <button type="button" onClick={openModelModal} className={styles.tab2ButtonStyle} style={{marginTop:"20px"}}>
+          <button type="button" onClick={openModelModal} className={styles.tab2ButtonStyle} style={{ marginTop: "15px" }}>
             모델 열기
           </button>
         </div>
@@ -1017,6 +1017,7 @@ function FitRoomMain() {
                     onChange={(e) => setLowerClothImage(e.target.files[0])}
                   /> */}
                 </div>
+                
               </div>
             )}
 
@@ -1025,6 +1026,7 @@ function FitRoomMain() {
           <button type="button" onClick={openClosetModal} className={styles.tabButtonStyle}>
             옷장 열기
           </button>
+
           <button
             type="submit"
             disabled={loading}

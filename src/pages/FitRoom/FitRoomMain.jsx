@@ -343,8 +343,6 @@ function FitRoomMain() {
 
 
 
-
-
   // 업로드용 색 추출 extractDominantColor
   // 이미지 업로드 시 색상 추출
   const handleUpperImageChange = async (e) => {

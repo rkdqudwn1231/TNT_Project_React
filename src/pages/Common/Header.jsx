@@ -4,6 +4,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import ToastNotification from "../../pages/Notification/Toast";
+import { caxios } from "../../config/config";
 
 const Header = ({ isHome }) => {
   const navigate = useNavigate();
@@ -68,13 +69,20 @@ const Header = ({ isHome }) => {
   };
 
   // 로그아웃
-  const handleLogout = () => {
-    sessionStorage.removeItem("token");
-    sessionStorage.removeItem("id");
-    sessionStorage.removeItem("roles");
-    sessionStorage.removeItem("nickname");
-    setUserMenuOpen(false);
-    navigate("/");
+  const handleLogout = async () => {
+    try {
+      await caxios.post("/auth/logout");  // 서버 요청 완료까지 대기
+
+      sessionStorage.removeItem("token");
+      sessionStorage.removeItem("id");
+      sessionStorage.removeItem("roles");
+      sessionStorage.removeItem("nickname");
+      setUserMenuOpen(false);
+
+      navigate("/");
+    } catch (err) {
+      console.error("Logout failed:", err);
+    }
   };
 
   return (

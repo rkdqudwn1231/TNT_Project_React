@@ -139,6 +139,8 @@ function Model() {
     //         alert("삭제 실패");
     //     }
     // }
+
+
     // 삭제
     const handleDelete = async () => {
         try {
@@ -155,7 +157,6 @@ function Model() {
                 handleCloseModal();
                 return;
             }
-
 
             const myRes = await caxios.get("/model/list", { params: { memberId } });
             const publicRes = await caxios.get("/model/publicList");

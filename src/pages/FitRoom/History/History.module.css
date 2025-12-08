@@ -42,7 +42,7 @@
     /* 카드 안 꽉 채움 */
     object-position: center;
     display: block;
-    border-radius: 8px;
+    border-radius: 7px;
 }
 
 /* ----------------- 텍스트 ----------------- */

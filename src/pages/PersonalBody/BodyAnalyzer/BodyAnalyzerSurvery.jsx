@@ -43,7 +43,7 @@ const BodyAnalyzerSurvery = () => {
 
     try {
       setLoading(true);
-      const res = await caxios.post("/bodySurvey/survey", form);
+      const res = await caxios.post("/bodySurvey/insert", form);
 
       // 결과 페이지로 이동하면서 데이터(res.data)를 state로 넘김
       navigate("/body/result", { state: { result: res.data } });

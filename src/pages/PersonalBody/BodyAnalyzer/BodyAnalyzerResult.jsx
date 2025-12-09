@@ -30,7 +30,7 @@ useEffect(() => {
       .catch(err => console.log("상의 추천 오류", err));
 
     // 하의 추천 가져오기
-    caxios.get("/recommend/list", {
+    caxios.get("/BodyRecommend/list", {
       params: { body_type: bodyType, gender, cloth_type: "lower" }
     })
       .then(res => setLowerList(res.data))
@@ -50,7 +50,7 @@ const goCloset = () => {
 };
 
   const handleSave = (item) => {
-    caxios.post("/recommend/saveRecommend", {
+    caxios.post("/BodyRecommend/saveRecommend", {
       clothType: item.cloth_type,     // upper / lower
       category: item.category,
       upperImageUrl: item.cloth_type === "upper" ? item.image_url : null,

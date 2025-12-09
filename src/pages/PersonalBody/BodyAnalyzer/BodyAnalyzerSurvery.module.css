@@ -38,14 +38,14 @@
   margin-bottom: 12px;
 }
 
-/* 옵션 영역 - 가로 배치 (성별 같은 짧은 것들) */
+/* 옵션 영역  */
 .optionsRow {
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
 }
 
-/* 옵션 영역 - 세로 카드 스택 */
+/* 옵션 영역 */
 .optionsColumn {
   display: flex;
   flex-direction: column;
@@ -68,31 +68,26 @@
   line-height: 1.4;
 }
 
-/* 호버 시 */
 .optionCard:hover {
   border-color: #ffb7d0;
   background: #fff7fb;
   box-shadow: 0 4px 14px rgba(255, 150, 190, 0.22);
 }
 
-/* 라디오 숨기고 커스텀 스타일 */
 .optionCard input[type="radio"] {
   margin-top: 3px;
   accent-color: #ff7fae; /* 최신 브라우저용 */
 }
 
-/* 선택된 상태 - input:checked + span */
 .optionCard input[type="radio"]:checked + span {
   font-weight: 600;
 }
 
-/* 선택된 카드 전체 강조 */
 .optionCard input[type="radio"]:checked ~ span,
 .optionCard input[type="radio"]:checked + span {
   color: #ff4f8a;
 }
 
-/* 카드 테두리도 체크 시 변경 */
 .optionCard input[type="radio"]:checked ~ span::before {
   /* dummy to keep selector; 실제 스타일은 label에 적용 */
 }

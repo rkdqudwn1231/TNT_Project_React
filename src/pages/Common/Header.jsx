@@ -4,6 +4,8 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import NotificationBell from "../Notification/NotificationBell";
+import { caxios } from "../../config/config";
+
 
 const Header = ({ isHome }) => {
   const navigate = useNavigate();
@@ -67,13 +69,20 @@ const Header = ({ isHome }) => {
   };
 
   // 로그아웃
-  const handleLogout = () => {
-    sessionStorage.removeItem("token");
-    sessionStorage.removeItem("id");
-    sessionStorage.removeItem("roles");
-    sessionStorage.removeItem("nickname");
-    setUserMenuOpen(false);
-    navigate("/");
+  const handleLogout = async () => {
+    try {
+      await caxios.post("/auth/logout");  // 서버 요청 완료까지 대기
+
+      sessionStorage.removeItem("token");
+      sessionStorage.removeItem("id");
+      sessionStorage.removeItem("roles");
+      sessionStorage.removeItem("nickname");
+      setUserMenuOpen(false);
+
+      navigate("/");
+    } catch (err) {
+      console.error("Logout failed:", err);
+    }
   };
 
   return (
@@ -106,7 +115,7 @@ const Header = ({ isHome }) => {
             {/* 홈일 때 */}
             {!isMobile && isHome && (
               <>
-                <NavLink to="/color" className={styles.mainTab}>Personal Color</NavLink>
+                <NavLink to="/color/test" className={styles.mainTab}>Personal Color</NavLink>
                 <NavLink to="/body" className={styles.mainTab}>Personal Body</NavLink>
                 <NavLink to="/fitroom" className={styles.mainTab}>Fitting Room</NavLink>
 

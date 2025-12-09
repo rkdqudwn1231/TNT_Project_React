@@ -156,7 +156,7 @@ function History() {
                         <div className="cardContainer">
                             <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
                                 {groupedByDate[date].map(item => {
-                                    return (<div className={styles.itemCard}>
+                                    return (<div key={item.seq} className={styles.itemCard}>
                                         <div className={styles.imgWrapper}>
                                             <img
                                                 src={item.resultUrl}

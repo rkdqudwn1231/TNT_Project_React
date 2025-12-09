@@ -16,47 +16,64 @@ const celebrityMap = {
   spring: {
     male: [
       { name: "박보검", img: "/images/celebrity/박보검.png", desc: "부드럽고 깨끗한 봄 라이트톤" },
-      { name: "차은우", img: "/images/celebrity/차은우.png", desc: "맑고 선명한 봄 브라이트톤" }
+      { name: "차은우", img: "/images/celebrity/차은우.png", desc: "맑고 선명한 봄 브라이트톤" },
+      { name: "유승호", img: "/images/celebrity/유승호.png", desc: "순하고 맑은 봄 라이트톤" },   // 추가
+      { name: "지수", img: "/images/celebrity/지수.png", desc: "부드럽고 따뜻한 봄 웜톤" }     // 추가
     ],
     female: [
       { name: "아이유", img: "/images/celebrity/아이유.png", desc: "맑고 밝은 라이트 스프링 대표 톤" },
-      { name: "태연", img: "/images/celebrity/태연.png", desc: "중명도의 따뜻한 봄톤" }
+      { name: "태연", img: "/images/celebrity/태연.png", desc: "중명도의 따뜻한 봄톤" },
+      { name: "김유정", img: "/images/celebrity/김유정.png", desc: "상큼하고 화사한 봄 라이트톤" },   // 추가
+      { name: "박민영", img: "/images/celebrity/박민영.png", desc: "맑고 깨끗한 브라이트 스프링" }    // 추가
     ]
   },
 
   summer: {
     male: [
       { name: "정해인", img: "/images/celebrity/정해인.png", desc: "맑고 깨끗한 여름 라이트톤" },
-      { name: "뷔", img: "/images/celebrity/뷔.png", desc: "시원하고 부드러운 여름 쿨톤" }
+      { name: "뷔", img: "/images/celebrity/뷔.png", desc: "시원하고 부드러운 여름 쿨톤" },
+      { name: "이도현", img: "/images/celebrity/이도현.png", desc: "부드럽고 차분한 서머 소프트톤" }, // 추가
+      { name: "서강준", img: "/images/celebrity/서강준.png", desc: "맑고 청량한 여름 쿨톤" }        // 추가
     ],
     female: [
       { name: "수지", img: "/images/celebrity/수지.png", desc: "부드럽고 차분한 여름 라이트톤" },
-      { name: "이영애", img: "/images/celebrity/이영애.png", desc: "청초하고 투명한 쿨톤 대표" }
+      { name: "이영애", img: "/images/celebrity/이영애.png", desc: "청초하고 투명한 쿨톤 대표" },
+      { name: "정은지", img: "/images/celebrity/정은지.png", desc: "부드럽고 안정적인 서머 뮤트톤" },  // 추가
+      { name: "신세경", img: "/images/celebrity/신세경.png", desc: "차분하고 맑은 여름 쿨톤" }        // 추가
     ]
   },
 
   autumn: {
     male: [
       { name: "공유", img: "/images/celebrity/공유.png", desc: "따뜻하고 차분한 가을 소프트톤" },
-      { name: "남주혁", img: "/images/celebrity/남주혁.png", desc: "깊고 안정적인 가을 딥톤" }
+      { name: "남주혁", img: "/images/celebrity/남주혁.png", desc: "깊고 안정적인 가을 딥톤" },
+      { name: "하정우", img: "/images/celebrity/하정우.png", desc: "묵직하고 따뜻한 가을 딥톤" },        // 추가
+      { name: "마동석", img: "/images/celebrity/마동석.png", desc: "강한 대비의 가을 브라운톤" }        // 추가
     ],
     female: [
       { name: "제니", img: "/images/celebrity/제니.png", desc: "고급스럽고 딥한 가을톤" },
-      { name: "한지민", img: "/images/celebrity/한지민.png", desc: "부드럽고 따뜻한 뮤트톤" }
+      { name: "한지민", img: "/images/celebrity/한지민.png", desc: "부드럽고 따뜻한 뮤트톤" },
+      { name: "고윤정", img: "/images/celebrity/고윤정.png", desc: "부드럽고 따뜻한 가을 소프트톤" },  // 추가
+      { name: "전지현", img: "/images/celebrity/전지현.png", desc: "선명하고 깊은 딥 오텀" }          // 추가
     ]
   },
 
   winter: {
     male: [
       { name: "현빈", img: "/images/celebrity/현빈.png", desc: "차갑고 강렬한 겨울 딥톤" },
-      { name: "정우성", img: "/images/celebrity/정우성.png", desc: "선명한 대비의 겨울 브라이트톤" }
+      { name: "정우성", img: "/images/celebrity/정우성.png", desc: "선명한 대비의 겨울 브라이트톤" },
+      { name: "강동원", img: "/images/celebrity/강동원.png", desc: "선명하고 차가운 겨울 브라이트톤" }, // 추가
+      { name: "이정재", img: "/images/celebrity/이정재.png", desc: "고급스러운 겨울 딥톤" }           // 추가
     ],
     female: [
       { name: "송혜교", img: "/images/celebrity/송혜교.png", desc: "선명하고 대비 강한 겨울 딥톤" },
-      { name: "윤아", img: "/images/celebrity/윤아.png", desc: "깨끗하고 투명한 아이시 쿨톤" }
+      { name: "윤아", img: "/images/celebrity/윤아.png", desc: "깨끗하고 투명한 아이시 쿨톤" },
+      { name: "크리스탈", img: "/images/celebrity/크리스탈.png", desc: "차갑고 선명한 브라이트 윈터" }, // 추가
+      { name: "아이린", img: "/images/celebrity/아이린.png", desc: "맑고 차가운 겨울 쿨톤" }           // 추가
     ]
   }
 };
+
 
 
 
@@ -72,7 +89,8 @@ const toneDescriptions = {
     style: [
       "비비드 코랄, 라임, 민트, 선명한 옐로우 계열 추천",
       "아이 메이크업은 골드·샴페인 계열이 잘 어울립니다.",
-      "상의는 크림화이트, 라이트 베이지, 파스텔톤 추천"
+      "상의는 크림화이트, 라이트 베이지, 파스텔톤 추천",
+      "퍼스널컬러 스타일링을 사용하시려면 챗봇을 사용해보세요!"
     ]
   },
   "Light Spring": {
@@ -80,12 +98,14 @@ const toneDescriptions = {
     desc: [
       "밝고 연한 파스텔 계열이 잘 어울립니다.",
       "강한 색보다 부드러운 색이 얼굴과 조화롭습니다.",
-      "짙은 컬러는 얼굴을 눌러 보이게 할 수 있습니다."
+      "짙은 컬러는 얼굴을 눌러 보이게 할 수 있습니다.",
+      "퍼스널컬러 스타일링을 사용하시려면 챗봇을 사용해보세요!"
     ],
     style: [
       "살구, 라이트 코랄, 피치 핑크 추천",
       "립은 맑은 핑크·코랄, 아이는 밝은 브라운 계열",
-      "화이트보다는 크림 아이보리 계열이 더 자연스럽습니다."
+      "화이트보다는 크림 아이보리 계열이 더 자연스럽습니다.",
+      "퍼스널컬러 스타일링을 사용하시려면 챗봇을 사용해보세요!"
     ]
   },
   "Warm Autumn": {
@@ -93,12 +113,14 @@ const toneDescriptions = {
     desc: [
       "가을 단풍처럼 따뜻하고 풍부한 색감이 잘 어울립니다.",
       "노랑·주황·브라운 계열이 전체적인 분위기를 살려줍니다.",
-      "차가운 쿨톤 색은 얼굴이 붉거나 칙칙해 보일 수 있습니다."
+      "차가운 쿨톤 색은 얼굴이 붉거나 칙칙해 보일 수 있습니다.",
+      
     ],
     style: [
       "머스타드, 테라코타, 카멜, 카키 추천",
       "립은 브릭, 오렌지 브라운 계열이 잘 어울립니다.",
-      "골드 액세서리가 분위기를 더 살려줍니다."
+      "골드 액세서리가 분위기를 더 살려줍니다.",
+      "퍼스널컬러 스타일링을 사용하시려면 챗봇을 사용해보세요!"
     ]
   },
   "Soft Autumn": {
@@ -106,12 +128,14 @@ const toneDescriptions = {
     desc: [
       "채도가 낮고 부드러운 색이 가장 잘 어울리는 톤입니다.",
       "전체적으로 잔잔하고 편안한 인상을 줍니다.",
-      "너무 선명한 색은 얼굴만 둥둥 떠 보일 수 있습니다."
+      "너무 선명한 색은 얼굴만 둥둥 떠 보일 수 있습니다.",
+      
     ],
     style: [
       "더스티 로즈, 올리브, 모카, 웜 그레이 추천",
       "매트한 피부 표현 + 브라운 섀도우가 잘 어울립니다.",
-      "코트나 자켓은 베이지·모카 계열이 무난하게 잘 맞습니다."
+      "코트나 자켓은 베이지·모카 계열이 무난하게 잘 맞습니다.",
+      "퍼스널컬러 스타일링을 사용하시려면 챗봇을 사용해보세요!"
     ]
   },
   "Deep Autumn": {
@@ -124,7 +148,8 @@ const toneDescriptions = {
     style: [
       "딥 브라운, 버건디, 카키, 진한 카멜 추천",
       "스모키 메이크업, 버건디 립도 소화 가능합니다.",
-      "블랙보다는 다크 브라운/다크 올리브 계열이 자연스럽습니다."
+      "블랙보다는 다크 브라운/다크 올리브 계열이 자연스럽습니다.",
+      "퍼스널컬러 스타일링을 사용하시려면 챗봇을 사용해보세요!"
     ]
   },
   "Light Summer": {
@@ -137,7 +162,8 @@ const toneDescriptions = {
     style: [
       "라일락, 라이트 블루, 시폰 핑크 추천",
       "립은 쿨 핑크·로즈, 아이는 그레이 브라운 계열",
-      "실버·화이트골드 액세서리가 잘 어울립니다."
+      "실버·화이트골드 액세서리가 잘 어울립니다.",
+      "퍼스널컬러 스타일링을 사용하시려면 챗봇을 사용해보세요!"
     ]
   },
   "Soft Summer": {
@@ -150,7 +176,8 @@ const toneDescriptions = {
     style: [
       "더스티 핑크, 스틸 블루, 라벤더 그레이 추천",
       "메이크업은 로즈·몰드 와인 계열을 은은하게 사용",
-      "패턴보다는 심플한 디자인이 잘 어울립니다."
+      "패턴보다는 심플한 디자인이 잘 어울립니다.",
+      "퍼스널컬러 스타일링을 사용하시려면 챗봇을 사용해보세요!"
     ]
   },
   "Cool Summer": {
@@ -163,7 +190,8 @@ const toneDescriptions = {
     style: [
       "쿨 핑크, 로즈, 블루, 라벤더 추천",
       "립은 로즈·베리 계열, 아이섀도는 쿨 브라운·그레이",
-      "실버/화이트골드 주얼리와 궁합이 좋습니다."
+      "실버/화이트골드 주얼리와 궁합이 좋습니다.",
+      "퍼스널컬러 스타일링을 사용하시려면 챗봇을 사용해보세요!"
     ]
   },
   "Bright Winter": {
@@ -176,7 +204,8 @@ const toneDescriptions = {
     style: [
       "비비드 블루, 마젠타, 푸시아 핑크, 아이시 컬러 추천",
       "또렷한 아이라인, 선명한 립 컬러도 잘 어울립니다.",
-      "흰색은 아이보리보다 퓨어 화이트가 더 잘 맞습니다."
+      "흰색은 아이보리보다 퓨어 화이트가 더 잘 맞습니다.",
+      "퍼스널컬러 스타일링을 사용하시려면 챗봇을 사용해보세요!"
     ]
   },
   "Deep Winter": {
@@ -189,7 +218,8 @@ const toneDescriptions = {
     style: [
       "블랙, 딥 네이비, 와인, 딥 퍼플 추천",
       "레드 립, 딥 버건디 립도 잘 어울리는 타입입니다.",
-      "올블랙 룩도 부담 없이 소화할 수 있습니다."
+      "올블랙 룩도 부담 없이 소화할 수 있습니다.",
+      "퍼스널컬러 스타일링을 사용하시려면 챗봇을 사용해보세요!"
     ]
   },
   "Cool Winter": {
@@ -202,7 +232,8 @@ const toneDescriptions = {
     style: [
       "쿨 레드, 푸시아, 로열 블루 추천",
       "립은 푸시아·쿨 레드, 아이섀도는 그레이·차콜",
-      "실버 주얼리, 아이시 톤과 특히 잘 어울립니다."
+      "실버 주얼리, 아이시 톤과 특히 잘 어울립니다.",
+      "퍼스널컬러 스타일링을 사용하시려면 챗봇을 사용해보세요!"
     ]
   }
 };
@@ -527,6 +558,7 @@ function PersonalColor() {
 
   const [showModal, setShowModal] = useState(false);
   const [selectedColor, setSelectedColor] = useState(null);
+  const[showHelp,setShowHelp]=useState(false);
   const handleColorClick = (color) => {
   setSelectedColor(color);
   setShowModal(true);
@@ -787,8 +819,44 @@ function PersonalColor() {
             style={tabButtonStyle(mode === "Eye")}>
             Eye
             </button>
+
+
             
           </div>
+
+
+          <div style={{ marginBottom: 20 }}>
+  <button
+    onClick={() => setShowHelp((prev) => !prev)}
+    style={{
+      padding: "8px 14px",
+      borderRadius: 14,
+      border: "1px solid #ccc",
+      background: "#fff",
+      fontSize: 13,
+      cursor: "pointer"
+    }}
+  >
+    색 선택 안내
+  </button>
+
+  {showHelp && (
+    <div
+      style={{
+        marginTop: 10,
+        padding: "12px 16px",
+        background: "#f7f7ff",
+        border: "1px solid #dcdcff",
+        borderRadius: 10,
+        lineHeight: 1.6
+      }}
+    >
+      얼굴 사진에서 <strong>피부(Skin) · 머리(Hair) · 눈(Eye)</strong>에 해당하는 색을 클릭해보세요!  
+      <br />
+      선택된 색을 기반으로 <strong>AI가 12톤 퍼스널컬러 결과</strong>를 분석해드립니다
+    </div>
+  )}
+</div>
 
           {imageSrc && (
             <>

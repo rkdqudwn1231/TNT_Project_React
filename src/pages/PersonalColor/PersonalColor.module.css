@@ -36,8 +36,8 @@
 
 @media (max-width: 768px) {
   .imgBox {
-    width: 90vw;
-    height: 90vw;
+    width: 70vw;
+    height: 70vw;
   }
 }
 
@@ -86,5 +86,19 @@
     margin-left: 0;
     margin-top: 20px;
     padding: 18px;
+  }
+}
+
+@media (max-width: 768px) {
+  .imgBox {
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
+@media (max-width: 768px) {
+  .container > div:first-child {
+    width: 100% !important;
   }
 }

@@ -61,7 +61,7 @@ const Chatbot = () => {
         }
         else {
             setMessages([{
-                text: "당신의 퍼스널 컬러와 체형에 맞는 스타일을 추천해드립니다. 궁금한 점을 말해보세요.",
+                text: "퍼스널 컬러와 체형에 맞는 스타일을 추천해드리는 TNT 스타일 매니저입니다. 궁금한 점을 말해보세요.",
                 sender: "bot"
             }])
         }
@@ -153,7 +153,7 @@ const Chatbot = () => {
             if (textareaRef.current) textareaRef.current.style.height = "40px"; // 초기 높이로 리셋
             setMessages(() => {
                 const updated = [{
-                    text: "당신의 퍼스널 컬러와 체형에 맞는 스타일을 추천해드립니다. 궁금한 점을 말해보세요.",
+                    text: "퍼스널 컬러와 체형에 맞는 스타일을 추천해드리는 TNT 스타일 매니저입니다. 궁금한 점을 말해보세요.",
                     sender: "bot"
                 }]
                 sessionStorage.setItem("chatHistory", JSON.stringify(updated));

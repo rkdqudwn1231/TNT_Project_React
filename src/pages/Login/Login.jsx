@@ -1,14 +1,18 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { caxios } from "../../config/config";
 import styles from "./Login.module.css";
 
 const Login = () => {
+  const location = useLocation();
   const navigate = useNavigate();
 
   const [id, setId] = useState("");
   const [pw, setPw] = useState("");
   const [error, setError] = useState("");
+
+  const from = location.state?.from;
+  const result = location.state?.result;
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -28,8 +32,12 @@ const Login = () => {
       sessionStorage.setItem("roles", resp.data.roles);
       sessionStorage.setItem("nickname", resp.data.nickname);
       // 로그인 성공 시 이동
-      navigate("/");
-  
+      if (from) {
+        navigate(from, { state: { result } });
+      } else {
+        navigate("/");
+      }
+
 
     } catch (err) {
       console.error(err);
@@ -46,7 +54,7 @@ const Login = () => {
         </p>
 
         <form className={styles.form} onSubmit={onSubmit}>
-          
+
           <div className={styles.formGroup}>
             <label className={styles.label}>아이디</label>
             <input

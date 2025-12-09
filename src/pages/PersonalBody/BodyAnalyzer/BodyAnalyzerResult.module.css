@@ -1,7 +1,6 @@
 .wrapper {
   width: 100%;
   padding: 0px 0 80px;
-  /* 양옆 padding 제거 */
 }
 
 .pbHeader {
@@ -28,9 +27,7 @@
 
 .imageBox {
   flex: 0 0 auto;
-  /* 자동 줄어들지 X */
   margin-left: 30px;
-  /* 왼쪽에 밀착 */
   display: flex;
   justify-content: flex-start;
   margin-left: -80px;
@@ -88,6 +85,7 @@
 .patternBox ul {
   margin: 0;
   padding-left: 26px;
+  list-style: none !important;
 }
 
 .patternBox li {
@@ -101,7 +99,7 @@
   justify-content: center;
   align-items: center;
   gap: 14px;
-  flex-wrap: nowrap; /* 줄바꿈 방지 */
+  flex-wrap: nowrap;
 }
 
 .shareWrap button {
@@ -115,10 +113,106 @@
   justify-content: center;
 }
 
-.recommendContainer {
+.recommendImageSection {
+  margin-top: 42px;
+  padding: 26px 20px;
+  background: #fff6fb;
+  border-radius: 22px;
+  animation: fadeIn 0.35s ease;
+}
+
+.recommendImageSection h3 {
+  font-size: 22px;
+  font-weight: 800;
+  color: #ff3c76;
+  margin-bottom: 18px;
+  text-align: center;
+}
+
+.recommendGrid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   gap: 18px;
+}
+
+.recommendCard {
+  background: white;
+  border-radius: 18px;
+  padding: 16px 14px 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  text-align: center;
+  border: 2px solid #ffd1e5;
+  transition: transform 0.22s ease;
+}
+
+.recommendCard:hover {
+  transform: translateY(-4px);
+}
+
+.recommendImg {
+  width: 100%;
+  height: 210px;
+  object-fit: cover;
+  border-radius: 14px;
+}
+
+.recommendName {
+  margin-top: 10px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #555;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.recommendBlock {
+  margin-top: 60px;
+  padding: 32px;
+  background: #fff7fc;
+  border-radius: 18px;
+}
+
+.rowFlex {
+  display: flex;
+  gap: 36px;
+  align-items: flex-start;
+}
+
+.tipsBox {
+  flex: 0 0 34%;
+  min-width: 260px;
+}
+
+.imagesBox {
+  flex: 1;
+}
+
+.blockTitle {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 18px;
+  color: #db005c;
+}
+
+
+.saveBtn {
+  width: 100%;
+  margin-top: 12px;
+  padding: 10px 0;
+  background: #ff3c76;
+  border-radius: 10px;
+  border: none;
+  font-size: 15px;
+  font-weight: 700;
+  color: white;
+  cursor: pointer;
+  transition: 0.15s;
+}
+
+.saveBtn:hover {
+  background: #db005c;
 }
 
 .card {
@@ -138,6 +232,7 @@
 .card ul {
   margin: 0;
   padding-left: 20px;
+  list-style: none !important;
 }
 
 .card li {
@@ -147,13 +242,13 @@
 }
 
 .retryBtn {
-  width: 100%;
-  margin-top: 42px;
-  padding: 16px 0;
+  width: 18%;
+  height: 40px;
+  padding: 0px 0;
   background: #ff3c76;
-  border-radius: 14px;
-  font-size: 18px;
-  font-weight: 700;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: bold;
   color: white;
   border: none;
   cursor: pointer;
@@ -163,6 +258,15 @@
 .retryBtn:hover {
   background: #db005c;
 }
+
+.buttonRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 42px;
+}
+
+/* 모바일 반응형 */
 
 @keyframes fadeIn {
   from {
@@ -179,5 +283,33 @@
 @media (max-width: 600px) {
   .recommendContainer {
     grid-template-columns: 1fr;
+  }
+
+
+  @media (max-width: 600px) {
+    .recommendImg {
+      height: 180px;
+    }
+
+    .recommendName {
+      font-size: 14px;
+      height: auto;
+    }
+  }
+
+  @media (max-width: 900px) {
+    .rowFlex {
+      flex-direction: column;
+    }
+
+    .tipsBox {
+      width: 100%;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .buttonRow {
+      flex-direction: column;
+    }
   }
 }

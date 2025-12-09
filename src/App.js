@@ -1,20 +1,30 @@
 import "./App.css";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import { useEffect } from "react";
-import PersonalColor from "./pages/PersonalColor/personalColor.jsx";
 import ContentMain from "./pages/Common/ContentMain.jsx";
-import FitRoom from "./pages/FitRoom/FitRoom.jsx";
-import LoginRoutes from "./pages/Login/LoginRoutes";
 
 function App() {
 
+   if (window.Kakao && !window.Kakao.isInitialized()) {
+      window.Kakao.init("034f69077a26317b44736939a73b0351");  
+      console.log("Kakao Initialized");
+    }
 
   useEffect(() => {
-    // index.html에서 SDK가 로드됐는지 확인
-    if (window.Kakao && !window.Kakao.isInitialized()) {
-      window.Kakao.init("034f69077a26317b44736939a73b0351"); 
-      console.log("Kakao SDK Initialized!");
-    }
+    const handleBeforeUnload = (event) => {
+      const token = sessionStorage.getItem("token") || "";
+      if (!token) return;
+
+      const blob = new Blob([JSON.stringify({ token })], { type: "text/plain" });
+      navigator.sendBeacon("http://10.5.5.20/manage/logout/beacon", blob);
+      console.log("sendBeacon sent");
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
   }, []);
 
   // 로그인이 되어 있으면 url 링크에 맞춰서 동작.

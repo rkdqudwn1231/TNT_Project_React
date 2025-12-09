@@ -5,7 +5,6 @@ import { caxios } from "../../../config/config";
 
 const BodyAnalyzerSurvery = () => {
 
-  // 훅 초기화
   const navigate = useNavigate();
 
   const [form, setForm] = useState({
@@ -44,7 +43,7 @@ const BodyAnalyzerSurvery = () => {
 
     try {
       setLoading(true);
-      const res = await caxios.post("/api/body/survey", form);
+      const res = await caxios.post("/bodySurvey/survey", form);
 
       // 결과 페이지로 이동하면서 데이터(res.data)를 state로 넘김
       navigate("/body/result", { state: { result: res.data } });
@@ -62,7 +61,6 @@ const BodyAnalyzerSurvery = () => {
     <div className={styles.pbHeader}>Body Analysis by Survey</div>
     <form className={styles.wrapper} onSubmit={handleSubmit}>
     
-      {/* 성별 로그인한 회원일 시 성별을 데이터 넣기*/}
       <section className={styles.block}>
         <h3 className={styles.question}>1. 성별을 선택해 주세요.</h3>
         <div className={styles.optionsRow}>

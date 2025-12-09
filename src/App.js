@@ -5,6 +5,10 @@ import ContentMain from "./pages/Common/ContentMain.jsx";
 
 function App() {
 
+   if (window.Kakao && !window.Kakao.isInitialized()) {
+      window.Kakao.init("034f69077a26317b44736939a73b0351");  
+      console.log("Kakao Initialized");
+    }
 
   useEffect(() => {
     const handleBeforeUnload = (event) => {
@@ -12,7 +16,7 @@ function App() {
       if (!token) return;
 
       const blob = new Blob([JSON.stringify({ token })], { type: "text/plain" });
-      navigator.sendBeacon("http://10.5.5.19/manage/logout/beacon", blob);
+      navigator.sendBeacon("http://10.5.5.20/manage/logout/beacon", blob);
       console.log("sendBeacon sent");
     };
 

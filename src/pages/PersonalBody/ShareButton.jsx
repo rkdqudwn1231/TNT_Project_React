@@ -2,22 +2,23 @@ import { useState } from "react";
 
 function ShareButton({ title, description, imageUrl, linkPath }) {
   const [copied, setCopied] = useState(false);
-
+  
+  // 🔥 실제 배포 서버 URL (백엔드와 동일한 주소)
+  const SERVER_URL = "http://10.5.5.20";
+  
   const handleShare = () => {
     if (!window.Kakao) {
       alert("Kakao SDK가 로드되지 않았습니다.");
       return;
     }
 
-    const safeLink = window.location.origin + linkPath;
+    // 🔥 올바른 서버 URL로 링크 생성
+    const safeLink = SERVER_URL + "/#" + linkPath;
     const safeTitle = (title && title.toString().slice(0, 40)) || "TNT 체형 진단 결과";
-    const safeDescription = (description || "")
-      .toString()
-      .replace(/\s+/g, " ")
-      .slice(0, 200);
-    const safeImage =
-      imageUrl ||
-      "https://t1.kakaocdn.net/kakaocorp/kakaocorp/admin/6587e1f40100001.png";
+    const safeDescription = (description || "").toString().replace(/\s+/g, " ").slice(0, 200);
+    const safeImage = imageUrl || "https://t1.kakaocdn.net/kakaocorp/kakaocorp/admin/6587e1f40100001.png";
+
+    console.log("🔗 생성된 카카오 링크:", safeLink);
 
     window.Kakao.Link.sendDefault({
       objectType: "feed",
@@ -35,8 +36,8 @@ function ShareButton({ title, description, imageUrl, linkPath }) {
         {
           title: "✨ 나도 분석하기",
           link: {
-            mobileWebUrl: window.location.origin + "/body",
-            webUrl: window.location.origin + "/body"
+            mobileWebUrl: SERVER_URL + "/#/body",
+            webUrl: SERVER_URL + "/#/body"
           }
         }
       ]
@@ -44,7 +45,8 @@ function ShareButton({ title, description, imageUrl, linkPath }) {
   };
 
   const handleCopyLink = async () => {
-    const url = window.location.origin + linkPath;
+    // 🔥 링크 복사도 올바른 서버 URL로
+    const url = SERVER_URL + linkPath;
     try {
       await navigator.clipboard.writeText(url);
       setCopied(true);
@@ -59,10 +61,10 @@ function ShareButton({ title, description, imageUrl, linkPath }) {
       style={{
         position: "relative",
         display: "flex",
-        flexDirection: "row",    // 🟢 한 줄 가로 정렬
+        flexDirection: "row",
         justifyContent: "center",
         alignItems: "center",
-        gap: "14px",              // 버튼 간 간격
+        gap: "14px",
       }}
     >
       <button

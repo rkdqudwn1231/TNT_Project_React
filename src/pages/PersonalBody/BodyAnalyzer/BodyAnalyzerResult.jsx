@@ -14,35 +14,9 @@ const BodyAnalyzerResult = () => {
   const [upperList, setUpperList] = useState([]);
   const [lowerList, setLowerList] = useState([]);
 
-  const [saved, setSaved] = useState(false);
+  const [saved, setSaved] = useState(false); 
 
-useEffect(() => {
-  // 원래 result가 있으면(일반 진단) -> API 호출 안 함
-  if (result) return;
-
-  const queryParams = new URLSearchParams(location.search);
-  const typeFromUrl = queryParams.get("type");
-
-  if (!typeFromUrl) {
-    alert("잘못된 접근입니다. 진단을 먼저 진행해 주세요.");
-    navigate("/body/main");
-    return;
-  }
-
-  console.log("공유 링크 접속 확인. 타입:", typeFromUrl);
-
-  // 🔥 공유 링크 재접속 → 해당 타입의 체형 전체 데이터 다시 불러오기
-  caxios.get(`/body/result`, { params: { type: typeFromUrl } })
-    .then(res => {
-      setResult(res.data);
-      localStorage.setItem("gender", res.data.GENDER); // 추천 호출에 사용되게 저장
-    })
-    .catch(err => {
-      console.error("공유 결과 불러오기 오류:", err);
-      alert("결과를 불러올 수 없습니다.");
-      navigate("/body/main");
-    });
-}, [location.search, navigate, result]);
+  const [loading, setLoading] = useState(false);
 
   const handleSave = (item) => {
     caxios.post("/recommend/saveRecommend", {
@@ -83,36 +57,67 @@ useEffect(() => {
   };
 
   // 카카오톡 공유하기
-  useEffect(() => {
+useEffect(() => {
+  // 이미 result가 있으면 (일반 진단) API 호출 불필요
+  if (result) return;
 
-    if (result) return;
+  setLoading(true);
+  let typeFromUrl = null;
 
-    const queryParams = new URLSearchParams(location.search);
-    const typeFromUrl = queryParams.get("type");
+  // ① 일반 쿼리 파라미터 방식 (?type=H)
+  const queryParams = new URLSearchParams(location.search);
+  typeFromUrl = queryParams.get("type");
 
-    if (typeFromUrl) {
-      // [수정 2] 공유 링크로 들어온 경우 처리
-      // ★ 실제로는 여기서 백엔드 API를 호출해서 해당 타입의 정보를 가져와야 합니다.
-      // 지금은 에러가 안 나도록 '임시 데이터'를 넣어둡니다.
-
-      console.log("공유 링크 접속 확인. 타입:", typeFromUrl);
-
-      const mockData = {
-        BODY_TYPE: typeFromUrl,
-        SUMMARY: "공유된 링크를 통해 들어오셨군요! (친구의 결과입니다)",
-        IMAGE_URL: "https://via.placeholder.com/300?text=Result+Image", // 임시 이미지
-        TOP_TIPS: "추천 팁을 불러오는 중...",
-        BOTTOM_TIPS: "추천 팁을 불러오는 중...",
-        PATTERN_TIPS: "패턴 팁을 불러오는 중..."
-      };
-
-      setResult(mockData);
-
-    } else {
-      alert("잘못된 접근입니다. 진단을 먼저 진행해 주세요.");
-      navigate("/body/main");
+  // ② 카카오 인앱 브라우저 해시 방식 (#/body/result?type=H)
+  if (!typeFromUrl && window.location.hash.includes("type=")) {
+    const hashPart = window.location.hash.split("?")[1];
+    if (hashPart) {
+      const hashParams = new URLSearchParams(hashPart);
+      typeFromUrl = hashParams.get("type");
     }
-  }, [location.search, navigate, result]);
+  }
+
+  // ③ React Router의 location.search도 체크 (혹시 모를 경우 대비)
+  if (!typeFromUrl && location.pathname.includes("result")) {
+    const pathParams = new URLSearchParams(location.search);
+    typeFromUrl = pathParams.get("type");
+  }
+
+  console.log("🔍 디버깅 정보:");
+  console.log("location.search:", location.search);
+  console.log("window.location.hash:", window.location.hash);
+  console.log("추출된 type:", typeFromUrl);
+
+  if (!typeFromUrl) {
+    alert("잘못된 접근입니다. 진단을 먼저 진행해 주세요.");
+    navigate("/body/main");
+    setLoading(false);
+    return;
+  }
+
+  console.log("✅ 공유 링크 접속 확인. 타입:", typeFromUrl);
+
+  // 🔥 공유 링크 재접속 → 해당 타입의 체형 데이터 불러오기
+  caxios
+    .get(`/body/result`, { params: { type: typeFromUrl } })
+    .then((res) => {
+      console.log("✅ API 응답:", res.data);
+      setResult(res.data);
+      if (res.data.GENDER || res.data.gender) {
+        localStorage.setItem("gender", res.data.GENDER || res.data.gender);
+      }
+    })
+    .catch((err) => {
+      console.error("❌ 공유 결과 불러오기 오류:", err);
+      console.error("에러 상세:", err.response?.data);
+      alert("결과를 불러올 수 없습니다.");
+      navigate("/body/main");
+    })
+    .finally(() => {
+      setLoading(false);
+    });
+}, [location.search, location.pathname, navigate, result]);
+
 
   // 데이터 로딩 중일 때 표시
   if (!result) return <div>결과를 불러오는 중입니다...</div>;
@@ -149,6 +154,15 @@ useEffect(() => {
       });
   };
 
+  if (loading) {
+  return (
+    <div className={styles.wrapper}>
+      <div style={{ textAlign: "center", padding: "50px" }}>
+        결과를 불러오는 중입니다...
+      </div>
+    </div>
+  );
+}
 
   return (
     <div className={styles.wrapper}>

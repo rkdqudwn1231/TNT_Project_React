@@ -86,7 +86,7 @@ const NotificationBell = ({ loginId }) => {
   // 알림 한 건 클릭 → 해당 게시글로 이동
   const handleClickNotification = (noti) => {
     if (noti.board_seq) {
-      navigate(`/Board/detail/${n.board_seq}`);
+      navigate(`/Board/detail/${noti.board_seq}`);
     }
     setShowDropdown(false);
   };

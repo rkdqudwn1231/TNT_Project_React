@@ -187,26 +187,32 @@ const MyPage = () => {
   // 표시용 변환
   const renderGender = (g) => (g === "female" ? "여성" : "남성");
 
+  // 회원가입 기준 퍼스널 컬러 코드 매핑
   const renderColor = (c) =>
-    (
-      {
-        spring_warm: "봄웜",
-        summer_cool: "여름쿨",
-        autumn_warm: "가을웜",
-        winter_cool: "겨울쿨",
-      }[c] || "-"
-    );
+    ({
+      spring_bright: "봄 브라이트",
+      spring_light: "봄 라이트",
+      spring_warm: "봄 웜",
+      summer_light: "여름 라이트",
+      summer_soft: "여름 소프트",
+      summer_cool: "여름 쿨",
+      autumn_warm: "가을 웜",
+      autumn_soft: "가을 소프트",
+      autumn_deep: "가을 딥",
+      winter_bright: "겨울 브라이트",
+      winter_deep: "겨울 딥",
+      winter_cool: "겨울 쿨",
+    }[c] || "-");
 
+  // 회원가입 기준 퍼스널 체형 코드 매핑
   const renderBody = (b) =>
-    (
-      {
-        hourglass: "모래시계형",
-        triangle: "삼각형",
-        inverted_triangle: "역삼각형",
-        rectangle: "직사각형",
-        apple: "사과형",
-      }[b] || "-"
-    );
+    ({
+      A: "삼각형",
+      V: "역삼각형",
+      H: "직사각형",
+      O: "원형",
+      X: "모래시계형",
+    }[b] || "-");
 
   if (loading) {
     return <div className={styles.container}>로딩 중...</div>;
@@ -335,10 +341,19 @@ const MyPage = () => {
               value={editForm.personalColor}
               onChange={handleChange}
             >
-              <option value="spring_warm">봄웜</option>
-              <option value="summer_cool">여름쿨</option>
-              <option value="autumn_warm">가을웜</option>
-              <option value="winter_cool">겨울쿨</option>
+              <option value="">선택하세요</option>
+              <option value="spring_bright">봄 브라이트</option>
+              <option value="spring_light">봄 라이트</option>
+              <option value="spring_warm">봄 웜</option>
+              <option value="summer_light">여름 라이트</option>
+              <option value="summer_soft">여름 소프트</option>
+              <option value="summer_cool">여름 쿨</option>
+              <option value="autumn_warm">가을 웜</option>
+              <option value="autumn_soft">가을 소프트</option>
+              <option value="autumn_deep">가을 딥</option>
+              <option value="winter_bright">겨울 브라이트</option>
+              <option value="winter_deep">겨울 딥</option>
+              <option value="winter_cool">겨울 쿨</option>
             </select>
           ) : (
             // 서버 DTO: personal_color
@@ -358,11 +373,12 @@ const MyPage = () => {
               value={editForm.bodyShape}
               onChange={handleChange}
             >
-              <option value="hourglass">모래시계형</option>
-              <option value="triangle">삼각형</option>
-              <option value="inverted_triangle">역삼각형</option>
-              <option value="rectangle">직사각형</option>
-              <option value="apple">원형(사과형)</option>
+              <option value="">선택하세요</option>
+              <option value="A">삼각형</option>
+              <option value="V">역삼각형</option>
+              <option value="H">직사각형</option>
+              <option value="O">원형</option>
+              <option value="X">모래시계형</option>
             </select>
           ) : (
             // 서버 DTO: body_shape

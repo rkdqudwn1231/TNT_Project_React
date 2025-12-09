@@ -127,10 +127,6 @@
 .inputActive {
   animation: blink 0.6s infinite alternate;
 }
-@keyframes blink {
-  from { background: #ffe6f1; }
-  to { background: #fff; }
-}
 
 .inputGroup label {
   display: block;
@@ -149,15 +145,14 @@
 /* 버튼 */
 .btnBox {
   display: flex;
-  justify-content: flex-end;   /* 오른쪽 정렬 */
-  gap: 12px;                   /* 버튼 간격 */
+  justify-content: flex-end;   
+  gap: 12px;                  
   margin-top: 30px;
 }
 
-/* 두 버튼 크기 동일하게 */
 .submitBtn,
 .backBtn {
-  width: auto;                 /* 기존 100% 제거 */
+  width: auto;    
   padding: 12px 26px;
   border-radius: 14px;
   font-size: 1.05rem;
@@ -184,7 +179,7 @@
 }
 
 /* 모바일 대응 */
-/* 모바일 반응형 (세로 전환) */
+
 @media (max-width: 900px) {
   .container {
     height: auto;
@@ -215,20 +210,17 @@
     display: block;
   }
 
-  /* 도움말 카드 간격 축소 */
   .middle {
     gap: 20px;
   }
 
-  /* 입력 카드 패딩 감소 */
   .right {
     padding: 22px;
     border-radius: 16px;
   }
 
-  /* 버튼 두 개 한 줄 유지 */
   .btnBox {
-    justify-content: center; /* or flex-end 에서 취향 선택 */
+    justify-content: center;
     gap: 10px;
     margin-top: 16px;
   }
@@ -238,5 +230,10 @@
     padding: 10px 18px;
     font-size: 0.95rem;
   }
+
+  @keyframes blink {
+  from { background: #ffe6f1; }
+  to { background: #fff; }
+}
 }
 

@@ -17,6 +17,37 @@ const BodyAnalyzerResult = () => {
   const [saved, setSaved] = useState(false); 
 
   const [loading, setLoading] = useState(false);
+useEffect(() => {
+    if (!result) return;
+    const bodyType = result.BODY_TYPE;
+    const gender = result.GENDER || localStorage.getItem("gender");
+
+   // 상의 추천 가져오기
+    caxios.get("/BodyRecommend/list", {
+      params: { body_type: bodyType, gender, cloth_type: "upper" }
+    })
+      .then(res => setUpperList(res.data))
+      .catch(err => console.log("상의 추천 오류", err));
+
+    // 하의 추천 가져오기
+    caxios.get("/recommend/list", {
+      params: { body_type: bodyType, gender, cloth_type: "lower" }
+    })
+      .then(res => setLowerList(res.data))
+      .catch(err => console.log("하의 추천 오류", err));
+ }, [result]); 
+
+const goCloset = () => {
+  const token = sessionStorage.getItem("token");
+
+  if (!token) {
+    alert("로그인이 필요합니다.");
+    navigate("/login", { state: { from: "/fitroom/closet" } });
+    return;
+  }
+
+  navigate("/fitroom/closet");
+};
 
   const handleSave = (item) => {
     caxios.post("/recommend/saveRecommend", {
@@ -44,46 +75,36 @@ const BodyAnalyzerResult = () => {
       });
   };
 
-  const goCloset = () => {
-    const token = sessionStorage.getItem("token");
-
-    if (!token) {
-      alert("로그인이 필요합니다.");
-      navigate("/login", { state: { from: "/fitroom/closet" } });
-      return;
-    }
-
-    navigate("/fitroom/closet");
-  };
-
   // 카카오톡 공유하기
 useEffect(() => {
-  // 이미 result가 있으면 (일반 진단) API 호출 불필요
+
   if (result) return;
 
   setLoading(true);
   let typeFromUrl = null;
 
-  // ① 일반 쿼리 파라미터 방식 (?type=H)
+  // 일반 쿼리 파라미터 방식 (?type=H)
   const queryParams = new URLSearchParams(location.search);
-  typeFromUrl = queryParams.get("type");
+  typeFromUrl = queryParams.get("body_type");
+  let genderFromUrl = null;
+  genderFromUrl = queryParams.get("gender");
 
-  // ② 카카오 인앱 브라우저 해시 방식 (#/body/result?type=H)
-  if (!typeFromUrl && window.location.hash.includes("type=")) {
+  // 카카오 인앱 브라우저 해시 방식 (#/body/result?type=H)
+  if (!typeFromUrl && window.location.hash.includes("body_type=")) {
     const hashPart = window.location.hash.split("?")[1];
     if (hashPart) {
       const hashParams = new URLSearchParams(hashPart);
-      typeFromUrl = hashParams.get("type");
+      typeFromUrl = hashParams.get("body_type");
     }
   }
 
-  // ③ React Router의 location.search도 체크 (혹시 모를 경우 대비)
+  // React Router의 location.search도 체크 (혹시 모를 경우 대비)
   if (!typeFromUrl && location.pathname.includes("result")) {
     const pathParams = new URLSearchParams(location.search);
-    typeFromUrl = pathParams.get("type");
+    typeFromUrl = pathParams.get("body_type");
   }
 
-  console.log("🔍 디버깅 정보:");
+  console.log("디버깅 정보:");
   console.log("location.search:", location.search);
   console.log("window.location.hash:", window.location.hash);
   console.log("추출된 type:", typeFromUrl);
@@ -95,20 +116,20 @@ useEffect(() => {
     return;
   }
 
-  console.log("✅ 공유 링크 접속 확인. 타입:", typeFromUrl);
+  console.log("공유 링크 접속 확인. 타입:", typeFromUrl);
 
-  // 🔥 공유 링크 재접속 → 해당 타입의 체형 데이터 불러오기
+  // 공유 링크 재접속 → 해당 타입의 체형 데이터 불러오기
   caxios
-    .get(`/body/result`, { params: { type: typeFromUrl } })
+    .get(`/bodyType/result`, { params: { body_type: typeFromUrl , gender :genderFromUrl } })
     .then((res) => {
-      console.log("✅ API 응답:", res.data);
+      console.log("API 응답:", res.data);
       setResult(res.data);
       if (res.data.GENDER || res.data.gender) {
         localStorage.setItem("gender", res.data.GENDER || res.data.gender);
       }
     })
     .catch((err) => {
-      console.error("❌ 공유 결과 불러오기 오류:", err);
+      console.error("공유 결과 불러오기 오류:", err);
       console.error("에러 상세:", err.response?.data);
       alert("결과를 불러올 수 없습니다.");
       navigate("/body/main");
@@ -118,12 +139,10 @@ useEffect(() => {
     });
 }, [location.search, location.pathname, navigate, result]);
 
-
-  // 데이터 로딩 중일 때 표시
   if (!result) return <div>결과를 불러오는 중입니다...</div>;
 
-  // --- 기존 렌더링 로직 (변수명 그대로 사용) ---
   const body_type = result.BODY_TYPE || result.body_type;
+  const gender = result.GENDER || result.gender;
   const summary = result.SUMMARY || result.summary;
   const imageUrl = result.IMAGE_URL || result.image_url;
 
@@ -206,13 +225,13 @@ useEffect(() => {
               title={`나의 체형 타입: ${body_type}`}
               description={`${summary}`}
               imageUrl={imageUrl}
-              linkPath={`/body/result?type=${body_type}`}
+              linkPath={`/body/result?body_type=${body_type}&gender=${gender}`}
+
             />
           </div>
         </div>
       </div>
 
-      {/* ========== 상의 텍스트 + 상의 이미지 가로 배치 ========== */}
       {topTips.length > 0 && (
         <section className={styles.recommendBlock}>
           <h3 className={styles.blockTitle}>👚 상의 스타일 추천</h3>
@@ -241,7 +260,6 @@ useEffect(() => {
         </section>
       )}
 
-      {/* ========== 하의 텍스트 + 하의 이미지 가로 배치 ========== */}
       {bottomTips.length > 0 && (
         <section className={styles.recommendBlock}>
           <h3 className={styles.blockTitle}>👖 하의 스타일 추천</h3>

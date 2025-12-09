@@ -9,7 +9,6 @@ const BodyAnalyzerMain = () => {
 
         <div className="container">
 
-            {/* 헤더 */}
             <div className={styles.pbHeader}>Body Type Test</div>
             <div className={styles.selectTest}>
                 <div className={styles.select} style={{ marginLeft: "-55px", backgroundColor: "#fce690ff", border: "5px solid #fce690ff" }}>

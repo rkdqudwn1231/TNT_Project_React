@@ -4,10 +4,12 @@ import { caxios } from "../../../config/config";
 import { useNavigate } from "react-router-dom";
 
 const BodyAnalyzerSize = () => {
+
   const navigate = useNavigate();
+
   const [highlight, setHighlight] = useState(null);
 
-  const [measure, setMeasure] = useState({
+  const [size, setSize] = useState({
     gender: "F",
     shoulder: "",
     bust: "",
@@ -25,14 +27,14 @@ const handleChange = (e) => {
   // 3자리 이상 입력 불가
   if (onlyNum.length > 3) return;
 
-  setMeasure({ ...measure, [name]: onlyNum });
+  setSize({ ...size, [name]: onlyNum });
 };
 
   const diagnose = () => {
 
     // 입력값 검증
     for (const key of ["shoulder", "bust", "waist", "hip"]) {
-      if (!measure[key]) {
+      if (!size[key]) {
         setHighlight(key);
         alert("모든 치수를 입력해 주세요.");
         return;
@@ -40,7 +42,7 @@ const handleChange = (e) => {
     }
 
     caxios
-      .post("/body/size", measure)
+      .post("/bodySize/insert", size)
       .then((res) => {
         navigate("/body/result", { state: { result: res.data } });
       })
@@ -51,7 +53,7 @@ const handleChange = (e) => {
 
     <div className={styles.container}>
       <div className={styles.pbHeader}>Body Analysis by Size</div>
-      {/* 왼쪽 - 실루엣 이미지 */}
+  
       <div className={styles.layoutRow}>
         <div className={styles.left}>
           <img
@@ -61,27 +63,26 @@ const handleChange = (e) => {
           />
         </div>
 
-        {/* 중앙 - 도움말 카드 */}
         <div className={styles.middle}>
-          <MeasureCard
+          <SizeCard
             title="어깨 (Shoulder)"
             summary="넓이 측정"
             text="왼쪽 어깨 끝에서 오른쪽 어깨 끝까지 일직선으로 측정"
             onClick={() => setHighlight("shoulder")}
           />
-          <MeasureCard
+          <SizeCard
             title="가슴 (Bust)"
             summary="둘레 측정"
             text="가슴이 가장 넓은 부분을 줄자로 한 바퀴 둘러 측정"
             onClick={() => setHighlight("bust")}
           />
-          <MeasureCard
+          <SizeCard
             title="허리 (Waist)"
             summary="둘레 측정"
             text="배꼽 위 2~3cm, 가장 잘록한 부분을 줄자로 측정"
             onClick={() => setHighlight("waist")}
           />
-          <MeasureCard
+          <SizeCard
             title="엉덩이 (Hip)"
             summary="둘레 측정"
             text="엉덩이가 가장 넓은 부분을 줄자로 한 바퀴 둘러 측정"
@@ -89,22 +90,20 @@ const handleChange = (e) => {
           />
         </div>
 
-        {/* 오른쪽 - 입력 카드 */}
         <div className={styles.right}>
 
-          {/* 성별 선택 */}
           <div className={styles.genderBox}>
             <button
-              className={`${styles.genderBtn} ${measure.gender === "F" && styles.active}`}
-              onClick={() => setMeasure({ ...measure, gender: "F" })}
+              className={`${styles.genderBtn} ${size.gender === "F" && styles.active}`}
+              onClick={() => setSize({ ...size, gender: "F" })}
             >여성</button>
             <button
-              className={`${styles.genderBtn} ${measure.gender === "M" && styles.active}`}
-              onClick={() => setMeasure({ ...measure, gender: "M" })}
+              className={`${styles.genderBtn} ${size.gender === "M" && styles.active}`}
+              onClick={() => setSize({ ...size , gender: "M" })}
             >남성</button>
           </div>
 
-          {/* 입력 */}
+          {/* 입력 칸 */}
           {["shoulder", "bust", "waist", "hip"].map((key) => (
             <div
               key={key}
@@ -122,7 +121,7 @@ const handleChange = (e) => {
                 pattern="[0-9]*"
                 name={key}
                 placeholder="cm"
-                value={measure[key]}
+                value={size[key]}
                 onChange={handleChange}
               />
             </div>
@@ -143,8 +142,8 @@ const handleChange = (e) => {
 };
 
 // 카드 분리 컴포넌트
-const MeasureCard = ({ icon, title, summary, text, onClick }) => (
-  <div className={styles.measureCard} onClick={onClick}>
+const SizeCard = ({ icon, title, summary, text, onClick }) => (
+  <div className={styles.sizeCard} onClick={onClick}>
     <div className={styles.cardHeader}>
       <span className={styles.icon}>{icon}</span>
       <span className={styles.badge}>{summary}</span>

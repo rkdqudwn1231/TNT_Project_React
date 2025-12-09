@@ -1,10 +1,11 @@
 import { useState } from "react";
 
 function ShareButton({ title, description, imageUrl, linkPath }) {
+
   const [copied, setCopied] = useState(false);
   
-  // 🔥 실제 배포 서버 URL (백엔드와 동일한 주소)
-  const SERVER_URL = "http://10.5.5.20";
+  // 실제 배포 서버 URL (백엔드와 동일한 주소)
+  const SERVER_URL = "http://10.5.5.20:3000";
   
   const handleShare = () => {
     if (!window.Kakao) {
@@ -12,8 +13,8 @@ function ShareButton({ title, description, imageUrl, linkPath }) {
       return;
     }
 
-    // 🔥 올바른 서버 URL로 링크 생성
-    const safeLink = SERVER_URL + "/#" + linkPath;
+    // 올바른 서버 URL로 링크 생성
+    const safeLink = SERVER_URL +"/" +  linkPath.replace(/^\//, "");
     const safeTitle = (title && title.toString().slice(0, 40)) || "TNT 체형 진단 결과";
     const safeDescription = (description || "").toString().replace(/\s+/g, " ").slice(0, 200);
     const safeImage = imageUrl || "https://t1.kakaocdn.net/kakaocorp/kakaocorp/admin/6587e1f40100001.png";
@@ -26,18 +27,24 @@ function ShareButton({ title, description, imageUrl, linkPath }) {
         title: safeTitle,
         description: safeDescription,
         imageUrl: safeImage,
-        link: { mobileWebUrl: safeLink, webUrl: safeLink }
+        link: {
+          mobileWebUrl: safeLink,
+          webUrl: safeLink
+        },
       },
       buttons: [
         {
           title: "🔍 결과 보기",
-          link: { mobileWebUrl: safeLink, webUrl: safeLink }
+          link: {
+          mobileWebUrl: safeLink,
+          webUrl: safeLink
+        },
         },
         {
           title: "✨ 나도 분석하기",
           link: {
-            mobileWebUrl: SERVER_URL + "/#/body",
-            webUrl: SERVER_URL + "/#/body"
+            mobileWebUrl: SERVER_URL + "/body/main",
+            webUrl: SERVER_URL + "/body/main"
           }
         }
       ]
@@ -45,15 +52,28 @@ function ShareButton({ title, description, imageUrl, linkPath }) {
   };
 
   const handleCopyLink = async () => {
-    // 🔥 링크 복사도 올바른 서버 URL로
-    const url = SERVER_URL + linkPath;
+    // 링크 복사도 올바른 서버 URL로
+    const url =  SERVER_URL +"/" +  linkPath.replace(/^\//, "");
     try {
+
+    if (navigator.clipboard && window.isSecureContext) {
       await navigator.clipboard.writeText(url);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 1800);
-    } catch {
-      alert("복사 실패! 브라우저 설정을 확인해주세요.");
+    } else {
+ 
+      const tempInput = document.createElement("input");
+      tempInput.value = url;
+      document.body.appendChild(tempInput);
+      tempInput.select();
+      document.execCommand("copy");
+      document.body.removeChild(tempInput);
     }
+
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1800);
+
+  } catch (err) {
+    alert("복사 실패! 브라우저 설정을 확인해주세요.");
+  }
   };
 
   return (

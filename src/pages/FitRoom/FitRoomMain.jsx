@@ -804,12 +804,9 @@ function FitRoomMain() {
 
       {/* 안내 모달 */}
 
-
-      <h1 style={{ textAlign: "center" }}>FitRoom</h1>
-
       {/* 도움말 MODAL */}
-      <div>
-        <button style={{ cursor: "pointer", float: "left" }} onClick={() => setTeachModalShow(true)} className={styles.tab2ButtonStyle} > 도움말 </button>
+      <div style={{  marginBottom: "50px" }}>
+        <button style={{ cursor: "pointer", float: "left" , marginBottom: "100px" }} onClick={() => setTeachModalShow(true)} className={styles.tab2ButtonStyle} > 도움말 </button>
         <TeachModal show={teachModalShow} onHide={() => setTeachModalShow(false)} />
       </div>
 

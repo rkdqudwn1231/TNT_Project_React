@@ -1,5 +1,5 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import About from "./About";
+import About from "./FitRoomAbout";
 import Closet from "./Closet/Closet";
 import Model from "./Model/Model";
 import History from "./History/History";

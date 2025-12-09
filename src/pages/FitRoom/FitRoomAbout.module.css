@@ -1,0 +1,285 @@
+intro
+
+/* 전체 레이아웃 */
+.wrap {
+    width: 100%;
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 60px 20px 160px;
+    background: #fff;
+}
+
+/* ① 히어로 이미지 */
+.heroImg img {
+    width: 55%;
+    border-radius: 10px;
+    margin-left: 360px;
+    box-shadow: 0 14px 32px rgba(0, 0, 0, 0.18);
+    opacity: 0;
+    animation: fadeIn 1s forwards;
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+    }
+}
+
+/* ② 헤더 문장 */
+.header {
+    margin: 100px  60px;
+    margin-bottom: 200px;
+    text-align: center;
+    font-size: 45px;
+    font-weight: 700;
+}
+
+/* ③ 기사/커뮤니티 지그재그 */
+.zigzag {
+    display: flex;
+    flex-direction: column;
+    gap: 90px;     /* 🔥 원래대로 복구 */
+    margin: 70px 0 110px;
+}
+
+.zItem {
+    width: 100%;
+    opacity: 0;
+    transition: opacity .85s ease, transform .9s cubic-bezier(.18, .89, .32, 1.28);
+}
+
+.zItem img {
+    width: 100%;
+    max-width: 400px;
+    border-radius: 10px;
+    box-shadow: 0 12px 26px rgba(0, 0, 0, 0.18);
+}
+
+.left {
+  display: flex;
+  justify-content: center ;
+  transform: translateX(-400px);
+}
+.right {
+  display: flex;
+  justify-content: center ;
+  transform: translateX(400px);
+}
+
+/* 좌우 배치 */
+.left img {
+    margin-right: 500px;
+}
+
+.right img {
+    margin-left: 500px;
+}
+
+/* 등장 애니메이션 */
+.zItem.show {
+  opacity: 1;
+  justify-content: center;   /* 🔥 핵심: 양쪽이 모두 가운데로 */
+  transform: translateX(0);
+}
+
+.zItem.show.left,
+.zItem.show.right {
+  transform: translateX(0);  /* 중앙으로 안착 */
+}
+
+/* 순차 등장 딜레이 */
+.zItem:nth-child(1).show {
+    transition-delay: .05s;
+}
+
+.zItem:nth-child(2).show {
+    transition-delay: .18s;
+}
+
+.zItem:nth-child(3).show {
+    transition-delay: .31s;
+}
+
+.zItem:nth-child(4).show {
+    transition-delay: .44s;
+}
+
+.titleBlock {
+  margin: 200px 0 70px;
+  display: flex;
+  justify-content: center;
+}
+
+.titleBlock img {
+    margin-left: 460px;
+  max-width: 680px;
+  width: 92%;
+  opacity: 1;
+  transform: none;
+}
+
+.titleBlock::after {
+  content: "";
+  display: block;
+  width: 72px;
+  height: 3px;
+  margin: 12px auto 0;
+  background: rgba(0, 0, 0, .14);
+  border-radius: 8px;
+}
+
+@keyframes riseUpFloating {
+    0% {
+        transform: translateY(65px) scale(0.92);
+        opacity: 0;
+    }
+
+    55% {
+        transform: translateY(-6px) scale(1.03);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* ⑤ 설명 문단 */
+.intro {
+    max-width: 800px;
+    margin: 0 auto 160px;
+    font-size: 18px;
+    line-height: 2;
+    text-align: center;
+    /* 🔥 가운데 정렬 */
+    color: rgba(0, 0, 0, 0.75);
+}
+
+.intro ul {
+    margin: 26px auto 0;
+    padding-left: 0;
+    display: inline-block;
+    /* 🔥 가운데 정렬을 위한 핵심 */
+    text-align: left;
+    /* 리스트 안 글자 들여쓰기 유지 */
+}
+
+.intro ul li+li {
+    margin-top: 6px;
+}
+
+/* ⑥ 기능 섹션 id2~id5 */
+.features {
+    display: flex;
+    flex-direction: column;
+    gap: 110px;
+}
+
+.featureRow {
+    display: flex;
+    align-items: center;
+    gap: 90px;
+    /* 🔥 요청대로 간격 크게 */
+    padding: 30px 0;
+    /* 🔥 요청대로 여백 추가 */
+    opacity: 0;
+    transform: translateY(70px);
+    transition: 0.9s ease;
+}
+
+.featureRow.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.featureImg img {
+    width: 100%;
+    max-width: 500px;
+    /* 🔥 이미지 조금 더 키움 */
+    border-radius: 14px;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.14);
+}
+
+.reverse {
+    flex-direction: row-reverse;
+}
+
+.featureText h3 {
+    font-size: 30px;
+    font-weight: 800;
+    margin-bottom: 16px;
+}
+
+.featureText p {
+    margin-bottom: 22px;
+    white-space: pre-line;
+    line-height: 1.75;
+    color: rgba(0, 0, 0, 0.8);
+}
+
+.featureText ul {
+    list-style: disc;
+    padding-left: 22px;
+}
+
+.featureText ul li+li {
+    margin-top: 6px;
+}
+
+/* ⑦ Hover 효과 (선택적) */
+.zItem img,
+.featureImg img {
+    transition: transform .4s ease;
+}
+
+.zItem img:hover,
+.featureImg img:hover {
+    transform: scale(1.03);
+}
+
+/* 반응형 */
+@media (max-width: 880px) {
+
+    .featureRow,
+    .reverse {
+        flex-direction: column;
+    }
+
+    .featureRow {
+        gap: 46px;
+        padding: 20px 0 40px;
+    }
+
+    .featureImg img {
+        max-width: 380px;
+    }
+}
+
+@media (max-width: 640px) {
+    .header {
+        font-size: 18px;
+    }
+
+    .featureText h3 {
+        font-size: 22px;
+    }
+
+    .titleBlock img {
+        max-width: 340px;
+    }
+}
+
+/* 반응형 */
+@media (max-width: 760px) {
+
+    .left,
+    .right {
+        justify-content: center;
+        transform: translateY(40px);
+    }
+
+    .zItem.show.left,
+    .zItem.show.right {
+        transform: translateY(0);
+    }
+}

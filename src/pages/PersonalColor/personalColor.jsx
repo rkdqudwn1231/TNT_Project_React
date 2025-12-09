@@ -830,7 +830,7 @@ function PersonalColor() {
     onClick={() => setShowHelp((prev) => !prev)}
     style={{
       padding: "8px 14px",
-      borderRadius: 14,
+      borderRadius: 10,
       border: "1px solid #ccc",
       background: "#fff",
       fontSize: 13,
@@ -1044,7 +1044,7 @@ function ColorPalette({ title, colors,handleColorClick }) {
 
 const tabButtonStyle = (active) => ({
   padding: "10px 18px",
-  borderRadius: "20px",
+  borderRadius: "10px",
   border: "none",
   cursor: "pointer",
   fontSize: "14px",

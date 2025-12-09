@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import PersonalColor from "./personalColor";
 import ColorResult from "./ColorResult";
-import Colortest from "./Colortest";
+import ColorAbout from "./ColorAbout";
 
 
 function Color(){
@@ -9,7 +9,7 @@ function Color(){
         <Routes>
             <Route index element={<PersonalColor/>}/>
              <Route path="result" element={<ColorResult/>} />
-             <Route path="about" element={<Colortest/>}/>
+             <Route path="about" element={<ColorAbout/>}/>
          
         </Routes>
     );

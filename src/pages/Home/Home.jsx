@@ -44,7 +44,7 @@ export default function Home() {
 
         <div className={styles.overlay}>
           <h1>Your Style, Defined</h1>
-          <p style={{ color:"white"}}>Unlock your personal color & shape</p>
+          <p style={{ color: "white" }}>Unlock your personal color & shape</p>
         </div>
       </section>
 
@@ -53,7 +53,7 @@ export default function Home() {
         <Container>
 
           {/* 1. 퍼스널 컬러 */}
-          <Row className="align-items-center">
+          <Row className="align-items-center" style={{ marginTop: "100px", }}>
             <Col lg={6}
               className={styles.slideLeft}
               ref={addSlideRef}
@@ -81,13 +81,13 @@ export default function Home() {
                 src="/images/about/personal2.jpg"
                 className="img-fluid rounded"
                 alt="about"
-                style={{ marginTop: "100px", marginLeft: "30px" }}
+                style={{ marginTop: "100px" }}
               />
             </Col>
           </Row>
 
           {/* 2. 퍼스널 체형 */}
-          <Row className="align-items-center">
+          <Row className="align-items-center" >
             <Col lg={6}
               className={styles.slideRight}
               ref={addSlideRef}>
@@ -95,7 +95,7 @@ export default function Home() {
                 src="/images/about/personal3.jpg"
                 className="img-fluid rounded"
                 alt="about"
-                style={{ marginTop: "100px", marginLeft: "50px" }}
+                style={{ marginTop: "170px", }}
               />
             </Col>
 
@@ -120,7 +120,7 @@ export default function Home() {
           </Row>
 
           {/* 3. 피팅룸 */}
-          <Row className="align-items-center">
+          <Row className="align-items-center" style={{ marginTop: "150px", }}>
             <Col lg={6}
               className={styles.slideLeft}
               ref={addSlideRef}
@@ -153,7 +153,7 @@ export default function Home() {
           </Row>
 
           {/* 4. 옷장 */}
-          <Row className="align-items-center">
+          <Row className="align-items-center" style={{ marginTop: "220px", }}>
             <Col lg={6}
               className={styles.slideRight}
               ref={addSlideRef}>
@@ -184,7 +184,7 @@ export default function Home() {
           </Row>
 
           {/* 5. 챗봇 */}
-          <Row className="align-items-center">
+          <Row className="align-items-center" style={{ marginTop: "190px", marginBottom: "250px" }} >
             <Col lg={6}
               className={styles.slideLeft}
               ref={addSlideRef}>
@@ -211,7 +211,7 @@ export default function Home() {
                 src="/images/about/chatbot.png"
                 className="img-fluid rounded"
                 alt="about"
-                style={{ marginTop: "30px", marginLeft: "10px" }}
+                style={{ marginTop: "30px" }}
               />
             </Col>
           </Row>

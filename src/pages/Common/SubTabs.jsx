@@ -8,14 +8,14 @@ const SubTabs = ({ cx, onClickItem }) => {
 
   if (pathname.startsWith("/color")) {
     tabs = [
-      { label: "Color mean", path: "/color/test", end: true },
+      { label: "About", path: "/color/about", end: true },
       { label: "Color", path: "/color", end: true },
     ];
   }
 
   if (pathname.startsWith("/body")) {
     tabs = [
-      { label: "Body Insight", path: "/body", end: true },
+      { label: "About", path: "/body", end: true },
       { label: "Shape Diagnosis", path: "/body/main" },
     ];
   }

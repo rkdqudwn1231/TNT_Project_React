@@ -18,7 +18,7 @@
   height: 60px;
   z-index: 1000;
   display: grid;
-  grid-template-columns: 220px 1fr;
+  grid-template-columns: 120px 1fr;
   transition: transform 0.4s ease-out;
 }
 
@@ -34,6 +34,10 @@
 /* 서브페이지 */
 .subHeader {
   background: white;
+  box-shadow: 0px 4px 6px rgb(255, 226, 236);
+
+
+
 }
 
 /* 스크롤 시 */
@@ -78,23 +82,25 @@
 .tabArea {
   display: flex;
   flex-direction: column;
-  justify-content: center;
 }
 
 /* 메인탭 */
 .mainTabs {
   display: flex;
   justify-content: flex-end;
-  padding: 5px 30px;
+
+  padding: 8px;
   gap: 35px;
   font-size: 15px;
   font-weight: 600;
+
+
 }
 
 .mainTabs a {
   text-decoration: none !important;
   font-size: 18px;
-  padding: 6px 12px;
+  padding: 7px;
   border-radius: 6px;
   font-weight: 600;
   transition: all 0.2s ease-in-out;
@@ -102,7 +108,7 @@
 }
 
 .mainTab {
-  padding: 2px 10px;
+  padding: 8px;
   border-radius: 4px;
   text-align: end;
   font-size: 20px;
@@ -112,11 +118,14 @@
 
 /* Login 자리에 들어가는 슬롯 (로그인 후 종/사람 아이콘) */
 .loginSlot {
-  width: 80px;          /* 로그인 탭이 차지하던 정도의 폭 */
+  width: 80px;
+  /* 로그인 탭이 차지하던 정도의 폭 */
   height: 40px;
   display: flex;
-  align-items: center;  /* 수직 중앙 */
-  justify-content: center; /* 수평 중앙 */
+  align-items: center;
+  /* 수직 중앙 */
+  justify-content: center;
+  /* 수평 중앙 */
   gap: 10px;
   position: relative;
 }
@@ -155,15 +164,18 @@
 .subTabs {
   display: flex;
   gap: 22px;
+  margin-right: 95px;
 }
 
 .subTabs a {
   text-decoration: none;
   color: rgba(255, 180, 210, 0.85);
   text-align: end;
+  margin-top: 15px;
 }
 
 .subTabActive {
+
   color: rgba(220, 50, 120, 1);
   font-weight: 700;
   border-bottom: 2px solid rgb(250, 187, 213);
@@ -230,6 +242,7 @@
     flex-direction: column;
   }
 
+
   /* 모바일 서브탭도 세로 정렬 */
   .subTabsWrapper {
     justify-content: flex-start !important;
@@ -240,6 +253,8 @@
     display: flex;
     flex-direction: column !important;
     align-items: flex-end !important;
+    border: 1px solid rgb(255, 255, 255);
+    border-radius: 10px;
   }
 
   .subTabs {
@@ -298,12 +313,14 @@ a {
 
 /* 드롭다운 항목 공통 */
 .userDropdownItem {
-  display: flex;              /* 아이콘 + 텍스트 가로 정렬 */
+  display: flex;
+  /* 아이콘 + 텍스트 가로 정렬 */
   align-items: center;
   gap: 8px;
   width: 100%;
   padding: 8px 12px;
-  font-size: 14px; /* 마이페이지 / 로그아웃 동일 크기 */
+  font-size: 14px;
+  /* 마이페이지 / 로그아웃 동일 크기 */
   color: #333;
   text-align: left;
   background: none;
@@ -322,11 +339,31 @@ a {
 
 /* 로그아웃 전용 스타일 (빨간 글씨) */
 .logoutItem {
-  color: #e11d48;          /* 기본 빨간 톤 */
+  color: #e11d48;
+  /* 기본 빨간 톤 */
   font-weight: 600;
 }
 
 .userDropdownItem.logoutItem:hover {
-  background: #fee2e2;     /* 연한 빨간 배경 */
-  color: #b91c1c;          /* hover 시 조금 더 진한 빨강 */
+  background: #fee2e2;
+  /* 연한 빨간 배경 */
+  color: #b91c1c;
+  /* hover 시 조금 더 진한 빨강 */
+}
+
+@media (min-width: 768px) and (max-width: 880px) {
+
+  .mainTabs {
+    gap: 20px !important;
+  }
+
+  .mainTabs a {
+    padding: 10px !important;
+  }
+
+  .mainTab {
+    padding: 10px !important;
+    font-size: 15px !important;
+
+  }
 }

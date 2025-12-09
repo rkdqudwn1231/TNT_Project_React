@@ -4,7 +4,7 @@ import PersonalColor from "../PersonalColor/personalColor";
 import FitRoom from "../FitRoom/FitRoom";
 import Home from "../Home/Home";
 import Chatbot from "../Chatbot/Chatbot";
-import Color from "../PersonalColor/Color"; 
+import Color from "../PersonalColor/Color";
 import Header from "./Header";
 import SubTabs from "./SubTabs.jsx";
 import MyPage from "../MyPage/MyPage"
@@ -30,26 +30,26 @@ const ContentMain = () => {
                 <Header isHome={isHome} />
             </header>
 
-                {/* 메인 (컨텐츠) */}
-                <main className={styles.main}>
-                    {/* 컨텐츠 */}
-                    <section className={styles.content}>
-                        <Routes>
-                            <Route path="/" element={<Home />} />
-                            <Route path="/color/*" element={<Color />} />
-                            <Route path="/body/*" element={<PersonalBodyRoute   />} />
-                            <Route path="/fitroom/*" element={<FitRoom />} />
-                            <Route path="/Login/*" element={<LoginRoutes />} />
-                            <Route path="/signup" element={<SignUp />} />
-                            <Route path="/MyPage" element={<MyPage />}/>
-                            <Route path="/Board/*" element={<BoardRoutes />} />
-                            <Route path="*" element={<h2>404 Not Found</h2>} />
-                        </Routes>
-                    </section>
-                </main>
-            { <Chatbot /> }
+            {/* 메인 (컨텐츠) */}
+            <main className={styles.main}>
+                {/* 컨텐츠 */}
+                <section className={styles.content}>
+                    <Routes>
+                        <Route path="/" element={<Home />} />
+                        <Route path="/color/*" element={<Color />} />
+                        <Route path="/body/*" element={<PersonalBodyRoute />} />
+                        <Route path="/fitroom/*" element={<FitRoom />} />
+                        <Route path="/Login/*" element={<LoginRoutes />} />
+                        <Route path="/signup" element={<SignUp />} />
+                        <Route path="/MyPage" element={<MyPage />} />
+                        <Route path="/Board/*" element={<BoardRoutes />} />
+                        <Route path="*" element={<h2>404 Not Found</h2>} />
+                    </Routes>
+                </section>
+            </main>
+            {<Chatbot />}
         </div>
-      
+
     );
 };
 

@@ -5,8 +5,13 @@ import { useState, useEffect } from "react";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import NotificationBell from "../Notification/NotificationBell";
 import { caxios } from "../../config/config";
+import { useLocation } from "react-router-dom";
 
-const Header = ({ isHome }) => {
+const Header = () => {
+
+  const location = useLocation();
+  const isHome = location.pathname === "/"; // 홈 페이지이면 true
+
   const navigate = useNavigate();
 
   const [showHeader, setShowHeader] = useState(true);
@@ -19,6 +24,21 @@ const Header = ({ isHome }) => {
   const token = sessionStorage.getItem("token");
   const loginId = sessionStorage.getItem("id");
   const isLoggedIn = !!token;
+
+  useEffect(() => {
+    const handleResize = () => {
+      const mobile = window.innerWidth <= 768;
+      setIsMobile(mobile);
+
+      if (!mobile) {
+        setMenuOpen(false); // PC로 전환 시 모바일 메뉴 닫기
+        setActiveMainTab(null); // 서브 메뉴 초기화
+      }
+    };
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   // Home 전용 스크롤 이벤트
   useEffect(() => {
@@ -114,7 +134,7 @@ const Header = ({ isHome }) => {
             {/* 홈일 때 */}
             {!isMobile && isHome && (
               <>
-                <NavLink to="/color/test" className={styles.mainTab}>Personal Color</NavLink>
+                <NavLink to="/color/about" className={styles.mainTab}>Personal Color</NavLink>
                 <NavLink to="/body" className={styles.mainTab}>Personal Body</NavLink>
                 <NavLink to="/fitroom" className={styles.mainTab}>Fitting Room</NavLink>
 
@@ -129,7 +149,7 @@ const Header = ({ isHome }) => {
             {!isMobile && !isHome && (
               <>
                 <NavLink
-                  to="/color"
+                  to="/color/about"
                   className={({ isActive }) =>
                     isActive ? `${styles.mainTab} ${styles.mainTabActive}` : styles.mainTab
                   }
@@ -177,7 +197,8 @@ const Header = ({ isHome }) => {
                   </div>
                   {activeMainTab === "color" && (
                     <div className={styles.subDropdown}>
-                      <NavLink to="/color" onClick={closeMenu}>Personal Color?</NavLink>
+                      <NavLink to="/color/about" onClick={closeMenu}>About</NavLink>
+                      <NavLink to="/color" onClick={closeMenu}>Color</NavLink>
                     </div>
                   )}
                 </div>
@@ -189,7 +210,8 @@ const Header = ({ isHome }) => {
                   </div>
                   {activeMainTab === "body" && (
                     <div className={styles.subDropdown}>
-                      <NavLink to="/body" onClick={closeMenu}>Personal Body?</NavLink>
+                      <NavLink to="/body" onClick={closeMenu}>About</NavLink>
+                      <NavLink to="/body/main" onClick={closeMenu}>Body</NavLink>
                     </div>
                   )}
                 </div>
@@ -238,8 +260,10 @@ const Header = ({ isHome }) => {
             ) : (
               <div className={styles.loginSlot}>
                 {/* 알림 컴포넌트 (종 아이콘 + 드롭다운 + 토스트) */}
-                <NotificationBell loginId={loginId} />
 
+                <span style={{ marginRight: "15px" }}>
+                  <NotificationBell loginId={loginId} />
+                </span>
                 {/* 사람 아이콘: 마이페이지/로그아웃 메뉴 */}
                 <div className={styles.userMenuWrapper}>
                   <button
@@ -284,7 +308,8 @@ const Header = ({ isHome }) => {
               <SubTabs cx={cx} onClickItem={closeMenu} />
             </div>
           )}
-        </div>
+
+        </div> {/*여기까지가 우측*/}
       </header>
     </>
   );

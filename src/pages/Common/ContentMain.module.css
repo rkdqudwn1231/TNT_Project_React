@@ -1,4 +1,3 @@
-
 .container {
     display: flex;
     flex-direction: column;
@@ -11,6 +10,7 @@
     height: 0;
 }
 
+
 /* 메인 기본 */
 .home .main {
     flex: 1;
@@ -21,14 +21,14 @@
 .home .content {
     width: 100%;
     height: 100%;
-         /* 스크롤바 숨기기 */
-    -ms-overflow-style: none; 
-    scrollbar-width: none; 
+    /* 스크롤바 숨기기 */
+    -ms-overflow-style: none;
+    scrollbar-width: none;
     overflow: visible !important;
 }
 
 .content::-webkit-scrollbar {
-    display: none; 
+    display: none;
 }
 
 /* 홈이 아닐 때 레이아웃 변경 */
@@ -48,14 +48,14 @@
 .sub .main {
     overflow-y: auto;
     height: 100%;
-    margin-top: 80px;
+
 }
 
 /* 서브 페이지 컨텐츠 */
 .sub .content {
+    padding-top: 80px;
     width: 85%;
     height: 100%;
     margin: 0 auto;
     overflow: auto;
-    border: 1px solid rgb(148, 209, 250);
 }

@@ -35,7 +35,7 @@ export default function BoardDetail() {
   const [myReaction, setMyReaction] = useState(null);
 
   // 로그인 정보
-  const loginId = sessionStorage.getItem("id");        // 회원 ID
+  const loginId = sessionStorage.getItem("id"); // 회원 ID
   const loginNickname = sessionStorage.getItem("nickname"); // 현재 닉네임
 
   // 게시글 상세 조회
@@ -66,14 +66,15 @@ export default function BoardDetail() {
 
       const mapped = list.map((c) => ({
         id: c.seq,
-        writer: c.member_nickname,       // 화면에 보이는 닉네임
-        memberId: c.member_id,           // 권한 체크용 ID
+        writer: c.member_nickname, // 화면에 보이는 닉네임
+        memberId: c.member_id, // 권한 체크용 ID
         text: c.content,
         createdAt: c.created_at
           ? String(c.created_at).replace("T", " ").slice(0, 16)
           : "",
         parentSeq: c.parent_seq ?? null,
         depth: c.depth ?? 0,
+        isDeleted: c.is_deleted === "Y", // ★ soft delete 여부
       }));
 
       setComments(mapped);
@@ -231,11 +232,11 @@ export default function BoardDetail() {
 
     try {
       await caxios.post(`/board/like/${seq}`, null, {
-            params: {
-             memberId: loginId,
-             memberNickname: loginNickname,   // ★ 추가
-            },
-        });
+        params: {
+          memberId: loginId,
+          memberNickname: loginNickname, // ★ 추가
+        },
+      });
 
       if (myReaction === "LIKE") {
         // 이미 좋아요 → 취소
@@ -309,8 +310,8 @@ export default function BoardDetail() {
 
       await caxios.post(`/board/${seq}/comments`, {
         content: trimmed,
-        member_id: loginId,       // 권한 체크용
-        member_nickname: nickname // 화면 표시용
+        member_id: loginId, // 권한 체크용
+        member_nickname: nickname, // 화면 표시용
       });
 
       setNewComment("");
@@ -408,7 +409,7 @@ export default function BoardDetail() {
     try {
       await caxios.put(`/board/${seq}/comments/${commentId}`, {
         content: trimmed,
-        member_id: loginId,   // 서버에서 seq + member_id 로 검사
+        member_id: loginId, // 서버에서 seq + member_id 로 검사
       });
 
       setEditingCommentId(null);
@@ -706,8 +707,8 @@ export default function BoardDetail() {
                 ) : (
                   <ul className={styles.commentList}>
                     {topLevelComments.map((c) => {
-                      const isMyComment =
-                        !!loginId && c.memberId === loginId;
+                      const isMyComment = !!loginId && c.memberId === loginId;
+                      const isDeleted = c.isDeleted;
 
                       return (
                         <li key={c.id} className={styles.commentItem}>
@@ -720,7 +721,7 @@ export default function BoardDetail() {
                             </span>
                           </div>
 
-                          {editingCommentId === c.id ? (
+                          {editingCommentId === c.id && !isDeleted ? (
                             <textarea
                               className={styles.commentEditInput}
                               value={editCommentText}
@@ -729,12 +730,14 @@ export default function BoardDetail() {
                               }
                             />
                           ) : (
-                            <p className={styles.commentText}>{c.text}</p>
+                            <p className={styles.commentText}>
+                              {isDeleted ? "삭제된 댓글입니다." : c.text}
+                            </p>
                           )}
 
                           <div className={styles.commentFooter}>
-                            {/* 왼쪽: 수정 · 삭제 */}
-                            {isMyComment && (
+                            {/* 왼쪽: 수정 · 삭제 (삭제된 댓글이면 숨김) */}
+                            {!isDeleted && isMyComment && (
                               <div className={styles.commentActions}>
                                 {editingCommentId === c.id ? (
                                   <>
@@ -790,17 +793,15 @@ export default function BoardDetail() {
                               </div>
                             )}
 
-                            {/* 오른쪽: 대댓글 버튼 */}
-                            <button
-                              type="button"
-                              className={styles.replyButton}
-                              onClick={() => handleOpenReply(c.id)}
-                            >
-                              <i
-                                className={`bi bi-arrow-return-right ${styles.replyIcon}`}
-                                aria-hidden="true"
-                              />
-                            </button>
+                           <button
+                             type="button"
+                             className={styles.replyButton}
+                             onClick={() => handleOpenReply(c.id)}
+                           >
+                            <i className={`bi bi-arrow-return-right ${styles.replyIcon}`} />
+                           </button>
+
+                           
                           </div>
 
                           {/* 이 부모 댓글에 대한 대댓글 입력창 */}
@@ -817,7 +818,10 @@ export default function BoardDetail() {
                                 }
                                 placeholder="대댓글을 입력해주세요."
                                 onKeyDown={(e) => {
-                                  if (e.key === "Enter" && !e.shiftKey) {
+                                  if (
+                                    e.key === "Enter" &&
+                                    !e.shiftKey
+                                  ) {
                                     e.preventDefault();
                                     handleReplySubmit();
                                   }
@@ -841,6 +845,7 @@ export default function BoardDetail() {
                                   !!loginId && r.memberId === loginId;
                                 const isEditingReply =
                                   editingCommentId === r.id;
+                                const isReplyDeleted = r.isDeleted;
 
                                 return (
                                   <li
@@ -848,15 +853,19 @@ export default function BoardDetail() {
                                     className={styles.replyItem}
                                   >
                                     <div className={styles.commentMeta}>
-                                      <span className={styles.commentWriter}>
+                                      <span
+                                        className={styles.commentWriter}
+                                      >
                                         {r.writer}
                                       </span>
-                                      <span className={styles.commentDate}>
+                                      <span
+                                        className={styles.commentDate}
+                                      >
                                         {r.createdAt}
                                       </span>
                                     </div>
 
-                                    {isEditingReply ? (
+                                    {isEditingReply && !isReplyDeleted ? (
                                       <textarea
                                         className={styles.commentEditInput}
                                         value={editCommentText}
@@ -868,12 +877,14 @@ export default function BoardDetail() {
                                       />
                                     ) : (
                                       <p className={styles.commentText}>
-                                        {r.text}
+                                        {isReplyDeleted
+                                          ? "삭제된 댓글입니다."
+                                          : r.text}
                                       </p>
                                     )}
 
                                     <div className={styles.commentFooter}>
-                                      {isMyReply && (
+                                      {isMyReply && !isReplyDeleted && (
                                         <div
                                           className={
                                             styles.commentActions

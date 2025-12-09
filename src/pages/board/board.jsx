@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styles from "./Board.module.css";
 import { caxios } from "../../config/config";
 import { useNavigate } from "react-router-dom";
 import "bootstrap-icons/font/bootstrap-icons.css";
+import { Modal, Button } from "react-bootstrap";
 
 // 카드 위(이미지 위)에 같이 띄울 대표 태그 하나 뽑는 헬퍼 (지금은 사용 안 하지만 놔둠)
 const getPrimaryTag = (post) => {
@@ -46,10 +47,25 @@ export default function Board() {
   const [appliedSearchField, setAppliedSearchField] = useState("title");
   const [appliedSearchText, setAppliedSearchText] = useState("");
 
+  // 히스토리 모달
+  const [showHistoryModal, setShowHistoryModal] = useState(false);
+  const [historyItems, setHistoryItems] = useState([]);
+  const [historyFileName, setHistoryFileName] = useState("");
+
+  const memberId = sessionStorage.getItem("id");
+
+  // 파일 input DOM 제어용 ref (히스토리 선택 시 값 비우기)
+  const fileInputRef = useRef(null);
+
   // 업로드 폼 입력 핸들러
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     setForm({ ...form, [name]: files ? files[0] : value });
+
+    // 사용자가 직접 파일을 선택하면 히스토리 선택 상태 초기화
+    if (name === "photo" && files && files[0]) {
+      setHistoryFileName("");
+    }
   };
 
   // 전체 게시글 목록
@@ -132,6 +148,12 @@ export default function Board() {
         body: "",
         desc: "",
       });
+      setHistoryFileName("");
+
+      // 파일 input도 초기화
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
     } catch (err) {
       console.error("업로드 실패:", err);
       alert("게시글 등록 실패");
@@ -216,9 +238,7 @@ export default function Board() {
         <div className={styles.cardThumb}>
           <img src={post.image_url} alt="" />
           <div className={styles.badgeGroup}>
-            {post.color && (
-              <span className={styles.badge}>{post.color}</span>
-            )}
+            {post.color && <span className={styles.badge}>{post.color}</span>}
             {post.body_shape && (
               <span className={styles.badge}>{post.body_shape}</span>
             )}
@@ -258,6 +278,61 @@ export default function Board() {
     );
   };
 
+  // 히스토리 모달 열기
+  const openHistoryModal = async () => {
+    if (!memberId) {
+      alert("로그인 해주세요.");
+      navigate("/login");
+      return;
+    }
+
+    try {
+      const res = await caxios.get("/history/list", {
+        params: { memberId },
+      });
+      setHistoryItems(res.data);
+      setShowHistoryModal(true);
+    } catch (err) {
+      console.error("히스토리 불러오기 실패:", err);
+      alert("히스토리 불러오기 실패");
+    }
+  };
+
+  // 히스토리 아이템 선택 → blob으로 받아서 File로 변환 후 form.photo에 저장
+  const handleSelectHistory = async (item) => {
+    try {
+      const res = await caxios.get("/history/download", {
+        params: { seq: item.seq },
+        responseType: "blob",
+      });
+
+      const fileName = item.name || "history.png";
+      const file = new File([res.data], fileName, {
+        type: res.data.type || "image/png",
+      });
+
+      // form.photo를 히스토리 파일로 교체
+      setForm((prev) => ({
+        ...prev,
+        photo: file,
+      }));
+
+      // 히스토리 파일명 표시
+      setHistoryFileName(fileName);
+
+      // 파일 input 선택값 초기화 (파일선택에서 고른 이름/값 제거)
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+
+      setShowHistoryModal(false);
+      alert("히스토리 이미지를 선택했습니다.");
+    } catch (err) {
+      console.error("히스토리 이미지 불러오기 실패:", err);
+      alert("히스토리 이미지 불러오기 실패");
+    }
+  };
+
   return (
     <div className={styles.boardContainer}>
       {/* 상단 제목 */}
@@ -271,13 +346,33 @@ export default function Board() {
             <div>
               <div className={styles.formGroup}>
                 <label>코디 사진</label>
-                <input
-                  type="file"
-                  name="photo"
-                  accept="image/*"
-                  onChange={handleChange}
-                  className={styles.fileInput}
-                />
+                <div className={styles.fileInputWrapper}>
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    name="photo"
+                    accept="image/*"
+                    onChange={handleChange}
+                    className={styles.fileInput}
+                  />
+                </div>
+              </div>
+
+              {/* 히스토리 사진 - 파일선택과 같은 라인 구조 */}
+              <div className={styles.formGroup}>
+                <label>히스토리 사진</label>
+                <div className={styles.fileInputWrapper}>
+                  <button
+                    type="button"
+                    className={styles.fileInputButton}
+                    onClick={openHistoryModal}
+                  >
+                    히스토리에서 선택
+                  </button>
+                  <span className={styles.fileName}>
+                    {historyFileName || "선택된 파일 없음"}
+                  </span>
+                </div>
               </div>
 
               <div className={styles.formGroup}>
@@ -308,12 +403,16 @@ export default function Board() {
             <div>
               <div className={styles.formGroup}>
                 <label>제목</label>
-                <input
-                  type="text"
-                  name="title"
-                  onChange={handleChange}
-                  value={form.title}
-                />
+              <input
+                type="text"
+                name="title"
+                placeholder="제목을 입력해주세요"
+                onChange={handleChange}
+                value={form.title}
+                onKeyDown={(e) => {
+                if (e.key === "Enter") e.preventDefault();
+               }}
+              />
               </div>
 
               <div className={styles.formGroup}>
@@ -321,9 +420,12 @@ export default function Board() {
                 <input
                   type="text"
                   name="tag"
-                  placeholder="예: 데일리룩"
+                  placeholder="예: 여러개 입력시 한칸 띄어쓰기 데일리룩 웨딩룩 하객룩 "
                   onChange={handleChange}
                   value={form.tag}
+                  onKeyDown={(e) => {
+                  if (e.key === "Enter") e.preventDefault();
+                  }}
                 />
               </div>
 
@@ -331,6 +433,7 @@ export default function Board() {
                 <label>코디 설명</label>
                 <textarea
                   name="desc"
+                  placeholder="오늘의 OOTD에 대해 이야기해 주세요!"
                   onChange={handleChange}
                   value={form.desc}
                 ></textarea>
@@ -339,7 +442,24 @@ export default function Board() {
           </div>
 
           <div className={styles.uploadActions}>
-            <button type="reset" className={styles.btnSecondary}>
+            <button
+              type="reset"
+              className={styles.btnSecondary}
+              onClick={() => {
+                setForm({
+                  photo: null,
+                  title: "",
+                  tag: "",
+                  color: "",
+                  body: "",
+                  desc: "",
+                });
+                setHistoryFileName("");
+                if (fileInputRef.current) {
+                  fileInputRef.current.value = "";
+                }
+              }}
+            >
               초기화
             </button>
             <button type="submit" className={styles.btnPrimary}>
@@ -435,6 +555,81 @@ export default function Board() {
       <section className={styles.cardGrid}>
         {filteredPosts.map((post) => renderCard(post))}
       </section>
+
+      {/* 히스토리 선택 모달 */}
+      <Modal
+        show={showHistoryModal}
+        onHide={() => setShowHistoryModal(false)}
+        size="lg"
+        centered
+      >
+        <Modal.Header closeButton style={{ justifyContent: "center" }}>
+          <Modal.Title style={{ textAlign: "center", flex: 1 }}>
+            히스토리에서 사진 선택
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {historyItems.length === 0 ? (
+            <p>저장된 히스토리 이미지가 없습니다.</p>
+          ) : (
+            <div
+              style={{
+                display: "flex",
+                flexWrap: "wrap",
+                gap: "12px",
+                justifyContent: "flex-start",
+              }}
+            >
+              {historyItems.map((item) => (
+                <div
+                  key={item.seq}
+                  style={{
+                    width: "150px",
+                    cursor: "pointer",
+                    textAlign: "center",
+                  }}
+                  onClick={() => handleSelectHistory(item)}
+                >
+                  <div
+                    style={{
+                      borderRadius: "8px",
+                      overflow: "hidden",
+                      border: "1px solid #eee",
+                    }}
+                  >
+                    <img
+                      src={item.resultUrl}
+                      alt={item.name || ""}
+                      style={{
+                        width: "100%",
+                        height: "auto",
+                        display: "block",
+                      }}
+                    />
+                  </div>
+                  <div
+                    style={{
+                      fontSize: "12px",
+                      marginTop: "4px",
+                      color: "#555",
+                      whiteSpace: "nowrap",
+                      textOverflow: "ellipsis",
+                      overflow: "hidden",
+                    }}
+                  >
+                    {item.name}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowHistoryModal(false)}>
+            닫기
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 }

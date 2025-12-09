@@ -6,7 +6,6 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import NotificationBell from "../Notification/NotificationBell";
 import { caxios } from "../../config/config";
 
-
 const Header = ({ isHome }) => {
   const navigate = useNavigate();
 
@@ -71,7 +70,7 @@ const Header = ({ isHome }) => {
   // 로그아웃
   const handleLogout = async () => {
     try {
-      await caxios.post("/auth/logout");  // 서버 요청 완료까지 대기
+      await caxios.post("/auth/logout"); // 서버 요청 완료까지 대기
 
       sessionStorage.removeItem("token");
       sessionStorage.removeItem("id");
@@ -261,14 +260,16 @@ const Header = ({ isHome }) => {
                           navigate("/mypage");
                         }}
                       >
-                        마이페이지
+                        <i className="bi bi-person-badge"></i>
+                        <span>마이페이지</span>
                       </button>
                       <button
                         type="button"
-                        className={styles.userDropdownItem}
+                        className={`${styles.userDropdownItem} ${styles.logoutItem}`}
                         onClick={handleLogout}
                       >
-                        로그아웃
+                        <i className="bi bi-box-arrow-right"></i>
+                        <span>로그아웃</span>
                       </button>
                     </div>
                   )}

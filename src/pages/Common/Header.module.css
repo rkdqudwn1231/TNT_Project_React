@@ -298,7 +298,9 @@ a {
 
 /* 드롭다운 항목 공통 */
 .userDropdownItem {
-  display: block;
+  display: flex;              /* 아이콘 + 텍스트 가로 정렬 */
+  align-items: center;
+  gap: 8px;
   width: 100%;
   padding: 8px 12px;
   font-size: 14px; /* 마이페이지 / 로그아웃 동일 크기 */
@@ -310,6 +312,21 @@ a {
   text-decoration: none;
 }
 
+.userDropdownItem i {
+  font-size: 16px;
+}
+
 .userDropdownItem:hover {
   background: #f2f2f2;
+}
+
+/* 로그아웃 전용 스타일 (빨간 글씨) */
+.logoutItem {
+  color: #e11d48;          /* 기본 빨간 톤 */
+  font-weight: 600;
+}
+
+.userDropdownItem.logoutItem:hover {
+  background: #fee2e2;     /* 연한 빨간 배경 */
+  color: #b91c1c;          /* hover 시 조금 더 진한 빨강 */
 }

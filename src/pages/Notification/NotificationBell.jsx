@@ -5,6 +5,7 @@ import styles from "./NotificationBell.module.css";
 import { caxios } from "../../config/config";
 import { connectWebSocket, disconnectWebSocket } from "../../config/websocket";
 import ToastNotification from "../../pages/Notification/Toast";
+import "bootstrap-icons/font/bootstrap-icons.css";
 
 const NotificationBell = ({ loginId }) => {
   const navigate = useNavigate();
@@ -15,6 +16,75 @@ const NotificationBell = ({ loginId }) => {
   const [toastMsg, setToastMsg] = useState(null);
 
   const isLoggedIn = !!loginId;
+
+  // 타입별 아이콘 선택
+  const renderTypeIcon = (type) => {
+    if (type === "LIKE") {
+      return (
+        <i
+          className={`bi bi-heart-fill ${styles.iconLike}`}
+          aria-hidden="true"
+        />
+      );
+    }
+    if (type === "COMMENT") {
+      return (
+        <i
+          className={`bi bi-chat-dots-fill ${styles.iconComment}`}
+          aria-hidden="true"
+        />
+      );
+    }
+    if (type === "REPLY") {
+      return (
+        <i
+          className={`bi bi-chat-left-text-fill ${styles.iconReply}`}
+          aria-hidden="true"
+        />
+      );
+    }
+    // 기본 아이콘
+    return (
+      <i
+        className={`bi bi-bell-fill ${styles.iconDefault}`}
+        aria-hidden="true"
+      />
+    );
+  };
+
+  // 메시지 렌더 (닉네임 분리 + 아이콘)
+  const renderMessage = (message, type) => {
+    if (!message || typeof message !== "string") {
+      return (
+        <span className={styles.messageText}>
+          {renderTypeIcon(type)}
+          <span>{message}</span>
+        </span>
+      );
+    }
+
+    const idx = message.indexOf("님이 ");
+    if (idx === -1) {
+      // 닉네임 패턴이 아니면 전체를 그냥 출력
+      return (
+        <span className={styles.messageText}>
+          {renderTypeIcon(type)}
+          <span>{message}</span>
+        </span>
+      );
+    }
+
+    const nickname = message.slice(0, idx);
+    const rest = message.slice(idx + 3); // "님이 " 이후 문장
+
+    return (
+      <span className={styles.messageText}>
+        {renderTypeIcon(type)}
+        <span className={styles.nickname}>{nickname}</span>
+        <span>님이 {rest}</span>
+      </span>
+    );
+  };
 
   // 최초 알림 목록 + 웹소켓 연결
   useEffect(() => {
@@ -118,7 +188,7 @@ const NotificationBell = ({ loginId }) => {
                     onClick={() => handleClickNotification(n)}
                   >
                     <div className={styles.notificationMessage}>
-                      {n.message}
+                      {renderMessage(n.message, n.type)}
                     </div>
                     <div className={styles.notificationTime}>
                       {n.created_at

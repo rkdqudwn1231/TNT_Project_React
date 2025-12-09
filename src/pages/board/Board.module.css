@@ -17,6 +17,24 @@
 }
 
 /* -------------------------
+   공통 인풋 스타일 (필터/검색 포함)
+-------------------------- */
+input,
+select,
+textarea {
+  border: 1px solid #d4d7e1;
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 13px;
+  background: #fff;
+}
+
+textarea {
+  min-height: 80px;
+  resize: none;
+}
+
+/* -------------------------
    업로드 박스
 -------------------------- */
 .uploadBox {
@@ -39,19 +57,12 @@
   margin-bottom: 14px;
 }
 
-input,
-select,
-textarea {
-  border: 1px solid #d4d7e1;
-  border-radius: 8px;
-  padding: 8px 10px;
-  font-size: 13px;
-  background: #fff;
-}
-
-textarea {
-  min-height: 80px;
-  resize: vertical;
+/* ✅ 업로드 영역 인풋만 폭 100% */
+.formGroup input,
+.formGroup select,
+.formGroup textarea {
+  width: 100%;
+  box-sizing: border-box;
 }
 
 /* 파일 커스텀 버튼 */
@@ -76,6 +87,46 @@ textarea {
   opacity: 0.9;
 }
 
+/* 히스토리 버튼을 파일선택이랑 똑같이 보이게 하는 래퍼 */
+.fileInputWrapper {
+  display: flex;
+  align-items: center;
+  max-width: 100%;
+  box-sizing: border-box;
+
+  border: 1px solid #d4d7e1;
+  border-radius: 999px;
+  padding: 4px 10px;
+  background: #fff;
+}
+
+/* 히스토리 선택 버튼 */
+.fileInputButton {
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: none;
+  background: #111827;
+  color: #fff;
+  font-size: 12px;
+  cursor: pointer;
+  white-space: nowrap;
+  margin-right: 8px;
+}
+
+.fileInputButton:hover {
+  opacity: 0.9;
+}
+
+/* 파일 이름 표시 영역 */
+.fileName {
+  font-size: 12px;
+  color: #6b7280;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 업로드 버튼 영역 */
 .uploadActions {
   display: flex;
   justify-content: flex-end;
@@ -135,7 +186,7 @@ textarea {
 .filterLeft {
   display: flex;
   gap: 12px;
-  flex-wrap: wrap;   /* 폭 줄어들면 아래줄로 */
+  flex-wrap: wrap;
 }
 
 /* 공통 그룹 */
@@ -143,7 +194,7 @@ textarea {
   display: flex;
   flex-direction: column;
   font-size: 13px;
-  min-width: 0;        /* flex 안에서 줄어들도록 */
+  min-width: 0;
 }
 
 .filterLabel {
@@ -151,7 +202,7 @@ textarea {
   margin-bottom: 4px;
 }
 
-/* select/input 폭 제한 */
+/* 퍼스널 컬러 / 체형 / 검색 select, input */
 .filterGroup select,
 .filterGroup input {
   min-width: 120px;
@@ -168,17 +219,17 @@ textarea {
   display: flex;
   align-items: center;
   gap: 8px;
-  flex-wrap: wrap;         /* 폭 줄면 버튼이 다음 줄로 */
+  flex-wrap: wrap;
 }
 
 .searchSelect {
   min-width: 90px;
 }
 
-/* 검색 입력칸: 고정폭 대신 flex */
+/* 검색 입력칸 */
 .searchInput {
   height: 34px;
-  flex: 1 1 140px;         /* 기본 140px, 남는 공간 채움 */
+  flex: 1 1 140px;
   max-width: 100%;
   box-sizing: border-box;
 }

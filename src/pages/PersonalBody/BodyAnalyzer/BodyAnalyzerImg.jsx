@@ -18,6 +18,8 @@ const BodyAnalyzerImg = () => {
     const [errorMsg, setErrorMsg] = useState("");
     const [error, setError] = useState(false);
 
+    const [dots, setDots] = useState("");
+
     const fileInputRef = useRef(null);
 
 
@@ -108,6 +110,16 @@ const BodyAnalyzerImg = () => {
         }
     };
 
+    useEffect(() => {
+    if (!loading) return;
+
+    const interval = setInterval(() => {
+        setDots(prev => (prev.length < 3 ? prev + "." : ""));
+    }, 500);
+
+    return () => clearInterval(interval);
+    }, [loading]);
+
     return (
         <div className="totalContainer">
             <div className={styles.pbHeader}>AI Body Analysis</div>
@@ -150,7 +162,7 @@ const BodyAnalyzerImg = () => {
                                     onClick={handleAnalyze}
                                     disabled={loading || !file}
                                 >
-                                    {loading ? "AI 분석 중..." : "체형 분석하기"}
+                                    {loading ? `AI 분석 중${dots}` : "체형 분석하기"}
                                 </button>)}
 
                             <div className="buttonGroup">

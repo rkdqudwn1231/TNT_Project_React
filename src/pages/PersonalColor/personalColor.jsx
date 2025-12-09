@@ -16,47 +16,64 @@ const celebrityMap = {
   spring: {
     male: [
       { name: "박보검", img: "/images/celebrity/박보검.png", desc: "부드럽고 깨끗한 봄 라이트톤" },
-      { name: "차은우", img: "/images/celebrity/차은우.png", desc: "맑고 선명한 봄 브라이트톤" }
+      { name: "차은우", img: "/images/celebrity/차은우.png", desc: "맑고 선명한 봄 브라이트톤" },
+      { name: "유승호", img: "/images/celebrity/유승호.png", desc: "순하고 맑은 봄 라이트톤" },   // 추가
+      { name: "지수", img: "/images/celebrity/지수.png", desc: "부드럽고 따뜻한 봄 웜톤" }     // 추가
     ],
     female: [
       { name: "아이유", img: "/images/celebrity/아이유.png", desc: "맑고 밝은 라이트 스프링 대표 톤" },
-      { name: "태연", img: "/images/celebrity/태연.png", desc: "중명도의 따뜻한 봄톤" }
+      { name: "태연", img: "/images/celebrity/태연.png", desc: "중명도의 따뜻한 봄톤" },
+      { name: "김유정", img: "/images/celebrity/김유정.png", desc: "상큼하고 화사한 봄 라이트톤" },   // 추가
+      { name: "박민영", img: "/images/celebrity/박민영.png", desc: "맑고 깨끗한 브라이트 스프링" }    // 추가
     ]
   },
 
   summer: {
     male: [
       { name: "정해인", img: "/images/celebrity/정해인.png", desc: "맑고 깨끗한 여름 라이트톤" },
-      { name: "뷔", img: "/images/celebrity/뷔.png", desc: "시원하고 부드러운 여름 쿨톤" }
+      { name: "뷔", img: "/images/celebrity/뷔.png", desc: "시원하고 부드러운 여름 쿨톤" },
+      { name: "이도현", img: "/images/celebrity/이도현.png", desc: "부드럽고 차분한 서머 소프트톤" }, // 추가
+      { name: "서강준", img: "/images/celebrity/서강준.png", desc: "맑고 청량한 여름 쿨톤" }        // 추가
     ],
     female: [
       { name: "수지", img: "/images/celebrity/수지.png", desc: "부드럽고 차분한 여름 라이트톤" },
-      { name: "이영애", img: "/images/celebrity/이영애.png", desc: "청초하고 투명한 쿨톤 대표" }
+      { name: "이영애", img: "/images/celebrity/이영애.png", desc: "청초하고 투명한 쿨톤 대표" },
+      { name: "정은지", img: "/images/celebrity/정은지.png", desc: "부드럽고 안정적인 서머 뮤트톤" },  // 추가
+      { name: "신세경", img: "/images/celebrity/신세경.png", desc: "차분하고 맑은 여름 쿨톤" }        // 추가
     ]
   },
 
   autumn: {
     male: [
       { name: "공유", img: "/images/celebrity/공유.png", desc: "따뜻하고 차분한 가을 소프트톤" },
-      { name: "남주혁", img: "/images/celebrity/남주혁.png", desc: "깊고 안정적인 가을 딥톤" }
+      { name: "남주혁", img: "/images/celebrity/남주혁.png", desc: "깊고 안정적인 가을 딥톤" },
+      { name: "하정우", img: "/images/celebrity/하정우.png", desc: "묵직하고 따뜻한 가을 딥톤" },        // 추가
+      { name: "마동석", img: "/images/celebrity/마동석.png", desc: "강한 대비의 가을 브라운톤" }        // 추가
     ],
     female: [
       { name: "제니", img: "/images/celebrity/제니.png", desc: "고급스럽고 딥한 가을톤" },
-      { name: "한지민", img: "/images/celebrity/한지민.png", desc: "부드럽고 따뜻한 뮤트톤" }
+      { name: "한지민", img: "/images/celebrity/한지민.png", desc: "부드럽고 따뜻한 뮤트톤" },
+      { name: "고윤정", img: "/images/celebrity/고윤정.png", desc: "부드럽고 따뜻한 가을 소프트톤" },  // 추가
+      { name: "전지현", img: "/images/celebrity/전지현.png", desc: "선명하고 깊은 딥 오텀" }          // 추가
     ]
   },
 
   winter: {
     male: [
       { name: "현빈", img: "/images/celebrity/현빈.png", desc: "차갑고 강렬한 겨울 딥톤" },
-      { name: "정우성", img: "/images/celebrity/정우성.png", desc: "선명한 대비의 겨울 브라이트톤" }
+      { name: "정우성", img: "/images/celebrity/정우성.png", desc: "선명한 대비의 겨울 브라이트톤" },
+      { name: "강동원", img: "/images/celebrity/강동원.png", desc: "선명하고 차가운 겨울 브라이트톤" }, // 추가
+      { name: "이정재", img: "/images/celebrity/이정재.png", desc: "고급스러운 겨울 딥톤" }           // 추가
     ],
     female: [
       { name: "송혜교", img: "/images/celebrity/송혜교.png", desc: "선명하고 대비 강한 겨울 딥톤" },
-      { name: "윤아", img: "/images/celebrity/윤아.png", desc: "깨끗하고 투명한 아이시 쿨톤" }
+      { name: "윤아", img: "/images/celebrity/윤아.png", desc: "깨끗하고 투명한 아이시 쿨톤" },
+      { name: "크리스탈", img: "/images/celebrity/크리스탈.png", desc: "차갑고 선명한 브라이트 윈터" }, // 추가
+      { name: "아이린", img: "/images/celebrity/아이린.png", desc: "맑고 차가운 겨울 쿨톤" }           // 추가
     ]
   }
 };
+
 
 
 
@@ -541,6 +558,7 @@ function PersonalColor() {
 
   const [showModal, setShowModal] = useState(false);
   const [selectedColor, setSelectedColor] = useState(null);
+  const[showHelp,setShowHelp]=useState(false);
   const handleColorClick = (color) => {
   setSelectedColor(color);
   setShowModal(true);
@@ -801,8 +819,44 @@ function PersonalColor() {
             style={tabButtonStyle(mode === "Eye")}>
             Eye
             </button>
+
+
             
           </div>
+
+
+          <div style={{ marginBottom: 20 }}>
+  <button
+    onClick={() => setShowHelp((prev) => !prev)}
+    style={{
+      padding: "8px 14px",
+      borderRadius: 14,
+      border: "1px solid #ccc",
+      background: "#fff",
+      fontSize: 13,
+      cursor: "pointer"
+    }}
+  >
+    색 선택 안내
+  </button>
+
+  {showHelp && (
+    <div
+      style={{
+        marginTop: 10,
+        padding: "12px 16px",
+        background: "#f7f7ff",
+        border: "1px solid #dcdcff",
+        borderRadius: 10,
+        lineHeight: 1.6
+      }}
+    >
+      얼굴 사진에서 <strong>피부(Skin) · 머리(Hair) · 눈(Eye)</strong>에 해당하는 색을 클릭해보세요!  
+      <br />
+      선택된 색을 기반으로 <strong>AI가 12톤 퍼스널컬러 결과</strong>를 분석해드립니다
+    </div>
+  )}
+</div>
 
           {imageSrc && (
             <>

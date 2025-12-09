@@ -21,7 +21,7 @@
     padding: 20px;
     border-radius: 10px;
     background: #fafafa;
-    
+
     margin: auto;
 }
 
@@ -73,13 +73,13 @@
 
 
 /* --------------------------------------------- */
-  .pbHeader {
-        font-size: 40px;
-        font-weight: 800;
-        text-align: center;
-        color: rgba(255, 170, 205, 0.85);
-        margin-bottom: 30px;
-    }
+.pbHeader {
+    font-size: 40px;
+    font-weight: 800;
+    text-align: center;
+    color: rgba(255, 170, 205, 0.85);
+    margin-bottom: 30px;
+}
 
 /* ===== 업로드 영역 ===== */
 
@@ -126,12 +126,25 @@
 }
 
 .analyzeBtn:disabled {
-    background:  #ffcae085;
+    background: #ffcae085;
     cursor: not-allowed;
 }
 
 .analyzeBtn:hover:not(:disabled) {
     background: linear-gradient(135deg, #ff7fae81, #ffb8d685);
+}
+
+.buttonGroup {
+    display: flex;
+    flex-wrap: wrap;
+    /* 화면 좁아지면 줄 바꿈 */
+    gap: 8px;
+    /* 버튼 간격 */
+}
+
+.buttonGroup button {
+    flex: 1 1 48%;
+    /* 화면 좁아지면 줄어들고, 필요 시 wrap */
 }
 
 .analyzeNextBtn {
@@ -147,19 +160,17 @@
     transition: 0.2s;
     transition: box-shadow 0.18s ease-out, transform 0.12s ease-out,
         opacity 0.18s ease-out;
-    margin-right: 4px;
+    margin-right: 1%;
 }
+
 .analyzeNextBtn:disabled {
-    background:  #ffcae085;
+    background: #ffcae085;
     cursor: not-allowed;
 }
 
 .analyzeNextBtn:hover:not(:disabled) {
     background: linear-gradient(135deg, #ff7fae81, #ffb8d685);
 }
-
-
-
 
 .analyzeNextBtn1 {
     width: 49%;
@@ -174,7 +185,7 @@
     transition: 0.2s;
     transition: box-shadow 0.18s ease-out, transform 0.12s ease-out,
         opacity 0.18s ease-out;
-    margin-left: 4px;
+    margin-left: 1%;
 }
 
 .analyzeNextBtn1Big {
@@ -201,11 +212,12 @@
 /* ===== 우측 상단 결과 ===== */
 .resultBox {
     width: 100%;
-    min-height: 250px;
+    min-height: 200px;
     background: #ffffff;
     border-radius: 18px;
     padding: 30px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    border: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.13);
 }
 
 .resultBox h1 {
@@ -224,13 +236,22 @@
 /* ===== 하단 추천 ===== */
 .footResultBox {
     width: 100%;
-    min-height: 200px;
+    height: 100%;
+    min-height: 320px;
     background: #ffffff;
     border-radius: 18px;
+    border: none;
     padding: 24px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.13);
 }
 
+.footResultTitle {
+    font-size: 20px;
+    font-weight: 700;
+    color: #ff91c8;          /* 핑크톤 강조 */
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+    margin-bottom: 8px;
+}
 /* ===== 반응형 ===== */
 @media (max-width: 768px) {
     .uploadBox {
@@ -251,5 +272,69 @@
         padding: 18px;
     }
 
-  
+
+}
+
+@media (max-width: 480px) {
+    .uploadBtn {
+        width: 100%;
+        height: 100%;
+    }
+
+     .previewImg {
+         width: 100%;
+    }
+
+    .buttonGroup button {
+        flex: 1 1 100%;
+        /* 모바일에서는 버튼 세로 배치 */
+    }
+}
+
+
+.infoContainer{
+    
+    padding: 40px;
+    border: none;
+    background-color: #ffffff; /* 부드러운 배경 */
+    border-radius: 10px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+}
+
+/* 각 항목 구분 */
+.infoContainer > div:nth-child(odd) {
+    font-weight: bold;       /* 제목 강조 */
+    font-size: 18px;
+    margin-top: 15px;
+    margin-bottom: 3px;
+    color: #3a3a3a;
+    
+        font-family: "Cafe24Dongdong" !important;
+}
+
+.infoContainer > div:nth-child(even) {
+    font-size: 16px;
+    line-height: 1.5;
+    margin-bottom: 10px;
+    color: #555;
+        font-family: "Gowun Dodum" !important;
+}
+
+/* 모바일 반응형 */
+@media (max-width: 768px) {
+    .infoContainer {
+        padding: 15px;
+    }
+    .infoContainer > div:nth-child(odd) {
+        font-size: 16px;
+        font-family: "Cafe24Dongdong" !important;
+    }
+    .infoContainer > div:nth-child(even) {
+        font-size: 14px;
+        font-family: "Gowun Dodum" !important;
+    }
+}
+
+.footResultContainer{
+    height: auto;
 }

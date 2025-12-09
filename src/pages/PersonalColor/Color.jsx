@@ -9,7 +9,7 @@ function Color(){
         <Routes>
             <Route index element={<PersonalColor/>}/>
              <Route path="result" element={<ColorResult/>} />
-             <Route path="test" element={<Colortest/>}/>
+             <Route path="about" element={<Colortest/>}/>
          
         </Routes>
     );

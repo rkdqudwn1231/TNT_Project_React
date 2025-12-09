@@ -231,8 +231,11 @@ export default function BoardDetail() {
 
     try {
       await caxios.post(`/board/like/${seq}`, null, {
-        params: { memberId },
-      });
+            params: {
+             memberId: loginId,
+             memberNickname: loginNickname,   // ★ 추가
+            },
+        });
 
       if (myReaction === "LIKE") {
         // 이미 좋아요 → 취소

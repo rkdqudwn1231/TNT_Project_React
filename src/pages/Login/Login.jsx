@@ -76,9 +76,8 @@ const Login = () => {
           </button>
 
           <div className={styles.links}>
-            <Link to="/find-id" className={styles.link}>아이디 찾기</Link>
-            <span>·</span>
-            <Link to="/find-password" className={styles.link}>비밀번호 찾기</Link>
+            <Link to="/Login/find-id" className={styles.link}>아이디 찾기</Link>
+            <Link to="/Login/find-password" className={styles.link}>비밀번호 찾기</Link>
             <span>·</span>
             <Link to="/signup" className={styles.link}>회원가입</Link>
           </div>

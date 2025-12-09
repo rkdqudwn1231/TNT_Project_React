@@ -1,22 +1,31 @@
 /* src/components/SignUp.module.css */
 
+/* 전체 컨테이너 */
 .container {
   max-width: 420px;
   margin: 40px auto;
   padding: 24px 20px;
-  border-radius: 12px;
-  background-color: #ffffff;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  border-radius: 16px;
+  background-color: #fff9fb;
+
+  /* 입체감 강화: 2단 그림자 */
+  box-shadow:
+    0 4px 12px rgba(255, 105, 180, 0.15),
+    0 8px 20px rgba(255, 105, 180, 0.10);
+
   box-sizing: border-box;
 }
 
+/* 제목 */
 .title {
   margin: 0 0 20px;
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 700;
   text-align: center;
+  color: #ff2f87;
 }
 
+/* form */
 .form {
   display: flex;
   flex-direction: column;
@@ -35,12 +44,13 @@
   height: 80px;
   border-radius: 50%;
   overflow: hidden;
-  border: 1px solid #dddddd;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #f7f7f7;
-  flex-shrink: 0;
+  border: 2px solid #ffb3cc;
+  background-color: #ffe6ef;
+
+  /* 입체감 */
+  box-shadow:
+    0 3px 6px rgba(255, 100, 150, 0.2),
+    inset 0 2px 4px rgba(255, 255, 255, 0.7);
 }
 
 .profileImage {
@@ -51,15 +61,23 @@
 
 .profilePlaceholder {
   font-size: 12px;
-  color: #999999;
+  color: #cc7a99;
 }
 
+/* 파일 업로드 버튼 */
 .fileLabel {
   font-size: 12px;
   padding: 8px 12px;
   border-radius: 999px;
-  border: 1px solid #cccccc;
+  border: 1px solid #ff7aaa;
+  color: #ff2f87;
   cursor: pointer;
+
+  /* 살짝 튀어나온 버튼 */
+  box-shadow:
+    0 2px 5px rgba(255, 80, 140, 0.25),
+    inset 0 1px 2px rgba(255, 255, 255, 0.8);
+
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -70,49 +88,50 @@
   display: none;
 }
 
+/* 그룹 */
 .formGroup {
   display: flex;
   flex-direction: column;
   gap: 6px;
 }
 
+/* label */
 .label {
   font-size: 13px;
-  font-weight: 500;
+  font-weight: 600;
+  color: #ff2f87;
 }
 
+/* input/select */
 .input,
 .select {
   width: 100%;
-  padding: 8px 10px;
-  border-radius: 6px;
-  border: 1px solid #cccccc;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #ffb3cc;
+  background-color: #ffffff;
   font-size: 14px;
-  box-sizing: border-box;
+
+  /* ★ 입체감 박스 */
+  box-shadow:
+    0 2px 4px rgba(255, 100, 150, 0.15),
+    inset 0 1px 2px rgba(255, 255, 255, 0.7);
+
+  transition: border-color 0.2s, box-shadow 0.25s;
 }
 
 .input:focus,
 .select:focus {
   outline: none;
-  border-color: #333333;
+  border-color: #ff4f9a;
+
+  /* 포커스 시 더 떠 보이게 */
+  box-shadow:
+    0 0 6px rgba(255, 47, 135, 0.4),
+    0 4px 8px rgba(255, 47, 135, 0.15),
+    inset 0 1px 2px rgba(255, 255, 255, 0.85);
 }
 
-.submitButton {
-  margin-top: 8px;
-  width: 100%;
-  padding: 10px 0;
-  border-radius: 8px;
-  border: none;
-  font-size: 15px;
-  font-weight: 600;
-  background-color: #111111;
-  color: #ffffff;
-  cursor: pointer;
-}
-
-.submitButton:hover {
-  opacity: 0.88;
-}
 /* 이메일 인증 input + 버튼 가로 정렬 */
 .emailRow {
   display: flex;
@@ -120,59 +139,79 @@
   align-items: center;
 }
 
-/* 버튼 크기를 회원가입 버튼 스타일과 유사하게 */
+/* 인증 버튼 */
 .verifyButton {
   flex-shrink: 0;
   padding: 10px 14px;
-  background: #111;
-  color: #fff;
+  background: #ff4f9a;
+  color: white;
   border: none;
   border-radius: 8px;
   font-size: 13px;
   cursor: pointer;
   height: 38px;
+
+  /* 입체감 */
+  box-shadow:
+    0 3px 6px rgba(255, 50, 120, 0.3),
+    inset 0 1px 2px rgba(255, 255, 255, 0.7);
+
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .verifyButton:hover {
-  opacity: 0.9;
+  background: #ff2f87;
+  box-shadow:
+    0 4px 8px rgba(255, 50, 120, 0.4),
+    inset 0 1px 2px rgba(255, 255, 255, 0.9);
 }
 
-
+/* 이메일 input 확장 */
 .emailRow input {
   flex: 1;
 }
 
-
+/* 회원가입 버튼 */
 .submitButton {
   width: 100%;
   padding: 12px 0;
-  background: #111;
+  background: linear-gradient(90deg, #ff7aaa, #ff4f9a);
   color: #fff;
   border: none;
-  border-radius: 8px;
-  font-size: 15px;
-  font-weight: 600;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 700;
   cursor: pointer;
   margin-top: 20px;
+
+  /* 강조된 입체감 */
+  box-shadow:
+    0 5px 12px rgba(255, 70, 150, 0.35),
+    inset 0 1px 3px rgba(255, 255, 255, 0.8);
+
+  transition: opacity 0.2s, box-shadow 0.25s;
 }
 
 .submitButton:hover {
-  opacity: 0.88;
+  opacity: 0.9;
+  box-shadow:
+    0 7px 16px rgba(255, 50, 130, 0.45),
+    inset 0 2px 4px rgba(255, 255, 255, 0.9);
 }
 
+/* 검증 메시지 */
 .matchMessage {
   margin-top: -4px;
   font-size: 13px;
-  color: #0a8800; /* 초록색 */
+  color: #009944;
   font-weight: 600;
 }
 
 .notMatchMessage {
   margin-top: -4px;
   font-size: 13px;
-  color: #d80000; /* 빨간색 */
+  color: #d80055;
   font-weight: 600;
 }

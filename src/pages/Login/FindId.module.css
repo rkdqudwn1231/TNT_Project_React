@@ -1,0 +1,113 @@
+/* 전체 페이지 */
+.page {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* 화면 위쪽으로 올림 */
+  padding-top: 80px; /* 적당히 위로 올림 */
+  background: #fff6fa;
+  font-family: sans-serif;
+}
+
+/* 박스 */
+.container {
+  width: 380px;
+  padding: 28px 24px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(8px);
+
+  box-shadow: 0 4px 16px rgba(255, 105, 180, 0.15);
+}
+
+/* 제목 */
+.title {
+  margin: 0 0 20px;
+  font-size: 22px;
+  font-weight: 700;
+  text-align: center;
+  color: #ff2f87;
+}
+
+/* 폼 */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* 라벨 */
+.label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #ff2f87;
+}
+
+/* 이메일줄 input + 버튼 */
+.emailRow {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+/* input 폭 줄임 */
+.emailInput {
+  flex: 1;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #ffb3cc;
+  font-size: 14px;
+}
+
+.emailInput:focus {
+  border-color: #ff4f9a;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(255, 105, 180, 0.25);
+}
+
+/* 인증 버튼 */
+.verifyButton {
+  padding: 10px 14px;
+  background: #ff4f9a;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 13px;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.verifyButton:hover {
+  background: #ff2f87;
+}
+
+/* 결과 및 에러 메시지 */
+.matchMessage {
+  font-size: 13px;
+  color: #009944;
+  font-weight: 600;
+}
+
+.notMatchMessage {
+  font-size: 13px;
+  color: #d80055;
+  font-weight: 600;
+}
+
+/* 아이디 찾기 버튼 */
+.submitButton {
+  width: 100%;
+  padding: 12px 0;
+  background: linear-gradient(90deg, #ff7aaa, #ff4f9a);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.submitButton:hover {
+  opacity: 0.9;
+}

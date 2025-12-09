@@ -1,40 +1,46 @@
-import Stomp from "stompjs";
+// src/config/websocket.js
+
+import { Client } from "@stomp/stompjs";
 
 let stompClient = null;
 
 export const connectWebSocket = (userId, onMessage) => {
   return new Promise((resolve, reject) => {
-    const socket = new WebSocket("ws://localhost:8080/ws-stomp"); 
-    stompClient = Stomp.over(socket);
+    if (!userId) {
+      reject("유저 ID 없음");
+      return;
+    }
 
-    stompClient.debug = null; // 콘솔 디버그 끄기
+    stompClient = new Client({
+      brokerURL: "ws://10.10.55.97/ws-stomp",
+      reconnectDelay: 3000,
 
-    stompClient.connect(
-      {},
-      () => {
+      onConnect: () => {
         console.log("WebSocket 연결됨");
 
-        // 사용자 알림 구독: /topic/notifications/{userId}
-        stompClient.subscribe(`/topic/notifications/${userId}`, (msg) => {
-          if (onMessage) {
-            onMessage(JSON.parse(msg.body)); 
-          }
+        // 구독
+        stompClient.subscribe(`/topic/notifications/${userId}`, (frame) => {
+          if (!frame.body) return;
+          const msg = JSON.parse(frame.body);
+          onMessage(msg);
         });
 
         resolve();
       },
-      (err) => {
-        console.error("WebSocket 연결 실패:", err);
+
+      onStompError: (err) => {
+        console.error("STOMP 오류:", err);
         reject(err);
       }
-    );
+    });
+
+    stompClient.activate();
   });
 };
 
 export const disconnectWebSocket = () => {
   if (stompClient) {
-    stompClient.disconnect(() => {
-      console.log("WebSocket 연결 해제됨");
-    });
+    stompClient.deactivate();
+    stompClient = null;
   }
 };

@@ -1,28 +1,27 @@
-/* 전체 페이지 (배경 이미지 포함) */
 .page {
   width: 100%;
-  height: 100vh;
-  background-image: url('/public/images/login.png'); /* public/images/login.png */
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-
+  min-height: 100vh;
+  background: linear-gradient(180deg, #ffffff, #ffffff); /* 은은한 핑크 그라데이션 */
   display: flex;
   justify-content: center;
   align-items: center;
-  font-family: sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Noto Sans KR", sans-serif;
+  padding: 20px;
 }
 
 /* 로그인 박스 */
 .container {
   width: 360px;
   padding: 28px 24px;
-  border-radius: 16px;
+  border-radius: 18px;
 
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(8px);
+  background: #fff9fb; /* 연핑크 흰색 */
+  backdrop-filter: blur(4px);
 
-  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+  /* SignUp과 동일한 입체감 */
+  box-shadow:
+    0 4px 12px rgba(255, 105, 180, 0.15),
+    0 8px 20px rgba(255, 105, 180, 0.10);
 }
 
 .title {
@@ -30,6 +29,7 @@
   font-size: 24px;
   font-weight: 700;
   text-align: center;
+  color: #ff2f87; /* 브랜드 핑크 */
 }
 
 .subText {
@@ -37,9 +37,10 @@
   margin-bottom: 24px;
   text-align: center;
   font-size: 13px;
-  color: #555;
+  color: #888;
 }
 
+/* form */
 .form {
   display: flex;
   flex-direction: column;
@@ -54,39 +55,72 @@
 
 .label {
   font-size: 13px;
-  color: #444;
-  font-weight: 500;
+  color: #ff2f87;
+  font-weight: 600;
 }
 
+/* input */
 .input {
   width: 100%;
   padding: 10px 12px;
-  border-radius: 8px;
-  border: 1px solid #bbb;
+  border-radius: 10px;
+  border: 1px solid #ffb3cc;
+  background: #ffffff;
   font-size: 14px;
+
+  /* SignUp과 동일한 입체감 */
+  box-shadow:
+    0 2px 4px rgba(255, 100, 150, 0.15),
+    inset 0 1px 2px rgba(255, 255, 255, 0.8);
+
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .input:focus {
-  border-color: #111;
   outline: none;
+  border-color: #ff4f9a;
+  box-shadow:
+    0 0 6px rgba(255, 47, 135, 0.35),
+    0 4px 8px rgba(255, 47, 135, 0.15),
+    inset 0 1px 2px rgba(255, 255, 255, 0.9);
 }
 
+/* 오류 메시지 */
+.error {
+  color: #d80055;
+  font-size: 13px;
+  font-weight: 600;
+  margin-top: -6px;
+  text-align: center;
+}
+
+/* 로그인 버튼 */
 .loginButton {
   width: 100%;
   padding: 12px 0;
-  background: #111;
+  background: linear-gradient(90deg, #ff7aaa, #ff4f9a);
   color: #fff;
   font-size: 16px;
-  border-radius: 10px;
+  border-radius: 12px;
   border: none;
   cursor: pointer;
-  font-weight: 600;
+  font-weight: 700;
+
+  box-shadow:
+    0 5px 12px rgba(255, 70, 150, 0.35),
+    inset 0 1px 3px rgba(255, 255, 255, 0.8);
+
+  transition: opacity 0.2s, box-shadow 0.2s;
 }
 
 .loginButton:hover {
   opacity: 0.9;
+  box-shadow:
+    0 7px 16px rgba(255, 50, 130, 0.45),
+    inset 0 2px 4px rgba(255, 255, 255, 0.9);
 }
 
+/* 링크 구역 */
 .links {
   margin-top: 14px;
   display: flex;
@@ -97,7 +131,8 @@
 
 .link {
   text-decoration: none;
-  color: #333;
+  color: #ff2f87;
+  font-weight: 600;
 }
 
 .link:hover {

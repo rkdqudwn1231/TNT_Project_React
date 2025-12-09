@@ -3,7 +3,7 @@ import styles from "./Header.module.css";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import ToastNotification from "../../pages/Notification/Toast";
+import NotificationBell from "../Notification/NotificationBell";
 
 const Header = ({ isHome }) => {
   const navigate = useNavigate();
@@ -15,10 +15,9 @@ const Header = ({ isHome }) => {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [userMenuOpen, setUserMenuOpen] = useState(false); // 사람 아이콘 메뉴 열림 상태
 
-  const isLoggedIn = !!sessionStorage.getItem("token");
-
-  // 토스트 메시지 상태
-  const [toastMsg, setToastMsg] = useState(null);
+  const token = sessionStorage.getItem("token");
+  const loginId = sessionStorage.getItem("id");
+  const isLoggedIn = !!token;
 
   // Home 전용 스크롤 이벤트
   useEffect(() => {
@@ -230,17 +229,8 @@ const Header = ({ isHome }) => {
               </NavLink>
             ) : (
               <div className={styles.loginSlot}>
-                {/* 종 아이콘: 알림 */}
-                <button
-                  type="button"
-                  className={styles.iconButton}
-                  onClick={() => {
-                    // 나중에 실제 알림 목록 가져오도록 변경
-                    setToastMsg("새로운 알림이 없습니다.");
-                  }}
-                >
-                  <i className="bi bi-bell"></i>
-                </button>
+                {/* 알림 컴포넌트 (종 아이콘 + 드롭다운 + 토스트) */}
+                <NotificationBell loginId={loginId} />
 
                 {/* 사람 아이콘: 마이페이지/로그아웃 메뉴 */}
                 <div className={styles.userMenuWrapper}>
@@ -286,14 +276,6 @@ const Header = ({ isHome }) => {
           )}
         </div>
       </header>
-
-      {/* 🔹 토스트 출력 (message가 있을 때만 표시) */}
-      {toastMsg && (
-        <ToastNotification
-          message={toastMsg}
-          onClose={() => setToastMsg(null)}
-        />
-      )}
     </>
   );
 };

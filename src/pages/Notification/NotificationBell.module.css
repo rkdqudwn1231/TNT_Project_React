@@ -1,0 +1,83 @@
+/* src/components/Header/NotificationBell.module.css */
+
+/* 종 + 드롭다운 전체 래퍼 */
+.notificationWrapper {
+  position: relative;
+  display: inline-block;
+}
+
+/* 버튼 기본 스타일 (헤더와 비슷하게) */
+.iconButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* 빨간 점 */
+.bellDot {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background-color: #ff4b6b;
+}
+
+/* 드롭다운 박스 */
+.notificationDropdown {
+  position: absolute;
+  right: 0;
+  top: 120%;
+  width: 260px;
+  max-height: 320px;
+  overflow-y: auto;
+  background: #ffffff;
+  color: #111827;
+  border-radius: 10px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+  padding: 8px 0;
+  z-index: 1100;
+}
+
+/* 리스트 */
+.notificationList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.notificationItem {
+  padding: 8px 12px;
+  font-size: 13px;
+  cursor: default;
+}
+
+.notificationItem + .notificationItem {
+  border-top: 1px solid #f3f4f6;
+}
+
+/* 메시지 / 시간 */
+.notificationMessage {
+  font-size: 13px;
+  color: #111827;
+  word-break: keep-all;
+}
+
+.notificationTime {
+  margin-top: 4px;
+  font-size: 11px;
+  color: #9ca3af;
+}
+
+/* 알림 없음 */
+.notificationEmpty {
+  padding: 10px 12px;
+  font-size: 13px;
+  text-align: center;
+  color: #6b7280;
+}

@@ -40,8 +40,13 @@ const Login = () => {
 
 
     } catch (err) {
-      console.error(err);
-      setError("아이디 또는 비밀번호가 올바르지 않습니다.");
+      console.error(err.response.data.error);
+      if (err.response.data.error === "블랙유저") {
+        setError("블랙 당하셨습니다.");
+      }
+      else {
+        setError("아이디 또는 비밀번호가 올바르지 않습니다.");
+      }
     }
   };
 

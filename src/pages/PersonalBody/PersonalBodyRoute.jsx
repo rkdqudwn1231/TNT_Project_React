@@ -5,6 +5,7 @@ import BodyAnalyzerSurvery from "./BodyAnalyzer/BodyAnalyzerSurvery";
 import BodyAnalyzerResult from "./BodyAnalyzer/BodyAnalyzerResult";
 import BodyAnalyzerSize from "./BodyAnalyzer/BodyAnalyzerSize";
 import BodyAnalyzerImg from "./BodyAnalyzer/BodyAnalyzerImg";
+import NotFoundRedirect from "../Common/NotFoundRedirect";
 
 function PersonalBodyRoute() {
 
@@ -18,7 +19,7 @@ function PersonalBodyRoute() {
       <Route path="survery" element={<BodyAnalyzerSurvery />} />
       <Route path="size" element={<BodyAnalyzerSize />} />
       <Route path="result" element={<BodyAnalyzerResult />} />
-      
+      <Route path="*" element={<NotFoundRedirect />} />
     </Routes>
   );
 }

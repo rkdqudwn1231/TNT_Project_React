@@ -28,9 +28,10 @@ export default function FitRoomAbout() {
 그 위에 상의·하의·아우터를 자유롭게 교체하며
 “이 조합이 나에게 어울릴까?”를 부담 없이 실험해 볼 수 있습니다.`,
       lists: [
-        "체형 정보 반영된 가상 아바타",
-        "수십 가지 코디를 버튼으로 테스트",
-        "앞·뒤·측면 이미지 제공(디자인에 맞게 구현)"
+        "가상 아바타",
+        "수십 가지 코디를 버튼으로 가상 피팅",
+        "결과 이미지 제공",
+        
       ],
       image: "/images/fitroom/screen.png",
       alt: "버추얼 피팅 미러 이미지"
@@ -42,9 +43,7 @@ export default function FitRoomAbout() {
 진단 결과를 기반으로 나에게 어울리는 컬러·실루엣을 반영해
 ‘나답게 트렌디한 스타일’을 제안합니다.`,
       lists: [
-        "AI 기반 코디 추천 카드",
-        "TPO별 스타일 제안(데이트·출근·모임 등)",
-        "좋아요 / 저장 / 옷장 연동"
+        
       ],
       image: "/images/fitroom/runway.png",
       alt: "스마트폰에서 걸어나오는 모델"
@@ -58,7 +57,7 @@ export default function FitRoomAbout() {
       lists: [
         "원클릭으로 옷장 저장",
         "카테고리별 정돈된 UI",
-        "옷장 콘텐츠 기반 자동 코디 추천"
+        
       ],
       image: "/images/fitroom/blue-store.jpg",
       alt: "럭셔리 패션 스토어 인테리어"

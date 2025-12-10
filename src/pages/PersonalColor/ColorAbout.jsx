@@ -162,6 +162,7 @@ export default function ColorAbout() {
             퍼스널 컬러는 그냥 ‘예쁜 색’이 아니라,
             <br />
             <strong>나의 피부 톤과 조화를 이루는 색</strong>을 골라 주는 기준입니다.
+            <br></br>
             아래 예시처럼 색의 선택만으로도 스타일의 무드가 완전히 달라져요.
           </p>
         </div>

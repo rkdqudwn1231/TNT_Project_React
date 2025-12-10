@@ -284,7 +284,7 @@ const Header = () => {
                           navigate("/mypage");
                         }}
                       >
-                        <i className="bi bi-person-badge"></i>
+                        <i className={`${styles.iconPink} bi bi-person-circle`}></i>
                         <span>마이페이지</span>
                       </button>
                       <button
@@ -292,7 +292,7 @@ const Header = () => {
                         className={`${styles.userDropdownItem} ${styles.logoutItem}`}
                         onClick={handleLogout}
                       >
-                        <i className="bi bi-box-arrow-right"></i>
+                       <i className={`${styles.iconPink} bi bi-box-arrow-right`}></i>
                         <span>로그아웃</span>
                       </button>
                     </div>

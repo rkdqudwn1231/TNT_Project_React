@@ -359,3 +359,7 @@ a {
 
   }
 }
+
+.iconPink {
+  color: rgba(255, 170, 205) !important;
+}

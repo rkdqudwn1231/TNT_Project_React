@@ -43,8 +43,8 @@ export default function Home() {
         </video>
 
         <div className={styles.overlay}>
-          <h1>Your Style, Defined</h1>
-          <p style={{ color: "white" }}>Unlock your personal color & shape</p>
+          <h1>We Find the Style. You Just Enjoy</h1>
+          <p style={{ color: "white" , marginLeft: "15px" }}>From personal color to body shape, we craft a style made just for you.</p>
         </div>
       </section>
 
@@ -57,7 +57,7 @@ export default function Home() {
             <Col lg={6}
               className={styles.slideLeft}
               ref={addSlideRef}
-              style={{ textAlign: "left", paddingRight: "40px" }}>
+              style={{ textAlign: "left", paddingRight: "40px" }} >
               <h2 className="mb-4 ">“ 사진 한 장으로 나의 컬러를 찾다 ”</h2>
               <p>
                 AI가 피부·머리·눈 색을 분석해 <br />

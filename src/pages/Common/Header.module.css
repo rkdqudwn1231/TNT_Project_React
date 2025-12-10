@@ -1,3 +1,6 @@
+.header, .mainTabs a, .mainTab, .subTabs a, .logo {
+  font-family: "Quicksand", sans-serif !important;
+}
 
 .overlay {
   position: fixed;
@@ -35,8 +38,15 @@
 }
 
 .solid {
-  background: rgba(255, 200, 220, 1);
-  backdrop-filter: blur(6px);
+  background: linear-gradient(315deg,
+      #f9e2d2 0%,
+      /* 로고쪽만 살짝 더 밝아진 핑크 */
+      #f3cbd5 22%,
+      #eeb8c7 48%,
+      #e8a4b8 75%,
+      #da85a2 100%);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
 .homeText .mainTabs a,
@@ -56,7 +66,20 @@
   font-size: 40px;
   font-weight: 800;
   text-decoration: none;
-  color: rgba(255, 170, 205, 0.85);
+  background: linear-gradient(135deg,
+      #ffc3e2 0%,
+      #ff9acb 35%,
+      #ff68a7 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 4px rgba(255, 140, 180, 0.4));
+}
+
+.homeText .logo {
+  background: none !important;
+  -webkit-text-fill-color: #fff !important;
+  color: #fff !important;
+  filter: none !important;
 }
 
 .menuToggle {
@@ -88,9 +111,10 @@
   font-size: 18px;
   padding: 6px 12px;
   border-radius: 6px;
-  font-weight: 600;
+  font-weight: 800;
   transition: all 0.2s ease-in-out;
-  color: rgba(255, 170, 205, 0.85) !important;
+   color: #ff8fbe !important;
+
 }
 
 .mainTab {
@@ -122,12 +146,39 @@
 }
 
 .mainTabActive {
-  background: rgba(255, 150, 200, 1);
+  background: linear-gradient(
+    135deg,
+    #ffd0e5 0%,
+    #ffb6d7 25%,
+    #ff8fbe 55%,
+    #ff6aa8 100%
+  );
   color: #fff !important;
   font-weight: 700;
-  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.18);
-  border: 1px solid rgba(255, 120, 170, 0.9);
+  border: 1px solid rgba(255, 155, 190, 0.7);
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.10),
+              0 0 6px rgba(255, 130, 170, 0.35);
   transform: translateY(1px);
+  transition: 0.25s ease;
+}
+
+.mainTabs a:hover {
+  color: #ff6fae !important;
+  transform: translateY(-1px);
+  transition: 0.2s ease;
+}
+
+.mainTabActive:hover {
+  background: linear-gradient(
+    135deg,
+    #ffe0ef 0%,
+    #ffc2e0 25%,
+    #ff9acb 55%,
+    #ff6aa8 100%
+  );
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.10),
+              0 0 10px rgba(255, 125, 180, 0.45);
+  transform: translateY(0);
 }
 
 .mainTabs a.mainTabActive {

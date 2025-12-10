@@ -27,9 +27,26 @@
   width: 400px;
 }
 .guideImg {
-  width: 100%;
+  width: 98%;
   transition: 0.25s;
   filter: grayscale(0.1);
+}
+
+.headerRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;  /* 뱃지와 제목 사이 간격 */
+  margin-bottom: 20px;
+}
+
+.titleText {
+  font-size: 15.5px;
+  font-weight: 700;
+  margin: 0;
+  padding: 0;
+  line-height: 1.2;    
+  position: relative; 
+  top: 2px;            
 }
 
 .highlight_shoulder { filter: drop-shadow(0 0 8px #ff3c76); }
@@ -41,7 +58,7 @@
   width: 400px;
   display: flex;
   flex-direction: column;
-  gap: 35px;
+  gap: 44px;
 }
 .measureCard {
   background: #fff;

@@ -143,12 +143,13 @@ const handleChange = (e) => {
 
 // 카드 분리 컴포넌트
 const SizeCard = ({ icon, title, summary, text, onClick }) => (
-  <div className={styles.sizeCard} onClick={onClick}>
-    <div className={styles.cardHeader}>
-      <span className={styles.icon}>{icon}</span>
+  <div className={styles.measureCard} onClick={onClick}>
+    
+    <div className={styles.headerRow}>
       <span className={styles.badge}>{summary}</span>
+      <h4 className={styles.titleText}>{title}</h4>
     </div>
-    <h4>{title}</h4>
+
     <p>{text}</p>
   </div>
 );

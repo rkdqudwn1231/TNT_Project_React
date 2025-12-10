@@ -193,13 +193,13 @@ const BodyAnalyzerResult = () => {
           <img src={imageUrl} alt={`${body_type} 체형`} className={styles.bodyImage} />
         </div>
 
-        <div className={styles.typeInfoGroup}>
+        <div className={styles.typeRightWrapper}>
           <div className={styles.typeBox}>
-            <span className={styles.typeValue}>{body_type} 타입</span>
-            <p className={styles.typeDesc}>
+            <span className={styles.typeValue} style={{ textAlign: "center" }}>당신의 타입은 {body_type} 형 입니다!</span>
+            <p className={styles.typeDesc} style={{ textAlign: "center" }}>
               {summary.split('.').map((line, idx) =>
                 line.trim() ? (
-                  <span key={idx} style={{fontSize:"20px"}}>
+                  <span key={idx} style={{ fontSize: "16px" }}>
                     {line.trim()}.
                     <br />
                   </span>
@@ -210,12 +210,17 @@ const BodyAnalyzerResult = () => {
 
           {patternTips.length > 0 && (
             <div className={styles.patternBox}>
-              <h3>패턴 & 컬러 팁</h3>
-              <ul>
-                {patternTips.map((tip, idx) => (
-                  <li key={idx} style={{fontSize:"20px"}}>{tip.trim()}</li>
-                ))}
-              </ul>
+              <h3 style={{ textAlign: "center" }}>체형 타입의 장점</h3>
+              <p className={styles.patternDesc} style={{ textAlign: "center" }}>
+                {patternTips.map((tip, idx) =>
+                  tip.trim() ? (
+                    <span key={idx}>
+                      {tip.trim()}
+                      <br />
+                    </span>
+                  ) : null
+                )}
+              </p>
             </div>
           )}
           <div className={styles.shareWrap}>
@@ -304,9 +309,10 @@ const BodyAnalyzerResult = () => {
 };
 
 const TipCard = ({ title, tips }) => (
-  <div className={styles.card}>
-    <h3>{title}</h3>
-    <ul >
+  <div className={styles.tipsBox}>
+    {title && <div className={styles.tipsBoxTitle}>{title}</div>}
+    
+    <ul>
       {tips.map((tip, idx) => (
         <li key={idx}>{tip.trim()}</li>
       ))}

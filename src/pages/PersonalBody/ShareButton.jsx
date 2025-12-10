@@ -1,4 +1,5 @@
 import { useState } from "react";
+import styles from "./ShareButton.module.css";
 
 function ShareButton({ title, description, imageUrl, linkPath }) {
 
@@ -86,6 +87,7 @@ function ShareButton({ title, description, imageUrl, linkPath }) {
         alignItems: "center",
         gap: "14px",
       }}
+      className={styles.btnWrap}
     >
       <button
         onClick={handleShare}

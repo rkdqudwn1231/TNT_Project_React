@@ -621,3 +621,60 @@
     text-align: center;
   }
 }
+
+
+/* ==========================================================
+   📱 Body Type Main — Mobile ONLY (max-width: 600px)
+   ========================================================== */
+@media (max-width: 600px) {
+
+  /* 메인 헤더 */
+  .pbHeader {
+    font-size: 28px;
+    margin-bottom: 30px;
+  }
+
+  /* 카드들이 세로 정렬 */
+  .selectTest {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 34px;
+    padding: 0 10px;
+  }
+
+  /* 개별 카드 */
+  .select {
+    width: 100% !important;
+    max-width: 330px;           /* 너무 커지지 않도록 제한 */
+    height: auto;               /* 고정 높이 제거 */
+    padding-bottom: 26px;
+  }
+
+  /* 카드 타이틀 */
+  .selectHeader {
+    font-size: 26px;
+    margin-bottom: 26px !important;
+  }
+
+  /* 카드 내부 이미지 */
+  .select img {
+    width: 80% !important;
+    max-width: 240px;
+    margin-bottom: 20px !important;
+  }
+
+  /* 버튼 */
+  .selectBtn {
+    font-size: 24px;
+    padding: 6px 0;
+  }
+
+  /* inline style로 준 marginLeft 제거 효과 */
+  .select:first-child,
+  .select:last-child {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+}

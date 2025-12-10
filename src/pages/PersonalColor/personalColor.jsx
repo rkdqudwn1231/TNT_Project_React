@@ -539,7 +539,7 @@ function PersonalColor() {
   };
 
   const userId = getUserId();
-  console.log("Final UserId:", userId);
+  
 
   const isMobile = useIsMobile();
 
@@ -628,55 +628,45 @@ function PersonalColor() {
   }, 1200); 
 };
 
- const getPixelColor = (e) => {
+const getPixelColor = (e) => {
+  const img = imgRef.current;
   const canvas = canvasRef.current;
   const ctx = canvas.getContext("2d");
-  const img = imgRef.current;
+
   if (!img) return null;
 
-  const naturalW = img.naturalWidth;
-  const naturalH = img.naturalHeight;
-
   const rect = img.getBoundingClientRect();
-  const boxW = rect.width;
-  const boxH = rect.height;
 
+  // transform에서 scale 값 추출
+  const computedStyle = window.getComputedStyle(img);
+  const transform = computedStyle.transform;
 
+  let scaleX = 1, scaleY = 1;
 
-  const imgRatio = naturalW / naturalH;
-  const boxRatio = boxW / boxH;
-
-  // 실제 화면에 렌더링된 이미지 크기 (scale 적용됨)
-  let renderW, renderH;
-
-  if (imgRatio > boxRatio) {
-    renderW = boxW * scale;
-    renderH = (boxW / imgRatio) * scale;
-  } else {
-    renderH = boxH * scale;
-    renderW = (boxH * imgRatio) * scale;
+  if (transform && transform !== "none") {
+    const matrix = transform.match(/matrix\((.+)\)/);
+    if (matrix) {
+      const values = matrix[1].split(", ");
+      scaleX = parseFloat(values[0]);
+      scaleY = parseFloat(values[3]);
+    }
   }
 
-  // 이미지가 중앙 정렬되므로 여백(오프셋) 계산
-  const offsetX = (boxW - renderW) / 2;
-  const offsetY = (boxH - renderH) / 2;
+  // 마우스 → 이미지 내부 좌표로 변환
+  const mouseX = (e.clientX - rect.left) / scaleX;
+  const mouseY = (e.clientY - rect.top) / scaleY;
 
-  // 마우스 위치 변환
-  const mouseX = e.clientX - rect.left - offsetX;
-  const mouseY = e.clientY - rect.top - offsetY;
+  const naturalWidth = img.naturalWidth;
+  const naturalHeight = img.naturalHeight;
 
-  // 이미지 영역 밖이면 무시
-  if (mouseX < 0 || mouseY < 0 || mouseX > renderW || mouseY > renderH) {
-    return null;
-  }
+  const displayWidth = rect.width / scaleX;
+  const displayHeight = rect.height / scaleY;
 
-  // 원본 비율로 변환
-  const imgX = (mouseX / renderW) * naturalW;
-  const imgY = (mouseY / renderH) * naturalH;
+  const imgX = (mouseX / displayWidth) * naturalWidth;
+  const imgY = (mouseY / displayHeight) * naturalHeight;
 
-  // 픽셀 추출
-  canvas.width = naturalW;
-  canvas.height = naturalH;
+  canvas.width = naturalWidth;
+  canvas.height = naturalHeight;
   ctx.drawImage(img, 0, 0);
 
   const pixel = ctx.getImageData(imgX, imgY, 1, 1).data;
@@ -752,7 +742,7 @@ function PersonalColor() {
   onMouseLeave={() => setHoverColor(null)}
   className={styles.image}
   style={{
-    transform: `translate(-50%, -50%) scale(${scale})`,
+     transform: `scale(${scale})`,
   }}
 />
 
@@ -774,27 +764,28 @@ function PersonalColor() {
               )}
 
               {loading && (
-                <div
-                  style={{
-                    position: "absolute",
-                    top: 0,
-                    left: 0,
-                    width: "350px",
-                    height: "100%",
-                    background: "rgba(0,0,0,0.55)",
-                    backdropFilter: "blur(4px)",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    borderRadius: 12,
-                    color: "white",
-                    fontSize: 18,
-                    fontWeight: "bold",
-                  }}
-                >
-                  AI가 당신의 톤을 분석 중입니다…
-                </div>
-              )}
+          <div
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            background: "rgba(0,0,0,0.55)",
+            backdropFilter: "blur(4px)",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            borderRadius: 12,
+            color: "white",
+            fontSize: 18,
+            fontWeight: "bold",
+            zIndex: 10
+          }}
+        >
+        AI가 당신의 톤을 분석 중입니다…
+      </div>
+)}
 
               <canvas ref={canvasRef} style={{ display: "none" }} />
             </div>
@@ -938,6 +929,10 @@ function PersonalColor() {
     로그인하면 내 정보에 저장할 수 있어요 😊
   </p>
 )}
+
+ <div style={{ marginTop: 20 }}>
+          <a href="/color" style={{ color: "#2b6ef5" }}>다시 분석하기</a>
+        </div>
 
 
               </div>

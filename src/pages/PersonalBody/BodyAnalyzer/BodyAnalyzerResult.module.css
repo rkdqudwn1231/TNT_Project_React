@@ -75,7 +75,7 @@
 }
 
 .patternBox h3 {
-  font-size: 22px;
+  font-size: 30px;
   font-weight: 800;
   color: #ff3c76;
   margin-bottom: 14px;
@@ -89,6 +89,7 @@
 }
 
 .patternBox li {
+  text-align: center;
   font-size: 16px;
   line-height: 1.5;
   margin-bottom: 6px;
@@ -236,15 +237,16 @@
 }
 
 .card li {
-  font-size: 15px;
+  font-size: 18px;
   line-height: 1.48;
   margin-bottom: 4px;
 }
 
 .retryBtn {
-  width: 18%;
+  width: auto;
+  min-width: 140px; 
   height: 40px;
-  padding: 0px 0;
+  padding: 0 18px; 
   background: #ff3c76;
   border-radius: 10px;
   font-size: 15px;
@@ -261,9 +263,11 @@
 
 .buttonRow {
   display: flex;
-  justify-content: space-between;
-  gap: 16px;
+  justify-content: flex-end;  
+  align-items: center;
+  gap: 12px;                  
   margin-top: 42px;
+  padding-right: 20px;
 }
 
 /* 모바일 반응형 */
@@ -314,12 +318,8 @@
   }
 }
 
-/* ================================================
-   📱 완성형 모바일 반응형 BodyAnalyzerResult
-   ================================================= */
 @media (max-width: 600px) {
 
-  /* 전체 래퍼 */
   .wrapper {
     padding: 0 14px 60px;
   }
@@ -330,9 +330,6 @@
     margin-bottom: 20px;
   }
 
-  /* -------------------------
-     📌 상단 체형 요약 영역
-     ------------------------- */
   .typeContainer {
     flex-direction: column;
     padding: 0 10px;
@@ -343,7 +340,7 @@
     margin: 0 !important;
     justify-content: center;
     width: 100%;
-    background: none; /* 배경 제거(원하면 유지 가능) */
+    background: none;
   }
 
   .bodyImage {
@@ -365,11 +362,10 @@
   }
 
   .typeDesc {
-    font-size: 15px;
+    font-size: 20px;
     line-height: 1.5;
   }
 
-  /* 패턴 팁 */
   .patternBox {
     padding: 22px 18px;
   }
@@ -382,7 +378,6 @@
     font-size: 14px;
   }
 
-  /* 공유 영역 */
   .shareWrap {
     flex-direction: column;
     gap: 10px;
@@ -394,15 +389,12 @@
     font-size: 15px;
   }
 
-  /* -------------------------
-     📌 추천 섹션 레이아웃
-     ------------------------- */
   .recommendBlock {
     padding: 20px 16px;
   }
 
   .blockTitle {
-    font-size: 18px;
+    font-size: 24px;
     margin-bottom: 16px;
   }
 
@@ -416,7 +408,6 @@
     min-width: auto;
   }
 
-  /* Tip Card */
   .card {
     padding: 16px 14px;
   }
@@ -424,7 +415,6 @@
     font-size: 14px;
   }
 
-  /* 추천 이미지 그리드 */
   .recommendGrid {
     grid-template-columns: repeat(2, 1fr);
     gap: 14px;
@@ -445,15 +435,6 @@
     font-size: 14px;
   }
 
-  /* -------------------------
-     📌 버튼 (메인, 옷장)
-     ------------------------- */
-  .buttonRow {
-    flex-direction: column;
-    gap: 12px;
-    margin-top: 34px;
-  }
-
   .retryBtn {
     width: 100%;
     height: 42px;
@@ -461,12 +442,9 @@
   }
 }
 
-/* ==========================================================
-   📱 MOBILE ONLY — 600px 이하 화면에서 작동
-   ========================================================== */
+
 @media (max-width: 600px) {
 
-  /* 전체 래퍼 */
   .wrapper {
       padding: 0 14px 60px;
   }
@@ -476,9 +454,6 @@
       margin-bottom: 24px;
   }
 
-  /* ------------------------------------------------------
-      🔹 상단 체형 정보 레이아웃
-     ------------------------------------------------------ */
   .typeContainer {
       flex-direction: column;
       gap: 26px;
@@ -516,7 +491,6 @@
       line-height: 1.5;
   }
 
-  /* 패턴 박스 */
   .patternBox {
       padding: 20px 16px;
   }
@@ -529,7 +503,6 @@
       font-size: 14px;
   }
 
-  /* 저장 / 공유 버튼 */
   .shareWrap {
       flex-direction: column;
       gap: 12px;
@@ -541,9 +514,6 @@
       font-size: 15px;
   }
 
-  /* ------------------------------------------------------
-      🔹 추천 섹션 (상의 / 하의)
-     ------------------------------------------------------ */
   .recommendBlock {
       padding: 20px 16px;
       margin-top: 40px;
@@ -573,7 +543,6 @@
       font-size: 14px;
   }
 
-  /* 추천 이미지 그리드 */
   .recommendGrid {
       grid-template-columns: repeat(2, 1fr);
       gap: 14px;
@@ -593,15 +562,6 @@
   .saveBtn {
       padding: 8px 0;
       font-size: 14px;
-  }
-
-  /* ------------------------------------------------------
-      🔹 하단 버튼 2개
-     ------------------------------------------------------ */
-  .buttonRow {
-      flex-direction: column;
-      gap: 12px;
-      margin-top: 34px;
   }
 
   .retryBtn {

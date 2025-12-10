@@ -1,4 +1,4 @@
-/* 오버레이 */
+
 .overlay {
   position: fixed;
   top: 0;
@@ -10,7 +10,6 @@
   z-index: 900;
 }
 
-/* 헤더 전체 */
 .header {
   position: fixed;
   top: 0;
@@ -26,30 +25,25 @@
   transform: translateY(-100%);
 }
 
-/* 홈 */
 .transparent {
   background: transparent !important;
 }
 
-/* 서브페이지 */
 .subHeader {
   background: white;
   box-shadow: 0px 4px 6px rgb(255, 226, 236);
 }
 
-/* 스크롤 시 */
 .solid {
   background: rgba(255, 200, 220, 1);
   backdrop-filter: blur(6px);
 }
 
-/* 홈 텍스트 */
 .homeText .mainTabs a,
 .homeText .logo {
   color: white !important;
 }
 
-/* 로고 */
 .logoArea {
   display: flex;
   justify-content: space-between;
@@ -65,7 +59,6 @@
   color: rgba(255, 170, 205, 0.85);
 }
 
-/* 햄버거 버튼 */
 .menuToggle {
   display: none;
   background: none;
@@ -75,18 +68,16 @@
   color: white !important;
 }
 
-/* 탭 영역 */
 .tabArea {
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
 
-/* 메인탭 */
 .mainTabs {
   display: flex;
   justify-content: flex-end;
-  padding: 8px 30px;
+  padding: 5px 30px;
   gap: 35px;
   font-size: 15px;
   font-weight: 600;
@@ -111,27 +102,21 @@
   color: #fff !important;
 }
 
-/* Login 자리에 들어가는 슬롯 (로그인 후 종/사람 아이콘) */
 .loginSlot {
   width: 80px;
-  /* 로그인 탭이 차지하던 정도의 폭 */
   height: 40px;
   display: flex;
   align-items: center;
-  /* 수직 중앙 */
   justify-content: center;
-  /* 수평 중앙 */
   gap: 10px;
   position: relative;
 }
 
-/* 아이콘 기본 색 */
 .loginSlot i {
   font-size: 22px;
   color: rgba(255, 170, 205, 0.9);
 }
 
-/* 홈(투명)일 때 아이콘은 흰색으로 */
 .homeText .loginSlot i {
   color: #ffffff;
 }
@@ -149,7 +134,6 @@
   color: #fff !important;
 }
 
-/* 서브탭 */
 .subTabsWrapper {
   display: flex;
   justify-content: flex-end;
@@ -204,12 +188,10 @@
     color: rgba(255, 170, 205, 0.85) !important;
   }
 
-  /* 접힘 */
   .closeMenu {
     display: none !important;
   }
 
-  /* 펼침 */
   .openMenu {
     display: flex !important;
     flex-direction: column !important;
@@ -230,19 +212,11 @@
     width: 100%;
   }
 
-    .mainTabs a{
-    color: white !important;
-    border-radius: 0px;
-    border-bottom: 1px solid white;
-  }
-
-
   .mainTabGroup {
     display: flex;
     flex-direction: column;
   }
 
-  /* 모바일 서브탭도 세로 정렬 */
   .subTabsWrapper {
     justify-content: flex-start !important;
     padding: 0px 28px !important;
@@ -252,6 +226,7 @@
     display: flex;
     flex-direction: column !important;
     align-items: flex-end !important;
+    border: 1px solid rgb(255, 255, 255);
     border-radius: 10px;
   }
 
@@ -261,7 +236,6 @@
   }
 }
 
-/* 애니메이션 */
 @keyframes slideDown {
   from {
     opacity: 0;
@@ -278,7 +252,6 @@ a {
   text-decoration: none !important;
 }
 
-/* 아이콘 버튼 공통 스타일 */
 .iconButton {
   background: none;
   border: none;
@@ -289,13 +262,11 @@ a {
   align-items: center;
 }
 
-/* 사람 아이콘 + 드롭다운 래퍼 */
 .userMenuWrapper {
   position: relative;
   display: inline-block;
 }
 
-/* 드롭다운 박스 - 화이트 테마, 부트스트랩 느낌 */
 .userDropdown {
   position: absolute;
   right: 0;
@@ -309,16 +280,13 @@ a {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
 }
 
-/* 드롭다운 항목 공통 */
 .userDropdownItem {
   display: flex;
-  /* 아이콘 + 텍스트 가로 정렬 */
   align-items: center;
   gap: 8px;
   width: 100%;
   padding: 8px 12px;
   font-size: 14px;
-  /* 마이페이지 / 로그아웃 동일 크기 */
   color: #333;
   text-align: left;
   background: none;
@@ -335,18 +303,14 @@ a {
   background: #f2f2f2;
 }
 
-/* 로그아웃 전용 스타일 (빨간 글씨) */
 .logoutItem {
   color: #e11d48;
-  /* 기본 빨간 톤 */
   font-weight: 600;
 }
 
 .userDropdownItem.logoutItem:hover {
   background: #fee2e2;
-  /* 연한 빨간 배경 */
   color: #b91c1c;
-  /* hover 시 조금 더 진한 빨강 */
 }
 
 @media (min-width: 768px) and (max-width: 952px) {
@@ -357,7 +321,6 @@ a {
 
   .mainTabs a {
     padding: 10px !important;
-    
   }
 
   .mainTab {
@@ -365,8 +328,4 @@ a {
     font-size: 14px !important;
 
   }
-}
-
-.iconPink {
-  color: rgba(255, 170, 205) !important;
 }

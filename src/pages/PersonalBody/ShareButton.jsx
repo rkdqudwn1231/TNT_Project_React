@@ -6,7 +6,7 @@ function ShareButton({ title, description, imageUrl, linkPath }) {
   const [copied, setCopied] = useState(false);
   
   // 실제 배포 서버 URL (백엔드와 동일한 주소)
-  const SERVER_URL = "http://10.5.5.20:3000";
+  const SERVER_URL = "https://tnt5.store";
   
   const handleShare = () => {
     if (!window.Kakao) {

@@ -14,15 +14,15 @@ const BodyAnalyzerResult = () => {
   const [upperList, setUpperList] = useState([]);
   const [lowerList, setLowerList] = useState([]);
 
-  const [saved, setSaved] = useState(false); 
+  const [saved, setSaved] = useState(false);
 
   const [loading, setLoading] = useState(false);
-useEffect(() => {
+  useEffect(() => {
     if (!result) return;
     const bodyType = result.BODY_TYPE;
     const gender = result.GENDER || localStorage.getItem("gender");
 
-   // 상의 추천 가져오기
+    // 상의 추천 가져오기
     caxios.get("/BodyRecommend/list", {
       params: { body_type: bodyType, gender, cloth_type: "upper" }
     })
@@ -35,19 +35,19 @@ useEffect(() => {
     })
       .then(res => setLowerList(res.data))
       .catch(err => console.log("하의 추천 오류", err));
- }, [result]); 
+  }, [result]);
 
-const goCloset = () => {
-  const token = sessionStorage.getItem("token");
+  const goCloset = () => {
+    const token = sessionStorage.getItem("token");
 
-  if (!token) {
-    alert("로그인이 필요합니다.");
-    navigate("/login", { state: { from: "/fitroom/closet" } });
-    return;
-  }
+    if (!token) {
+      alert("로그인이 필요합니다.");
+      navigate("/login", { state: { from: "/fitroom/closet" } });
+      return;
+    }
 
-  navigate("/fitroom/closet");
-};
+    navigate("/fitroom/closet");
+  };
 
   const handleSave = (item) => {
     caxios.post("/BodyRecommend/saveRecommend", {
@@ -76,68 +76,68 @@ const goCloset = () => {
   };
 
   // 카카오톡 공유하기
-useEffect(() => {
+  useEffect(() => {
 
-  if (result) return;
+    if (result) return;
 
-  setLoading(true);
-  let typeFromUrl = null;
+    setLoading(true);
+    let typeFromUrl = null;
 
-  // 일반 쿼리 파라미터 방식 (?type=H)
-  const queryParams = new URLSearchParams(location.search);
-  typeFromUrl = queryParams.get("body_type");
-  let genderFromUrl = null;
-  genderFromUrl = queryParams.get("gender");
+    // 일반 쿼리 파라미터 방식 (?type=H)
+    const queryParams = new URLSearchParams(location.search);
+    typeFromUrl = queryParams.get("body_type");
+    let genderFromUrl = null;
+    genderFromUrl = queryParams.get("gender");
 
-  // 카카오 인앱 브라우저 해시 방식 (#/body/result?type=H)
-  if (!typeFromUrl && window.location.hash.includes("body_type=")) {
-    const hashPart = window.location.hash.split("?")[1];
-    if (hashPart) {
-      const hashParams = new URLSearchParams(hashPart);
-      typeFromUrl = hashParams.get("body_type");
-    }
-  }
-
-  // React Router의 location.search도 체크 (혹시 모를 경우 대비)
-  if (!typeFromUrl && location.pathname.includes("result")) {
-    const pathParams = new URLSearchParams(location.search);
-    typeFromUrl = pathParams.get("body_type");
-  }
-
-  console.log("디버깅 정보:");
-  console.log("location.search:", location.search);
-  console.log("window.location.hash:", window.location.hash);
-  console.log("추출된 type:", typeFromUrl);
-
-  if (!typeFromUrl) {
-    alert("잘못된 접근입니다. 진단을 먼저 진행해 주세요.");
-    navigate("/body/main");
-    setLoading(false);
-    return;
-  }
-
-  console.log("공유 링크 접속 확인. 타입:", typeFromUrl);
-
-  // 공유 링크 재접속 → 해당 타입의 체형 데이터 불러오기
-  caxios
-    .get(`/bodyType/result`, { params: { body_type: typeFromUrl , gender :genderFromUrl } })
-    .then((res) => {
-      console.log("API 응답:", res.data);
-      setResult(res.data);
-      if (res.data.GENDER || res.data.gender) {
-        localStorage.setItem("gender", res.data.GENDER || res.data.gender);
+    // 카카오 인앱 브라우저 해시 방식 (#/body/result?type=H)
+    if (!typeFromUrl && window.location.hash.includes("body_type=")) {
+      const hashPart = window.location.hash.split("?")[1];
+      if (hashPart) {
+        const hashParams = new URLSearchParams(hashPart);
+        typeFromUrl = hashParams.get("body_type");
       }
-    })
-    .catch((err) => {
-      console.error("공유 결과 불러오기 오류:", err);
-      console.error("에러 상세:", err.response?.data);
-      alert("결과를 불러올 수 없습니다.");
+    }
+
+    // React Router의 location.search도 체크 (혹시 모를 경우 대비)
+    if (!typeFromUrl && location.pathname.includes("result")) {
+      const pathParams = new URLSearchParams(location.search);
+      typeFromUrl = pathParams.get("body_type");
+    }
+
+    console.log("디버깅 정보:");
+    console.log("location.search:", location.search);
+    console.log("window.location.hash:", window.location.hash);
+    console.log("추출된 type:", typeFromUrl);
+
+    if (!typeFromUrl) {
+      alert("잘못된 접근입니다. 진단을 먼저 진행해 주세요.");
       navigate("/body/main");
-    })
-    .finally(() => {
       setLoading(false);
-    });
-}, [location.search, location.pathname, navigate, result]);
+      return;
+    }
+
+    console.log("공유 링크 접속 확인. 타입:", typeFromUrl);
+
+    // 공유 링크 재접속 → 해당 타입의 체형 데이터 불러오기
+    caxios
+      .get(`/bodyType/result`, { params: { body_type: typeFromUrl, gender: genderFromUrl } })
+      .then((res) => {
+        console.log("API 응답:", res.data);
+        setResult(res.data);
+        if (res.data.GENDER || res.data.gender) {
+          localStorage.setItem("gender", res.data.GENDER || res.data.gender);
+        }
+      })
+      .catch((err) => {
+        console.error("공유 결과 불러오기 오류:", err);
+        console.error("에러 상세:", err.response?.data);
+        alert("결과를 불러올 수 없습니다.");
+        navigate("/body/main");
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, [location.search, location.pathname, navigate, result]);
 
   if (!result) return <div>결과를 불러오는 중입니다...</div>;
 
@@ -168,20 +168,21 @@ useEffect(() => {
           alert("로그인이 필요합니다.");
           navigate("/login", { state: { from: location.pathname, result } });
         } else {
-          alert("오류가 발생했습니다.");
+          alert("로그인이 필요합니다.");
+          navigate("/login", { state: { from: location.pathname, result } });
         }
       });
   };
 
   if (loading) {
-  return (
-    <div className={styles.wrapper}>
-      <div style={{ textAlign: "center", padding: "50px" }}>
-        결과를 불러오는 중입니다...
+    return (
+      <div className={styles.wrapper}>
+        <div style={{ textAlign: "center", padding: "50px" }}>
+          결과를 불러오는 중입니다...
+        </div>
       </div>
-    </div>
-  );
-}
+    );
+  }
 
   return (
     <div className={styles.wrapper}>
@@ -198,7 +199,7 @@ useEffect(() => {
             <p className={styles.typeDesc}>
               {summary.split('.').map((line, idx) =>
                 line.trim() ? (
-                  <span key={idx}>
+                  <span key={idx} style={{fontSize:"20px"}}>
                     {line.trim()}.
                     <br />
                   </span>
@@ -212,7 +213,7 @@ useEffect(() => {
               <h3>패턴 & 컬러 팁</h3>
               <ul>
                 {patternTips.map((tip, idx) => (
-                  <li key={idx}>{tip.trim()}</li>
+                  <li key={idx} style={{fontSize:"20px"}}>{tip.trim()}</li>
                 ))}
               </ul>
             </div>
@@ -265,7 +266,7 @@ useEffect(() => {
           <h3 className={styles.blockTitle}>👖 하의 스타일 추천</h3>
 
           <div className={styles.rowFlex}>
-            <div className={styles.tipsBox}>
+            <div className={styles.tipsBox} >
               <TipCard title="" tips={bottomTips} />
             </div>
 
@@ -305,7 +306,7 @@ useEffect(() => {
 const TipCard = ({ title, tips }) => (
   <div className={styles.card}>
     <h3>{title}</h3>
-    <ul>
+    <ul >
       {tips.map((tip, idx) => (
         <li key={idx}>{tip.trim()}</li>
       ))}

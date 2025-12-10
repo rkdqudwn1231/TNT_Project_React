@@ -1,0 +1,15 @@
+@media (max-width: 600px) {
+
+    .btnWrap {
+width: 100%;
+        display: block !important;
+
+
+    }
+
+    .btnWrap button{
+        display: flex;
+        width: 100%;
+        margin-bottom: 10px;
+    }
+}

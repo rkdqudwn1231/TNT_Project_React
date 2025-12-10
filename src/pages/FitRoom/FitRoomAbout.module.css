@@ -283,3 +283,142 @@ intro
         transform: translateY(0);
     }
 }
+
+/* =========================================
+   📱 Mobile Responsive Upgrade (≤ 768px)
+   ========================================= */
+@media (max-width: 768px) {
+
+  /* 전체 여백 */
+  .wrap {
+      padding: 40px 16px 120px;
+  }
+
+  /* HERO IMAGE */
+  .heroImg img {
+      width: 85%;
+      margin: 0 auto;
+      display: block;
+    border-radius: 6px;
+  }
+
+  /* 헤더 */
+  .header {
+      font-size: 26px;
+      margin: 60px 0 100px;
+      line-height: 1.4;
+  }
+
+  /* 지그재그 */
+  .zigzag {
+      gap: 60px;
+      margin: 40px 0 70px;
+  }
+
+  .left,
+  .right {
+      justify-content: center !important;
+      transform: translateX(0) !important;
+  }
+
+  .left img,
+  .right img {
+      margin: 0 !important;
+      max-width: 82%;
+  }
+
+  .zItem {
+      transform: translateY(40px);
+  }
+  .zItem.show {
+      transform: translateY(0);
+  }
+
+  /* 타이틀 이미지 */
+  .titleBlock {
+      margin: 120px 0 40px;
+  }
+  .titleBlock img {
+      margin-left: 0;
+      max-width: 88%;
+  }
+
+  /* 인트로 텍스트 */
+  .intro {
+      font-size: 16px;
+      margin-bottom: 120px;
+      line-height: 1.8;
+      padding: 0 12px;
+  }
+
+  .intro ul {
+      font-size: 15px;
+  }
+
+  /* 기능 설명 */
+  .features {
+      gap: 90px;
+  }
+
+  .featureRow {
+      flex-direction: column !important;
+      text-align: center;
+      gap: 32px;
+      padding: 16px 0 20px;
+  }
+
+  /* 이미지 조금 더 크게 & 가운데 */
+  .featureImg img {
+      max-width: 85%;
+  }
+
+  .featureText h3 {
+      font-size: 22px;
+      margin-bottom: 12px;
+  }
+
+  .featureText p {
+      font-size: 15px;
+      line-height: 1.65;
+      padding: 0 10px;
+  }
+
+  .featureText ul {
+      padding-left: 20px;
+      font-size: 15px;
+      margin: 0 auto;
+      text-align: left; 
+      max-width: 300px;
+  }
+}
+
+
+/* =========================================
+   📱 Very Small Devices (≤ 480px)
+   ========================================= */
+@media (max-width: 480px) {
+
+  .header {
+      font-size: 22px;
+  }
+
+  .featureImg img {
+      max-width: 92%;
+  }
+
+  .featureText h3 {
+      font-size: 20px;
+  }
+
+  .heroImg img {
+      width: 92%;
+  }
+
+  .intro {
+      font-size: 15px;
+  }
+
+  .zItem img {
+      max-width: 88%;
+  }
+}

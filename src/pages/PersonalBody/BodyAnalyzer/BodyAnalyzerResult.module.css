@@ -313,3 +313,300 @@
     }
   }
 }
+
+/* ================================================
+   📱 완성형 모바일 반응형 BodyAnalyzerResult
+   ================================================= */
+@media (max-width: 600px) {
+
+  /* 전체 래퍼 */
+  .wrapper {
+    padding: 0 14px 60px;
+  }
+
+  /* 헤더 */
+  .pbHeader {
+    font-size: 26px;
+    margin-bottom: 20px;
+  }
+
+  /* -------------------------
+     📌 상단 체형 요약 영역
+     ------------------------- */
+  .typeContainer {
+    flex-direction: column;
+    padding: 0 10px;
+    gap: 28px;
+  }
+
+  .imageBox {
+    margin: 0 !important;
+    justify-content: center;
+    width: 100%;
+    background: none; /* 배경 제거(원하면 유지 가능) */
+  }
+
+  .bodyImage {
+    width: 75%;
+    max-width: 300px;
+  }
+
+  .typeInfoGroup {
+    gap: 28px;
+    width: 100%;
+  }
+
+  .typeBox {
+    padding: 22px 18px;
+  }
+
+  .typeValue {
+    font-size: 28px;
+  }
+
+  .typeDesc {
+    font-size: 15px;
+    line-height: 1.5;
+  }
+
+  /* 패턴 팁 */
+  .patternBox {
+    padding: 22px 18px;
+  }
+
+  .patternBox h3 {
+    font-size: 18px;
+  }
+
+  .patternBox li {
+    font-size: 14px;
+  }
+
+  /* 공유 영역 */
+  .shareWrap {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .shareWrap button {
+    width: 100%;
+    height: 45px;
+    font-size: 15px;
+  }
+
+  /* -------------------------
+     📌 추천 섹션 레이아웃
+     ------------------------- */
+  .recommendBlock {
+    padding: 20px 16px;
+  }
+
+  .blockTitle {
+    font-size: 18px;
+    margin-bottom: 16px;
+  }
+
+  .rowFlex {
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .tipsBox {
+    width: 100%;
+    min-width: auto;
+  }
+
+  /* Tip Card */
+  .card {
+    padding: 16px 14px;
+  }
+  .card ul li {
+    font-size: 14px;
+  }
+
+  /* 추천 이미지 그리드 */
+  .recommendGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+
+  .recommendImg {
+    height: 150px;
+  }
+
+  .recommendName {
+    font-size: 14px;
+    height: auto;
+    margin-top: 6px;
+  }
+
+  .saveBtn {
+    padding: 8px 0;
+    font-size: 14px;
+  }
+
+  /* -------------------------
+     📌 버튼 (메인, 옷장)
+     ------------------------- */
+  .buttonRow {
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 34px;
+  }
+
+  .retryBtn {
+    width: 100%;
+    height: 42px;
+    font-size: 14px;
+  }
+}
+
+/* ==========================================================
+   📱 MOBILE ONLY — 600px 이하 화면에서 작동
+   ========================================================== */
+@media (max-width: 600px) {
+
+  /* 전체 래퍼 */
+  .wrapper {
+      padding: 0 14px 60px;
+  }
+
+  .pbHeader {
+      font-size: 26px;
+      margin-bottom: 24px;
+  }
+
+  /* ------------------------------------------------------
+      🔹 상단 체형 정보 레이아웃
+     ------------------------------------------------------ */
+  .typeContainer {
+      flex-direction: column;
+      gap: 26px;
+      padding: 0;
+  }
+
+  .imageBox {
+      margin: 0 !important;
+      background: none;
+      justify-content: center;
+      width: 100%;
+  }
+
+  .bodyImage {
+      width: 75%;
+      max-width: 280px;
+  }
+
+  .typeInfoGroup {
+      width: 100%;
+      gap: 26px;
+  }
+
+  .typeBox {
+      padding: 22px 16px;
+      border-radius: 16px;
+  }
+
+  .typeValue {
+      font-size: 28px;
+  }
+
+  .typeDesc {
+      font-size: 15px;
+      line-height: 1.5;
+  }
+
+  /* 패턴 박스 */
+  .patternBox {
+      padding: 20px 16px;
+  }
+
+  .patternBox h3 {
+      font-size: 18px;
+  }
+
+  .patternBox li {
+      font-size: 14px;
+  }
+
+  /* 저장 / 공유 버튼 */
+  .shareWrap {
+      flex-direction: column;
+      gap: 12px;
+  }
+
+  .shareWrap button {
+      width: 100%;
+      height: 44px;
+      font-size: 15px;
+  }
+
+  /* ------------------------------------------------------
+      🔹 추천 섹션 (상의 / 하의)
+     ------------------------------------------------------ */
+  .recommendBlock {
+      padding: 20px 16px;
+      margin-top: 40px;
+  }
+
+  .blockTitle {
+      font-size: 18px;
+      margin-bottom: 14px;
+  }
+
+  .rowFlex {
+      flex-direction: column;
+      gap: 24px;
+  }
+
+  .tipsBox {
+      width: 100%;
+      min-width: auto;
+  }
+
+  .card {
+      padding: 16px 14px;
+      border-radius: 14px;
+  }
+
+  .card ul li {
+      font-size: 14px;
+  }
+
+  /* 추천 이미지 그리드 */
+  .recommendGrid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+  }
+
+  .recommendImg {
+      height: 150px;
+      border-radius: 10px;
+  }
+
+  .recommendName {
+      font-size: 14px;
+      margin-top: 6px;
+      height: auto;
+  }
+
+  .saveBtn {
+      padding: 8px 0;
+      font-size: 14px;
+  }
+
+  /* ------------------------------------------------------
+      🔹 하단 버튼 2개
+     ------------------------------------------------------ */
+  .buttonRow {
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 34px;
+  }
+
+  .retryBtn {
+      width: 100% !important;
+      height: 42px;
+      font-size: 14px;
+  }
+}

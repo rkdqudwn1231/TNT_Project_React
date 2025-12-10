@@ -8,8 +8,8 @@ const SubTabs = ({ cx, onClickItem }) => {
 
   if (pathname.startsWith("/color")) {
     tabs = [
-      { label: "About", path: "/color/about", end: true },
-      { label: "Color", path: "/color", end: true },
+      { label: "About", path: "/color/about"},
+      { label: "Color", path: "/color", end: true},
     ];
   }
 
@@ -36,7 +36,7 @@ const SubTabs = ({ cx, onClickItem }) => {
   if (pathname.startsWith("/Board")) {
     tabs = [
       { label: "OOTD Board", path: "/Board", end: true },
-      { label: "Q&A", path: "/Board/qna", end: true }
+      
     ];
   }
 
@@ -44,7 +44,7 @@ const SubTabs = ({ cx, onClickItem }) => {
   if (pathname.startsWith("/board") || pathname.startsWith("/qna")) {
     tabs = [
       { label: "OOTD 게시판", path: "/board", end: true },
-      { label: "문의 게시판", path: "/qna", end: true }
+      
     ];
   }
 

@@ -12,7 +12,12 @@ import SignUp from "../SignUp/SignUp"
 import BoardRoutes from "../Board/BoardRoutes";
 import LoginRoutes from "../Login/LoginRoutes";
 import PersonalBodyRoute from "../PersonalBody/PersonalBodyRoute.jsx";
+import { Navigate } from "react-router-dom";
 
+function NotFoundRedirect() {
+  alert("잘못된 접근입니다.");
+  return <Navigate to="/" replace />;
+}
 
 const ContentMain = () => {
 
@@ -43,7 +48,8 @@ const ContentMain = () => {
                         <Route path="/signup" element={<SignUp />} />
                         <Route path="/MyPage" element={<MyPage />} />
                         <Route path="/Board/*" element={<BoardRoutes />} />
-                        <Route path="*" element={<h2>404 Not Found</h2>} />
+                        <Route path="*" element={<NotFoundRedirect />} />
+                        
                     </Routes>
                 </section>
             </main>

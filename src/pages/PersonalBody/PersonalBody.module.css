@@ -405,8 +405,12 @@
 }
 
 .analysisCard {
-  text-align: left;
-  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  
+  padding: 10px;
+  
   border-radius: 16px;
   background: rgba(255, 255, 255, 0.92);
   box-shadow: 0 10px 26px rgba(197, 137, 178, 0.25);
@@ -414,8 +418,9 @@
 }
 
 .analysisCard h3 {
+  margin-top: 12px;
   font-size: 18px;
-  margin-bottom: 6px;
+  margin-bottom: 15px;
 }
 
 .analysisCard p {

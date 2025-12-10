@@ -8,7 +8,6 @@
   overflow: hidden;
 }
 
-/* 흐림 배경 - 가로 꽉 채우기 */
 .videoBgBlur {
   position: absolute;
   top: 0;
@@ -27,14 +26,12 @@
   left: 50%;
   height: 180%;
   width: auto;
-  /* 사이즈 조절 아래 수정하기 scale(2.0);*/
   transform: translate(-50%, -50%);
   z-index: -1;
   object-fit: contain;
   max-width: none;
 }
 
-/* 텍스트 오버레이 */
 .overlay {
   position: absolute;
   bottom: 15%;
@@ -47,14 +44,11 @@
   font-family: "Nanum Pen Script" !important;
   font-weight: 400;
   font-size: 3.5rem;
-  /* 이미지처럼 적당히 크게 */
   letter-spacing: -0.8px;
-  /* 글자 간격 좁혀서 연결감 있게 */
   line-height: 1.3;
   color: #555555cc;
 }
 
-/* Hero 메인 제목은 기존 스타일 유지 */
 .overlay h1 {
   font-family: "Cafe24Dongdong" !important;
   font-weight: 400;

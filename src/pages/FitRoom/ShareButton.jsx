@@ -17,9 +17,12 @@ function ShareButton({ imageUrl }) {
     const defaultImage = "https://i.imgur.com/n4A51Av.png";
 
     const shareImage = imageUrl || defaultImage;
-    // const BASE_URL = `${window.location.protocol}//${window.location.host}`;
-    const BASE_URL = `${window.location.protocol}//${window.location.hostname}:3000`;
     //const BASE_URL = window.location.origin;
+    // const BASE_URL = `${window.location.protocol}//${window.location.host}`;
+    // const BASE_URL = `${window.location.protocol}//${window.location.hostname}:3000`;
+
+    const BASE_URL = "https://tnt5.store";
+
     const sharePageUrl = `${BASE_URL}/fitroom/share?img=${encodeURIComponent(shareImage)}`;
 
     window.Kakao.Link.sendDefault({
@@ -56,7 +59,7 @@ function ShareButton({ imageUrl }) {
   //   const defaultImage = "https://i.imgur.com/n4A51Av.png";
   //   const shareImage = imageUrl || defaultImage;
 
-  //   const BASE_URL = window.location.origin;
+  //   const BASE_URL = "https://tnt5.store";
   //   const sharePageUrl = `${BASE_URL}/fitroom/share?img=${encodeURIComponent(shareImage)}`;
 
   //   try {

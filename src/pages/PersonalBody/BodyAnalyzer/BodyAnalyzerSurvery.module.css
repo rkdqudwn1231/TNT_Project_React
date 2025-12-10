@@ -1,5 +1,4 @@
 
-/* 전체 래퍼 */
 .wrapper {
   max-width: 780px;
   margin: 0 auto;
@@ -18,12 +17,10 @@
     margin-bottom: 50px;
 }
 
-/* 질문 블럭 */
 .block {
   margin-bottom: 28px;
 }
 
-/* 질문 텍스트 */
 .question {
   font-size: 16px;
   font-weight: 600;
@@ -31,28 +28,24 @@
   line-height: 1.4;
 }
 
-/* 설명/보조 텍스트 */
 .helper {
   font-size: 13px;
   color: #999;
   margin-bottom: 12px;
 }
 
-/* 옵션 영역  */
 .optionsRow {
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
 }
 
-/* 옵션 영역 */
 .optionsColumn {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
 
-/* 공통 카드 스타일 */
 .optionCard {
   position: relative;
   display: flex;
@@ -76,7 +69,7 @@
 
 .optionCard input[type="radio"] {
   margin-top: 3px;
-  accent-color: #ff7fae; /* 최신 브라우저용 */
+  accent-color: #ff7fae; 
 }
 
 .optionCard input[type="radio"]:checked + span {
@@ -89,11 +82,9 @@
 }
 
 .optionCard input[type="radio"]:checked ~ span::before {
-  /* dummy to keep selector; 실제 스타일은 label에 적용 */
 }
 
 .optionCard input[type="radio"]:checked {
-  /* 라디오 자체는 브라우저 기본 사용, 카드 강조는 아래로 */
 }
 
 .optionCard:has(input[type="radio"]:checked) {
@@ -101,7 +92,6 @@
   background: #fff0f6;
 }
 
-/* 버튼 */
 .submitBtn {
   width: 20%;
   margin-top: 16px;
@@ -184,7 +174,6 @@
     border-radius: 12px;
   }
 
-  /* 버튼 */
   .btnBox {
     justify-content: center; 
     gap: 10px;

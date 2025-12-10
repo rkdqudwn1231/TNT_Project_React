@@ -6,16 +6,6 @@
     gap: 50px;
 }
 
-.select {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    border: 5px solid rgba(250, 143, 188, 0.85);
-    border-radius: 20px;
-    width: 380px;
-    height: 600px;
-}
-
 .selectHeader {
     margin-top: 30px;
     margin-bottom: 30px;
@@ -34,22 +24,12 @@
     
 }
 
-/* 어바웃 */
-
-/* 기존 체형 선택 영역 (필요하면 유지) */
 .pbHeader {
   font-size: 40px;
   font-weight: 800;
   text-align: center;
   color: rgba(255, 170, 205, 0.85);
   margin-bottom: 50px;
-}
-
-.selectTest {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  gap: 50px;
 }
 
 .select {
@@ -62,36 +42,14 @@
   height: 600px;
 }
 
-.selectHeader {
-  margin-top: 30px;
-  margin-bottom: 30px;
-  font-size: 40px;
-  font-weight: 700;
-  color: white;
-}
-
-.selectBtn {
-  border: none;
-  background: none;
-  font-size: 40px;
-  font-weight: 700;
-  cursor: pointer;
-  color: white;
-}
-
-/* ------------------------------------------------ */
-/* 어바웃 공통 */
-/* ------------------------------------------------ */
-
 .wrapper {
   color: #222;
   width: 100%;
   overflow-x: hidden;
-  padding-bottom: 160px;
+  padding-bottom: 30px;
   background: radial-gradient(circle at top, #ffe9f3 0, #ffffff 40%, #ffeef7 100%);
 }
 
-/* 스크롤 등장 애니메이션 기본값 */
 .section {
   opacity: 0;
   transform: translateY(80px) scale(0.97);
@@ -110,10 +68,6 @@
   transform: translateY(0) scale(1) !important;
   filter: blur(0) !important;
 }
-
-/* ------------------------------------------------ */
-/* HERO */
-/* ------------------------------------------------ */
 
 .hero {
   display: flex;
@@ -166,7 +120,6 @@
   flex-wrap: wrap;
 }
 
-/* 버튼 공통 */
 .primaryBtn,
 .secondaryBtn,
 .ghostBtn {
@@ -184,6 +137,7 @@
   background: linear-gradient(135deg, #ff8fb8, #ff5ca8);
   color: #fff;
   box-shadow: 0 14px 30px rgba(255, 120, 190, 0.45);
+  margin-top: 70px;
 }
 
 .primaryBtn:hover {
@@ -203,7 +157,6 @@
   transform: translateY(-2px);
 }
 
-/* Hero Image */
 .heroImageWrap {
   flex: 1;
   position: relative;
@@ -240,10 +193,6 @@
   }
 }
 
-/* ------------------------------------------------ */
-/* CENTER BLOCK(체형 다양성, 마지막 CTA 타이틀 등) */
-/* ------------------------------------------------ */
-
 .centerBlock {
   display: flex;
   flex-direction: column;
@@ -277,10 +226,6 @@
   color: #222;
   white-space: pre-line;
 }
-
-/* ------------------------------------------------ */
-/* 지그재그 영역 (체형 유형 리스트) */
-/* ------------------------------------------------ */
 
 .zigzag {
   display: flex;
@@ -336,10 +281,6 @@
   white-space: pre-line;
   opacity: 0.9;
 }
-
-/* ------------------------------------------------ */
-/* 분석 소개 섹션 (AI + 설문 + 치수) */
-/* ------------------------------------------------ */
 
 .analysis {
   text-align: center;
@@ -429,10 +370,6 @@
   color: #444;
 }
 
-/* ------------------------------------------------ */
-/* 스타일 추천 섹션 */
-/* ------------------------------------------------ */
-
 .styleSection {
   text-align: center;
 }
@@ -505,10 +442,6 @@
   color: #b20068;
 }
 
-/* ------------------------------------------------ */
-/* 최종 CTA 섹션 */
-/* ------------------------------------------------ */
-
 .final {
   text-align: center;
 }
@@ -538,10 +471,6 @@
   background: rgba(255, 248, 252, 0.96);
   transform: translateY(-2px);
 }
-
-/* ------------------------------------------------ */
-/* 반응형 */
-/* ------------------------------------------------ */
 
 @media (max-width: 980px) {
   .hero {
@@ -627,19 +556,13 @@
   }
 }
 
-
-/* ==========================================================
-   📱 Body Type Main — Mobile ONLY (max-width: 600px)
-   ========================================================== */
 @media (max-width: 600px) {
 
-  /* 메인 헤더 */
   .pbHeader {
     font-size: 28px;
     margin-bottom: 30px;
   }
 
-  /* 카드들이 세로 정렬 */
   .selectTest {
     flex-direction: column;
     justify-content: center;
@@ -648,34 +571,29 @@
     padding: 0 10px;
   }
 
-  /* 개별 카드 */
   .select {
     width: 100% !important;
-    max-width: 330px;           /* 너무 커지지 않도록 제한 */
-    height: auto;               /* 고정 높이 제거 */
+    max-width: 330px;           
+    height: auto;              
     padding-bottom: 26px;
   }
 
-  /* 카드 타이틀 */
   .selectHeader {
     font-size: 26px;
     margin-bottom: 26px !important;
   }
 
-  /* 카드 내부 이미지 */
   .select img {
     width: 80% !important;
     max-width: 240px;
     margin-bottom: 20px !important;
   }
 
-  /* 버튼 */
   .selectBtn {
     font-size: 24px;
     padding: 6px 0;
   }
 
-  /* inline style로 준 marginLeft 제거 효과 */
   .select:first-child,
   .select:last-child {
     margin-left: 0 !important;

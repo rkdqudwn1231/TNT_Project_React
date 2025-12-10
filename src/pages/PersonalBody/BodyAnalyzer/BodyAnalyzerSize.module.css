@@ -23,7 +23,6 @@
   width: 100%;
 }
 
-/* 이미지 */
 .left {
   width: 400px;
 }
@@ -33,13 +32,11 @@
   filter: grayscale(0.1);
 }
 
-/* 이미지 하이라이트 */
 .highlight_shoulder { filter: drop-shadow(0 0 8px #ff3c76); }
 .highlight_bust { filter: drop-shadow(0 0 8px #ff7ea8); }
 .highlight_waist { filter: drop-shadow(0 0 8px #ffa7c6); }
 .highlight_hip { filter: drop-shadow(0 0 8px #ffc4d8); }
 
-/* 중앙 도움말 카드 */
 .middle {
   width: 400px;
   display: flex;
@@ -86,7 +83,6 @@
   margin: 0;
 }
 
-/* 오른쪽 입력 카드 */
 .right {
   max-width: 500px;
   width: 500px;
@@ -119,7 +115,6 @@
   color: #fff;
 }
 
-/* 입력 포커스 하이라이트 */
 .inputGroup {
   margin-bottom: 10px;
   transition: 0.25s;
@@ -142,7 +137,6 @@
   font-size: 1rem;
 }
 
-/* 버튼 */
 .btnBox {
   display: flex;
   justify-content: flex-end;   

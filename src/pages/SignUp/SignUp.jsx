@@ -296,7 +296,7 @@ const SignUp = () => {
       <h2 className={styles.title}>회원가입</h2>
 
       <form className={styles.form} onSubmit={handleSubmit}>
-        
+
         {/* 이름 */}
         <div className={styles.formGroup}>
           <label className={styles.label}>이름</label>
@@ -464,8 +464,8 @@ const SignUp = () => {
               {emailVerified
                 ? "완료"
                 : emailLinkSent
-                ? "인증 완료"
-                : "인증 요청"}
+                  ? "인증 완료"
+                  : "인증 요청"}
             </button>
           </div>
           {emailError && (
@@ -519,19 +519,18 @@ const SignUp = () => {
             value={form.personal_color}
             onChange={handleChange}
           >
-            <option value="">선택하세요</option>
-            <option value="spring_bright">봄 브라이트</option>
-            <option value="spring_light">봄 라이트</option>
-            <option value="spring_warm">봄 웜</option>
-            <option value="summer_light">여름 라이트</option>
-            <option value="summer_soft">여름 소프트</option>
-            <option value="summer_cool">여름 쿨</option>
-            <option value="autumn_warm">가을 웜</option>
-            <option value="autumn_soft">가을 소프트</option>
-            <option value="autumn_deep">가을 딥</option>
-            <option value="winter_bright">겨울 브라이트</option>
-            <option value="winter_deep">겨울 딥</option>
-            <option value="winter_cool">겨울 쿨</option>
+            <option value="Bright Spring">봄 브라이트</option>
+            <option value="Light Spring">봄 라이트</option>
+            <option value="Warm Spring">봄 웜</option>
+            <option value="Light Summer">여름 라이트</option>
+            <option value="Soft Summer">여름 소프트</option>
+            <option value="Cool Summer">여름 쿨</option>
+            <option value="Warm Autumn">가을 웜</option>
+            <option value="Soft Autumn">가을 소프트</option>
+            <option value="Deep Autumn">가을 딥</option>
+            <option value="Bright Winter">겨울 브라이트</option>
+            <option value="Deep Winter">겨울 딥</option>
+            <option value="Cool Winter">겨울 쿨</option>
           </select>
         </div>
 

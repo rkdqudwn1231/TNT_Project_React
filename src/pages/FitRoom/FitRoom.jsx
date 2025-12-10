@@ -5,6 +5,7 @@ import Model from "./Model/Model";
 import History from "./History/History";
 import FitRoomMain from "./FitRoomMain";
 import FitRoomShare from "./FitRoomShare";
+import NotFoundRedirect from "../Common/NotFoundRedirect";
 
 function FitRoom() {
   return (
@@ -23,6 +24,7 @@ function FitRoom() {
       <Route path="model" element={<Model />} />
       <Route path="history" element={<History />} />
       <Route path="share" element={<FitRoomShare />} />
+      <Route path="*" element={<NotFoundRedirect />} />
     </Routes>
   );
 }

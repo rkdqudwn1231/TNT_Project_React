@@ -149,7 +149,7 @@ const Header = () => {
             {!isMobile && !isHome && (
               <>
                 <NavLink
-                  to="/color/about"
+                  to="/color"
                   className={({ isActive }) =>
                     isActive ? `${styles.mainTab} ${styles.mainTabActive}` : styles.mainTab
                   }
@@ -223,11 +223,11 @@ const Header = () => {
                   </div>
                   {activeMainTab === "fitroom" && (
                     <div className={styles.subDropdown}>
+                      <NavLink to="/fitroom/about" onClick={closeMenu}>About</NavLink>
                       <NavLink to="/fitroom" onClick={closeMenu}>FitRoom</NavLink>
                       <NavLink to="/fitroom/closet" onClick={closeMenu}>Closet</NavLink>
                       <NavLink to="/fitroom/model" onClick={closeMenu}>Model</NavLink>
                       <NavLink to="/fitroom/history" onClick={closeMenu}>History</NavLink>
-                      <NavLink to="/fitroom/about" onClick={closeMenu}>About</NavLink>
                     </div>
                   )}
                 </div>
@@ -240,8 +240,8 @@ const Header = () => {
 
                   {activeMainTab === "Board" && (
                     <div className={styles.subDropdown}>
-                      <NavLink to="/Board" onClick={closeMenu}>Free Board</NavLink>
-                      <NavLink to="/Board" onClick={closeMenu}>Q&A</NavLink>
+                      <NavLink to="/Board" onClick={closeMenu}>OOTD Board</NavLink>
+                      
                     </div>
                   )}
                 </div>
@@ -284,7 +284,7 @@ const Header = () => {
                           navigate("/mypage");
                         }}
                       >
-                        <i className="bi bi-person-badge"></i>
+                         <i className={`${styles.iconPink} bi bi-person-circle`}></i>
                         <span>마이페이지</span>
                       </button>
                       <button
@@ -292,7 +292,7 @@ const Header = () => {
                         className={`${styles.userDropdownItem} ${styles.logoutItem}`}
                         onClick={handleLogout}
                       >
-                        <i className="bi bi-box-arrow-right"></i>
+                          <i className={`${styles.iconPink} bi bi-box-arrow-right`}></i>
                         <span>로그아웃</span>
                       </button>
                     </div>

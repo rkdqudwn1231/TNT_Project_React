@@ -26,12 +26,16 @@
    이미지 업로드 & 미리보기
 ===================== */
 .imgBox {
-  position: relative;
-  display: inline-block;
   width: 400px;
   height: 400px;
-  overflow: hidden;
   border-radius: 12px;
+  overflow: hidden;
+  
+  /* 중앙 정렬을 flex로 처리 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
 }
 
 @media (max-width: 768px) {
@@ -41,20 +45,19 @@
   }
 }
 
+/* 이미지는 절대 position 금지 → 좌표 문제 발생하니까 */
 .image {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 100%;
-  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
   object-fit: contain;
   cursor: none;
+
+  /* transform은 scale만 적용 가능 */
   transition: transform 0.15s ease-out;
-  transform: translate(-50%, -50%);
 }
 
 /* =====================
-   분석 영역(오른쪽)
+   분석 영역
 ===================== */
 .analysisBox {
   width: 480px;
@@ -86,19 +89,5 @@
     margin-left: 0;
     margin-top: 20px;
     padding: 18px;
-  }
-}
-
-@media (max-width: 768px) {
-  .imgBox {
-    position: relative;
-    left: 50%;
-    transform: translateX(-50%);
-  }
-}
-
-@media (max-width: 768px) {
-  .container > div:first-child {
-    width: 100% !important;
   }
 }

@@ -12,7 +12,7 @@ export const connectWebSocket = (userId, onMessage) => {
     }
 
     stompClient = new Client({
-      brokerURL: "ws://10.10.55.97/ws-stomp",
+      brokerURL: `https://tnt-65859504419.asia-northeast3.run.app`,
       reconnectDelay: 3000,
 
       onConnect: () => {

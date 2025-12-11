@@ -1,0 +1,75 @@
+[debug] [2025-12-10T04:57:20.522Z] ----------------------------------------------------------------------
+[debug] [2025-12-10T04:57:20.524Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\rkdqu\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js init
+[debug] [2025-12-10T04:57:20.524Z] CLI Version:   14.27.0
+[debug] [2025-12-10T04:57:20.524Z] Platform:      win32
+[debug] [2025-12-10T04:57:20.524Z] Node Version:  v22.19.0
+[debug] [2025-12-10T04:57:20.525Z] Time:          Wed Dec 10 2025 13:57:20 GMT+0900 (대한민국 표준시)
+[debug] [2025-12-10T04:57:20.525Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2025-12-10T04:57:20.526Z] >>> [apiv2][query] GET https://firebase-public.firebaseio.com/cli.json [none]
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  C:\강범찬\3차프로젝트
+
+Before we get started, keep in mind:
+
+  * You are currently outside your home directory
+
+[debug] [2025-12-10T04:57:20.906Z] <<< [apiv2][status] GET https://firebase-public.firebaseio.com/cli.json 200
+[debug] [2025-12-10T04:57:20.906Z] <<< [apiv2][body] GET https://firebase-public.firebaseio.com/cli.json {"cloudBuildErrorAfter":1594252800000,"cloudBuildWarnAfter":1590019200000,"defaultNode10After":1594252800000,"minVersion":"3.0.5","node8DeploysDisabledAfter":1613390400000,"node8RuntimeDisabledAfter":1615809600000,"node8WarnAfter":1600128000000}
+[debug] [2025-12-10T04:58:15.837Z] ExitPromptError: User force closed the prompt with SIGINT
+    at Interface.sigint (C:\Users\rkdqu\AppData\Roaming\npm\node_modules\firebase-tools\node_modules\@inquirer\core\dist\commonjs\lib\create-prompt.js:101:37)
+    at Interface.emit (node:events:519:28)
+    at Interface.emit (node:domain:489:12)
+    at [_ttyWrite] [as _ttyWrite] (node:internal/readline/interface:1132:18)
+    at ReadStream.onkeypress (node:internal/readline/interface:271:20)
+    at ReadStream.emit (node:events:531:35)
+    at ReadStream.emit (node:domain:489:12)
+    at emitKeys (node:internal/readline/utils:370:14)
+    at emitKeys.next (<anonymous>)
+    at ReadStream.onData (node:internal/readline/emitKeypressEvents:64:36)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2025-12-10T04:59:34.312Z] ----------------------------------------------------------------------
+[debug] [2025-12-10T04:59:34.314Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\rkdqu\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js init
+[debug] [2025-12-10T04:59:34.314Z] CLI Version:   14.27.0
+[debug] [2025-12-10T04:59:34.314Z] Platform:      win32
+[debug] [2025-12-10T04:59:34.314Z] Node Version:  v22.19.0
+[debug] [2025-12-10T04:59:34.315Z] Time:          Wed Dec 10 2025 13:59:34 GMT+0900 (대한민국 표준시)
+[debug] [2025-12-10T04:59:34.315Z] ----------------------------------------------------------------------
+[debug] 
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  C:\강범찬\3차프로젝트
+
+Before we get started, keep in mind:
+
+  * You are currently outside your home directory
+
+[debug] [2025-12-10T07:41:01.438Z] ExitPromptError: User force closed the prompt with SIGINT
+    at Interface.sigint (C:\Users\rkdqu\AppData\Roaming\npm\node_modules\firebase-tools\node_modules\@inquirer\core\dist\commonjs\lib\create-prompt.js:101:37)
+    at Interface.emit (node:events:519:28)
+    at Interface.emit (node:domain:489:12)
+    at [_ttyWrite] [as _ttyWrite] (node:internal/readline/interface:1132:18)
+    at ReadStream.onkeypress (node:internal/readline/interface:271:20)
+    at ReadStream.emit (node:events:531:35)
+    at ReadStream.emit (node:domain:489:12)
+    at emitKeys (node:internal/readline/utils:370:14)
+    at emitKeys.next (<anonymous>)
+    at ReadStream.onData (node:internal/readline/emitKeypressEvents:64:36)
+[error] 
+[error] Error: An unexpected error has occurred.

@@ -379,9 +379,20 @@ export default function Board() {
                 <label>퍼스널 컬러</label>
                 <select name="color" onChange={handleChange} value={form.color}>
                   <option value="">선택해주세요</option>
+                  <option value="봄 브라이트">봄 브라이트</option>
+                  <option value="봄 라이트">봄 라이트</option>
                   <option value="봄 웜">봄 웜</option>
+
+                  <option value="여름 라이트">여름 라이트</option>
+                  <option value="여름 소프트">여름 소프트</option>
                   <option value="여름 쿨">여름 쿨</option>
+
                   <option value="가을 웜">가을 웜</option>
+                  <option value="가을 소프트">가을 소프트</option>
+                  <option value="가을 딥">가을 딥</option>
+
+                  <option value="겨울 브라이트">겨울 브라이트</option>
+                  <option value="겨울 딥">겨울 딥</option>
                   <option value="겨울 쿨">겨울 쿨</option>
                 </select>
               </div>
@@ -403,16 +414,16 @@ export default function Board() {
             <div>
               <div className={styles.formGroup}>
                 <label>제목</label>
-              <input
-                type="text"
-                name="title"
-                placeholder="제목을 입력해주세요"
-                onChange={handleChange}
-                value={form.title}
-                onKeyDown={(e) => {
-                if (e.key === "Enter") e.preventDefault();
-               }}
-              />
+                <input
+                  type="text"
+                  name="title"
+                  placeholder="제목을 입력해주세요"
+                  onChange={handleChange}
+                  value={form.title}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") e.preventDefault();
+                  }}
+                />
               </div>
 
               <div className={styles.formGroup}>
@@ -424,7 +435,7 @@ export default function Board() {
                   onChange={handleChange}
                   value={form.tag}
                   onKeyDown={(e) => {
-                  if (e.key === "Enter") e.preventDefault();
+                    if (e.key === "Enter") e.preventDefault();
                   }}
                 />
               </div>
@@ -481,9 +492,20 @@ export default function Board() {
                 onChange={(e) => setFilterColor(e.target.value)}
               >
                 <option value="">전체</option>
+                <option value="봄 브라이트">봄 브라이트</option>
+                <option value="봄 라이트">봄 라이트</option>
                 <option value="봄 웜">봄 웜</option>
+
+                <option value="여름 라이트">여름 라이트</option>
+                <option value="여름 소프트">여름 소프트</option>
                 <option value="여름 쿨">여름 쿨</option>
+
                 <option value="가을 웜">가을 웜</option>
+                <option value="가을 소프트">가을 소프트</option>
+                <option value="가을 딥">가을 딥</option>
+
+                <option value="겨울 브라이트">겨울 브라이트</option>
+                <option value="겨울 딥">겨울 딥</option>
                 <option value="겨울 쿨">겨울 쿨</option>
               </select>
             </div>

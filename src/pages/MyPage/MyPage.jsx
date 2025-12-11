@@ -26,10 +26,50 @@ const MyPage = () => {
 
   const [saving, setSaving] = useState(false);
 
+  // ★ 회원가입과 동일한 전화번호 정규식
+  const phoneRegex = /^010-\d{4}-\d{4}$/;
+
   // 공통 input 변경
   const handleChange = (e) => {
     const { name, value } = e.target;
+
+    // ★ 전화번호는 회원가입처럼 포맷팅 함수로 처리
+    if (name === "phone") {
+      handlePhoneChange(value);
+      return;
+    }
+
     setEditForm((prev) => ({ ...prev, [name]: value }));
+  };
+
+  // ★ 회원가입과 동일한 전화번호 포맷팅 로직
+  const handlePhoneChange = (rawValue) => {
+    // 숫자만 추출
+    const digits = rawValue.replace(/\D/g, "");
+
+    let formatted = digits;
+
+    if (digits.startsWith("010")) {
+      if (digits.length <= 3) {
+        formatted = digits; // 010
+      } else if (digits.length <= 7) {
+        // 010-1234
+        formatted = digits.slice(0, 3) + "-" + digits.slice(3);
+      } else {
+        // 010-1234-5678
+        formatted =
+          digits.slice(0, 3) +
+          "-" +
+          digits.slice(3, 7) +
+          "-" +
+          digits.slice(7, 11);
+      }
+    }
+
+    setEditForm((prev) => ({
+      ...prev,
+      phone: formatted,
+    }));
   };
 
   // 프로필 이미지 변경
@@ -98,6 +138,13 @@ const MyPage = () => {
   const handleSave = async () => {
     if (!userData) return;
     setSaving(true);
+
+    // ★ 회원가입과 동일하게 저장 전 전화번호 형식 검사
+    if (editForm.phone && !phoneRegex.test(editForm.phone)) {
+      alert("전화번호는 010-0000-0000 형식으로 입력해주세요.");
+      setSaving(false);
+      return;
+    }
 
     try {
       let uploadedImage = null;

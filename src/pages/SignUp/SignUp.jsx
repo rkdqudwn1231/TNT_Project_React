@@ -210,6 +210,7 @@ const SignUp = () => {
   };
 
   const confirmEmailVerified = async () => {
+    
     try {
       const res = await caxios.get("/auth/email-verified", {
         params: { email: form.email },
@@ -221,6 +222,7 @@ const SignUp = () => {
       } else {
         setEmailVerified(false);
         setEmailVerifyMessage("아직 이메일 인증이 완료되지 않았습니다.");
+        alert(res.data.verified);
       }
     } catch {
       alert("이메일 인증 상태 확인 중 오류");
